@@ -1,6 +1,6 @@
 #' @title Plot of fitted growth for each age-length component
 #' @inheritParams plot_annual
-#' @param name A character vector specifying the \code{fit$catchdist.fleets$name} to plot. If \code{NULL}, all names are plotted.
+#' @inheritParams plot_catchdist
 #' @return A \link[ggplot2]{ggplot} object. A list of ggplot objects if there are multiple age-length (aldist) data sources (\code{unique(fit$catchdist.fleets$name)}).
 #' @export
 

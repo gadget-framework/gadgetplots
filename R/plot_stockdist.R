@@ -18,7 +18,8 @@ plot_stockdist <- function(fit, stocks = NULL, base_size = 8) {
       ggplot2::labs(y = 'Stock proportion', x = 'Length', color = "Stock", lty = "Stock",
                     shape = "Stock") +
       ggplot2::theme_classic(base_size = base_size) +
-      ggplot2::theme(strip.background = ggplot2::element_blank())
+      ggplot2::theme(legend.position = "bottom",
+                     strip.background = ggplot2::element_blank())
   }
 
   if(length(unique(fit$stockdist$name)) == 1) {

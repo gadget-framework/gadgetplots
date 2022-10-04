@@ -1,0 +1,181 @@
+---
+title: "Gadget model output"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+params: 
+  fit: fit
+editor_options: 
+  chunk_output_type: console
+---
+
+Annual plot
+=======================================================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Catches
+
+```{r}
+plotly::ggplotly(plot_catch(fit)) %>% 
+  plotly::layout(legend=list(x=0, y = 1, 
+                             xanchor='left',
+                             yanchor='bottom',
+                             orientation='h'))
+```
+
+### F
+
+```{r}
+plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
+```
+
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Recruitment
+
+```{r}
+plotly::ggplotly(plot_rec(fit) + ggplot2::theme(legend.position = "none"))
+```
+
+### Biomass
+
+```{r}
+plotly::ggplotly(
+  plot_biomass(fit, total = TRUE) + ggplot2::theme(legend.position = "none"))
+```
+
+
+Catch distributions 
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r, echo = FALSE}
+x <- plot_catchdist(fit, base_size = 14)
+```
+
+```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]])
+  cat("  \n")
+}
+
+```
+
+Suitability
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r, echo = FALSE}
+x <- plot_suitability(fit, fleets = NULL, base_size = 14)
+```
+
+```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]] + 
+          ggplot2::theme(legend.position = "top")
+  )
+  cat("  \n")
+}
+
+```
+
+Stock distribution 
+=======================================================================
+
+```{r}
+x <- plot_stockdist(fit, stocks = "separate")
+
+plotly::subplot(lapply(x, function(k) {
+  k + ggplot2::theme(legend.position = "none")
+}),
+nrows = 2
+)
+```
+
+Age-length
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r, echo = FALSE}
+x <- plot_agelength(fit, base_size = 14)
+```
+
+```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]])
+  cat("  \n")
+}
+```
+
+### Growth
+
+```{r}
+plot_growth(fit, base_size = 14) + ggplot2::theme(legend.position = "none")
+```
+
+Survey indices
+=======================================================================
+
+```{r}
+plotly::ggplotly(plot_si(fit))
+```
+
+Catches
+=======================================================================
+
+```{r}
+
+plotly::subplot(plot_catch(fit, type = "fleet"),
+                plot_catch(fit, type = "hr"),
+                margin = 0.05,
+                titleX = TRUE,
+                titleY = TRUE) # %>% 
+# plotly::layout(legend=list(x=0, y = 1, 
+#                            xanchor='left',
+#                            yanchor='bottom',
+#                            orientation='h')) 
+
+```
+
+Age composition 
+=======================================================================
+
+Column 
+-----------------------------------------------------------------------
+
+```{r, fig.width=14.5,fig.height=12}
+plot_agecomp(fit, base_size = 14)
+```
+
+Residuals
+=======================================================================
+
+Optimized parameters
+=======================================================================
+
+```{r}
+DT::datatable(fit$params, options = list(pageLength = 500)) %>%
+  DT::formatRound(columns=c('value'), digits=3)
+```
+

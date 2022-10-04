@@ -7,7 +7,7 @@
 \method{plot}{gadget.fit}(x, param = "annual", ...)
 }
 \arguments{
-\item{x}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+\item{x}{A gadget fit object. See \code{\link[gadgetutilss]{g3_fit}}.}
 
 \item{param}{Character defining the parameter to plot. See Details.}
 

@@ -9,7 +9,7 @@ plot_catchdist(fit, name = NULL, base_size = 8)
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{name}{A character vector specifying the \code{fit$catchdist.fleets$name} to plot. If \code{NULL}, all names are plotted.}
+\item{name}{A character vector specifying the unique(fit$catchdist.fleets$name) to plot. If \code{NULL}, all names are plotted.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

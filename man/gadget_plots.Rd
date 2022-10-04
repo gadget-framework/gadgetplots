@@ -6,7 +6,7 @@
 \usage{
 gadget_plots(
   fit,
-  path = NULL,
+  path,
   file_type = "png",
   quiet = FALSE,
   width = NULL,
@@ -18,7 +18,7 @@ gadget_plots(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{path}{Directory path for saving figures, defaults to file.path(getwd(), 'figs')}
+\item{path}{Directory path for saving figures}
 
 \item{file_type}{Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}}.}
 

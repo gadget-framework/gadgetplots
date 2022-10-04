@@ -1,6 +1,6 @@
 #' @title Plot \code{gadget.fit} object
 #' @description A wrapper function to plot the results from a \link[gadget3:g3_fit]{gadget.fit} object.
-#' @param x A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.
+#' @param x A gadget fit object. See \code{\link[gadgetutilss]{g3_fit}}.
 #' @param param Character defining the parameter to plot. See Details.
 #' @param ... Additional parameters passed to the separate plotting functions.
 #' @details A wrapper to plot the results from a \link[gadget3:g3_fit]{gadget.fit} object. The function produces a different plots defined by \code{param} argument and additional arguments passed to the respective functions.
@@ -82,13 +82,30 @@ plot.gadget.fit <- function(x, param = "annual", ...){
     }
   }
 
-  if(param %in% c("catch", "catches")) {
-    if(!type %in% c("stock", "fleet", "hr")) type <- "stock"
+  if(param %in% c("catch", "catches", "hr", "fleet")) {
+    if(param == "hr") {
+      type <- "hr"
+    } else if (param == "fleet") {
+      type <- "fleet"
+    } else if(!exists("type")) {
+      type <- "stock"
+    } else if (!type %in% c("stock", "fleet", "hr")) {
+      type <- "stock"
+    }
     return(plot_catch(fit, type = type, ...))
   }
 
-  if(param == 'likelihood') {
-    return(plot_likelihood(fit, ...))
+  if(param %in% c('likelihood', 'weighted', 'pie')) {
+    if(param == "pie") {
+      type <- "pie"
+    } else if (param == "weighted") {
+      type <- "weighted"
+    } else if(!exists("type")) {
+      type <- "direct"
+    } else if (!type %in% c("direct", "weighted", "pie")) {
+      type <- "direct"
+    }
+    return(plot_likelihood(fit, type = type, ...))
   }
 
   if(param %in% c('si', 'survey', 'surveyindex', 'surveyindices')) {
@@ -99,7 +116,7 @@ plot.gadget.fit <- function(x, param = "annual", ...){
     return(plot_catchdist(fit, ...))
   }
 
-  if(param == "suitability") {
+  if(param %in% c("suitability", "suit")) {
     return(plot_suitability(fit, ...))
   }
 

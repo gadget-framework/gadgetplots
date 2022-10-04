@@ -1,7 +1,7 @@
 #' Wrapper for plot.gadget.fit that saves all diagnostic graphs to a directory
 #'
 #' @inheritParams plot_annual
-#' @param path Directory path for saving figures, defaults to file.path(getwd(), 'figs')
+#' @param path Directory path for saving figures
 #' @param quiet Logical indicating whether to print messages about the plotting process (set to \code{FALSE} to suppress the messages.
 #' @param file_type Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}}.
 #' @param width,height Plot size given in \code{units}. If \code{NULL}, reasonable standard values are used.
@@ -12,18 +12,18 @@
 
 # Debugging params:
 # path = NULL; quiet = FALSE; width = NULL; height = NULL; units = "cm"; res = 300
-gadget_plots <- function(fit, path = NULL, file_type = "png", quiet = FALSE, width = NULL, height = NULL, units = "cm", res = 300){
+gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NULL, height = NULL, units = "cm", res = 300){
 
   if(is.null(width) & units == "cm") width <- 18
   if(is.null(height) & units == "cm") height <- 10
 
-  if (is.null(path)){
-    path <- file.path(getwd(), 'figs')
-  }
-  if (!dir.exists(path)) dir.create(path)
+  # if (is.null(path)){
+  #   path <- file.path(getwd(), 'figs')
+  # }
+  # if (!dir.exists(path)) dir.create(path)
 
   if(file_type == "html") {
-    stop("Html not implemented yet. Try plotting to files.")
+    plot_html(fit = fit, path = path)
   } else {
 
     if(!file_type %in% c("eps", "ps", "tex", "pdf", "jpeg", "tiff", "png", "bmp", "svg", "wmf")) stop("file_type has to be one of those listed in device argument for ggplot2")
