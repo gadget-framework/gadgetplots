@@ -1,7 +1,7 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.1.2**
+**Plot gadget3 model output using ggplot2. R package version 0.1.3**
 
 <!-- badges: start -->
 

@@ -58,9 +58,42 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       ggplot2::ggsave(
         file = paste0("Catchdistribution_", names(tmp)[i], ".", file_type),
         plot = print(tmp[[i]]),
-        path = path, bg = "white", width = width, height = height,
+        path = path, bg = "white", width = width, height = height*2,
         units = units, dpi = res)
     })
+
+    ## Stock distribution
+    if(!quiet) message("Plotting stock distribution")
+    tmp <- plot_stockdist(fit, stocks = "separate")
+
+    tmp <- lapply(seq_along(tmp), function(i) {
+      tmp[[i]] +
+        ggplot2::ggtitle(names(tmp)[i]) +
+        ggplot2::expand_limits(y = 1) +
+        ggplot2::theme(legend.position = "none")
+    })
+
+    ggplot2::ggsave(
+      file = paste0("Stockdist.", file_type),
+      plot = print(cowplot::plot_grid(plotlist = tmp)),
+      path = path, bg = "white", width = width, height = height*2, units = units,
+      dpi = res)
+
+    ## Suitability
+    if(!quiet) message("Plotting suitability")
+    ggplot2::ggsave(
+      file = paste0("Suitability.", file_type),
+      plot = print(plot_suitability(fit) + ggplot2::theme(legend.position = "bottom")),
+      path = path, bg = "white", width = width, height = height*1.5, units = units,
+      dpi = res)
+
+    ## Average length by age (growth)
+    if(!quiet) message("Plotting growth")
+    ggplot2::ggsave(
+      file = paste0("Growth.", file_type),
+      plot = print(plot_growth(fit)),
+      path = path, bg = "white", width = width, height = height, units = units,
+      dpi = res)
 
     ## Age-length
     if(!quiet) message("Plotting age-length")
@@ -84,6 +117,14 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
     #  tmp <- plot(fit, data="params", height=par("din")[1]*2, width=par("din")[2])
     #  ggplot2::ggsave("parameters.png", path=path, plot = tmp, height=par("din")[1]*2, width=par("din")[2]*1.25, bg = "white")
 
+    ## Age composiition
+    if(!quiet) message("Plotting age composition")
+    ggplot2::ggsave(
+      file = paste0("Age_composition.", file_type),
+      plot = print(plot_agecomp(fit)),
+      path = path, bg = "white", width = width, height = height*2, units = units,
+      dpi = res)
+
 
     ## Residuals
     if(!quiet) message("Plotting residuals")
@@ -95,30 +136,14 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       height = height, units = units, dpi = res
     )
 
-
-    ## Stock distribution
-    if(!quiet) message("Plotting stock distribution")
-    tmp <- plot_stockdist(fit, stocks = "separate")
-
-    tmp <- lapply(seq_along(tmp), function(i) {
-      tmp[[i]] +
-        ggplot2::ggtitle(names(tmp)[i]) +
-        ggplot2::expand_limits(y = 1) +
-        ggplot2::theme(legend.position = "none")
-    })
-
-    ggplot2::ggsave(
-      file = paste0("Stockdist.", file_type),
-      plot = print(cowplot::plot_grid(plotlist = tmp)),
-      path = path, bg = "white", width = width, height = height*2, units = units,
-      dpi = res)
-
     ## Likelihood
+
+    if(!quiet) message("Plotting likelihood")
 
     ggplot2::ggsave(
       file = paste0("Likelihood_weighted.", file_type),
       plot = print(plot_likelihood(fit)),
-      path = path, bg = "white", width = width, height = height, units = units,
+      path = path, bg = "white", width = width*0.7, height = height*0.7, units = units,
       dpi = res)
 
     ## Likelihood pies served hot
@@ -128,12 +153,6 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       path = path, bg = "white", width = width, height = height, units = units,
       dpi = res)
 
-    ## Suitability
-    if(!quiet) message("Plotting suitability")
-    ggplot2::ggsave(
-      file = paste0("Suitability.", file_type),
-      plot = print(plot_suitability(fit)),
-      path = path, bg = "white", width = width, height = height, units = units,
-      dpi = res)
+
   }
 }
