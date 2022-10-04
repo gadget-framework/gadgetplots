@@ -47,7 +47,7 @@ data(fit) # Note that we'll need a better example dataset
 ### Annual (ICES) plot
 
 ```{r}
-plot_annual(fit) # synonym: plot(fit, "annual")
+plot_annual(fit) # synonym: plot(fit)
 ```
 
 ### Stock biomass and abundance

@@ -11,4 +11,5 @@
 ^\.github$
 ^LICENSE$
 ^NEWS\.md$
+man/figures$
 

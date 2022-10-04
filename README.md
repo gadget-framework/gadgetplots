@@ -44,7 +44,7 @@ data(fit) # Note that we'll need a better example dataset
 ### Annual (ICES) plot
 
 ``` r
-plot_annual(fit) # synonym: plot(fit, "annual")
+plot_annual(fit) # synonym: plot(fit)
 ```
 
 ![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
