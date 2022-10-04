@@ -4,10 +4,12 @@
 \alias{plot_annual}
 \title{Plot annual ICES type of graphic returning central model data}
 \usage{
-plot_annual(fit, base_size = 8, ...)
+plot_annual(fit, color_palette = scales::hue_pal(), base_size = 8, ...)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+
+\item{color_palette}{A function defining the color palette to be used or a vector of colors which is 1 longer than the number of stocks in the model. The extra color will be used for total estimate. See \link[ggplot2]{scale_color_manual}.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
@@ -18,4 +20,9 @@ A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot object
 }
 \description{
 Plot annual ICES type of graphic returning central model data
+}
+\examples{
+data(fit)
+# Annual plot with custom colors
+plot_annual(fit, color_palette = scales::brewer_pal(palette = "Spectral"))
 }

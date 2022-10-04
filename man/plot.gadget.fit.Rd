@@ -25,30 +25,26 @@ A wrapper to plot the results from a \link[gadget3:g3_fit]{gadget.fit} object. T
 Valid \code{param} options are:
 \describe{
   \item{annual}{Annual summary of central model data. Uses \code{\link{plot_annual}}}
-  \item{sidat}{Surveyindices}
-  \item{likelihood}{\link[=plot_likelihood]{Likelihood summary data}}
-  \item{catchdist}{Catchdistribution data}
-  \item{stockdist}{Stockdistribution data}
-  \item{res.by.year}{Results by year}
-  \item{stock.std}{Age composition from the model}
-  \item{suitability}{Suitability estimated from the model by year and step}
-  \item{params}{Parameter values relative to their boundaries}
-}
-and valid plottypes are:
-\describe{
-  \item{direct}{Default value, plots direct comparisons of data with model output. Valid for all datatype except 'res.by.year'}
-  \item{weighted}{Only for 'summary'. Plots the weighted likelihood value for each component.}
-  \item{pie}{Only for 'summary'. Plots the likelihood composition as a pie chart}
-  \item{lengths}{Only for 'sidat'. Plot the surveyindex based on the SI length group instead of component name.}
-  \item{bio}{Only for 'sidat'. Plot the biomass weighted survey index, assumes length based abundance index.}
-  \item{scatter}{Only for 'sidat'. Produces a x-y scatter-plot for the fitted and observed index.}
-  \item{resid}{Only for 'catchdist.fleets'. Produces a residual plot for each component.}
-  \item{bubble}{Only for 'catchdist.fleets'. Produces a bubble plot for each component.}
-  \item{growth}{Only for 'catchdist.fleets'. Produces a plot of fitted growth for each age-length component.}
-  \item{resid}{Only for 'catchdist.fleets'. Produces a residual plot for each component.}
-  \item{F}{Only for 'res.by.year'. Produces a F plot by stock.}
-  \item{total}{Only for 'res.by.year'. Produces a total biomass plot by stock.}
-  \item{catch}{Only for 'res.by.year'. Produces a total catch plot by stock.}
-  \item{rec}{Only for 'res.by.year'. Produces a recruitment biomass plot by stock.}
+  \item{biomass}{Stock biomass. Uses \code{\link{plot_biomass}}}
+  \item{total}{Stock biomass with total. Uses \code{\link{plot_biomass}}(..., total = TRUE)}
+  \item{abundance}{Stock abundance. Uses \code{\link{plot_biomass}}(..., biomass = FALSE)}
+  \item{ssb}{Spawning stock biomass. Uses \code{\link{plot_ssb}}}
+  \item{rec}{Recruitment. Uses \code{\link{plot_rec}}}
+  \item{f}{Fishing mortality. Uses \code{\link{plot_f}}}
+  \item{catch}{Catches by stock. Uses \code{\link{plot_catch}}(..., type = "stock")}
+  \item{catch}{Catches by fleet. Uses \code{\link{plot_catch}}(..., type = "fleet")}
+  \item{hr}{Harvest rate. Uses \code{\link{plot_catch}}(..., type = "hr")}
+  \item{si}{Survey indices. Uses \code{\link{plot_si}}}
+  \item{catchdist}{Catch distribution. Uses \code{\link{plot_catchdist}}}
+  \item{stockdist}{Stock distribution. Uses \code{\link{plot_stockdist}}}
+  \item{suitablity}{Suitability (fleet selection). Uses \code{\link{plot_suitability}}}
+  \item{growth}{Average length by age. Uses \code{\link{plot_growth}}}
+  \item{agelength}{Age-length (growth parameter) fit. Uses \code{\link{plot_agelength}}}
+  \item{agecomp}{Age composition. Uses \code{\link{plot_agecomp}}}
+  \item{resid}{Residuals. Uses \code{\link{plot_resid}}}
+  \item{likelihood}{Likelihood scores. Uses \code{\link{plot_likelihood}}}
+  \item{weighted}{Weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "weighted")}
+  \item{pie}{Proportion of summed weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "pie")}
+  \item{params}{Parameter values relative to their boundaries (not implemented yet)}
 }
 }

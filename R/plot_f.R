@@ -19,6 +19,7 @@ plot_f <- function(fit, stock = NULL, total = TRUE, panelrow = FALSE, base_size 
       ggplot2::geom_line() +
       ggplot2::labs(y='F', x='Year', color='Stock') +
       ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::expand_limits(y = 0) +
       ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
       ggplot2::theme_classic(base_size = base_size)
 

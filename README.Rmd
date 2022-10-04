@@ -124,7 +124,7 @@ plot_stockdist(fit) # synonym: plot(fit, "stockdist")
 plot_suitability(fit) # synonym: plot(fit, "suitability")
 ```
 
-### Growth
+### Average length by age (growth)
 
 ```{r}
 plot_growth(fit) # synonym: plot(fit, "growth")

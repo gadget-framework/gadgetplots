@@ -1,7 +1,7 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.1.1**
+**Plot gadget3 model output using ggplot2. R package version 0.1.2**
 
 <!-- badges: start -->
 
@@ -154,7 +154,7 @@ plot_suitability(fit) # synonym: plot(fit, "suitability")
 
 ![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
 
-### Growth
+### Average length by age (growth)
 
 ``` r
 plot_growth(fit) # synonym: plot(fit, "growth")
