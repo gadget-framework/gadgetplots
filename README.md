@@ -1,7 +1,7 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.1.3**
+**Plot gadget3 model output using ggplot2. R package version 0.1.5**
 
 <!-- badges: start -->
 
@@ -38,7 +38,8 @@ Load example data to demonstrate the plots:
 
 ``` r
 library(gadgetplots)
-data(fit) # Note that we'll need a better example dataset
+load("/Users/a22357/ownCloud/GadgetGhl/g3 runs/model_files_no-age-andersen_20221005/data/Optimized TMB model fit.rda")
+# data(fit) # Note that we'll need a better example dataset
 ```
 
 ### Annual (ICES) plot

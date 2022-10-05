@@ -17,10 +17,10 @@
 Single or a list of \link[ggplot2]{ggplot} objects depending on the arguments.
 }
 \description{
-A wrapper function to plot the results from a \link[gadget3:g3_fit]{gadget.fit} object.
+A wrapper function to plot the results from a \link[gadgetutils:g3_fit]{gadget.fit} object.
 }
 \details{
-A wrapper to plot the results from a \link[gadget3:g3_fit]{gadget.fit} object. The function produces a different plots defined by \code{param} argument and additional arguments passed to the respective functions.
+A wrapper to plot the results from a \link[gadgetutils:g3_fit]{gadget.fit} object. The function produces a different plots defined by \code{param} argument and additional arguments passed to the respective functions.
 
 Valid \code{param} options are:
 \describe{

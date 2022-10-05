@@ -28,8 +28,9 @@ plot_likelihood <- function(fit, type = "direct", base_size = 8) {
     fit$likelihood %>%
       dplyr::filter(.data$year!='all') %>%
       dplyr::mutate(year = as.numeric(.data$year)) %>%
-      dplyr::filter(!is.na(.data$num), .data$num > 0) %>%
-      ggplot2::ggplot(ggplot2::aes(.data$year, .data$weight*.data$num)) +
+      dplyr::mutate(val = .data$weight*.data$num) %>%
+      dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
+      ggplot2::ggplot(ggplot2::aes(.data$year, .data$val)) +
       ggplot2::geom_point() +
       ggplot2::facet_wrap(~.data$component,scales = 'free_y') +
       ggplot2::labs(x='Year',y='Weighted score') +
@@ -40,6 +41,7 @@ plot_likelihood <- function(fit, type = "direct", base_size = 8) {
       dplyr::group_by(.data$component) %>%
       dplyr::filter(!is.na(.data$num)) %>%
       dplyr::summarise(val = sum(.data$num*.data$weight)) %>%
+      dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
       ggplot2::ggplot(ggplot2::aes(x="",y=.data$val,fill = .data$component)) +
       ggplot2::geom_bar(stat='identity',width = 1) +
       ggplot2::coord_polar("y",start = 0) +
