@@ -33,7 +33,6 @@ plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
 ```
 
 
-
 Column {data-width=500}
 -----------------------------------------------------------------------
 
@@ -48,6 +47,43 @@ plotly::ggplotly(plot_rec(fit) + ggplot2::theme(legend.position = "none"))
 ```{r}
 plotly::ggplotly(
   plot_biomass(fit, total = TRUE) + ggplot2::theme(legend.position = "none"))
+```
+
+Catches
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Catches
+
+```{r}
+plot_catch(fit, type = "fleet")
+
+# plotly::subplot(plot_catch(fit, type = "fleet"),
+#                 plot_catch(fit, type = "hr"),
+#                 margin = 0.05,
+#                 titleX = TRUE,
+#                 titleY = TRUE) # %>% 
+# plotly::layout(legend=list(x=0, y = 1, 
+#                            xanchor='left',
+#                            yanchor='bottom',
+#                            orientation='h')) 
+
+```
+
+### Harvest rate
+
+```{r}
+plot_catch(fit, type = "hr")
+```
+
+
+Survey indices
+=======================================================================
+
+```{r}
+plotly::ggplotly(plot_si(fit))
 ```
 
 
@@ -70,6 +106,19 @@ for(i in seq_along(x)) {
   cat("  \n")
 }
 
+```
+
+Stock distribution 
+=======================================================================
+
+```{r}
+x <- plot_stockdist(fit, stocks = "separate")
+
+plotly::subplot(lapply(x, function(k) {
+  k + ggplot2::theme(legend.position = "none")
+}),
+nrows = 2
+)
 ```
 
 Suitability
@@ -95,19 +144,6 @@ for(i in seq_along(x)) {
 
 ```
 
-Stock distribution 
-=======================================================================
-
-```{r}
-x <- plot_stockdist(fit, stocks = "separate")
-
-plotly::subplot(lapply(x, function(k) {
-  k + ggplot2::theme(legend.position = "none")
-}),
-nrows = 2
-)
-```
-
 Age-length
 =======================================================================
 
@@ -130,32 +166,8 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r}
+```{r, fig.height = 10, fig.width = 20}
 plot_growth(fit, base_size = 14) + ggplot2::theme(legend.position = "none")
-```
-
-Survey indices
-=======================================================================
-
-```{r}
-plotly::ggplotly(plot_si(fit))
-```
-
-Catches
-=======================================================================
-
-```{r}
-
-plotly::subplot(plot_catch(fit, type = "fleet"),
-                plot_catch(fit, type = "hr"),
-                margin = 0.05,
-                titleX = TRUE,
-                titleY = TRUE) # %>% 
-# plotly::layout(legend=list(x=0, y = 1, 
-#                            xanchor='left',
-#                            yanchor='bottom',
-#                            orientation='h')) 
-
 ```
 
 Age composition 
@@ -165,11 +177,38 @@ Column
 -----------------------------------------------------------------------
 
 ```{r, fig.width=14.5,fig.height=12}
-plot_agecomp(fit, base_size = 14)
+plotly::ggplotly(plot_agecomp(fit, base_size = 14))
 ```
 
-Residuals
+Residuals & likelihood
 =======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Residuals
+
+```{r}
+plotly::ggplotly(plot_resid(fit, base_size = 14))
+```
+
+### Raw likelihood
+
+```{r}
+plotly::ggplotly(plot_likelihood(fit, base_size = 14))
+```
+
+### Weighted likelihood
+
+```{r}
+plotly::ggplotly(plot_likelihood(fit, base_size = 14, type = "weighted"))
+```
+
+### Total proportion
+
+```{r}
+plot_likelihood(fit, base_size = 14, type = "pie")
+```
 
 Optimized parameters
 =======================================================================

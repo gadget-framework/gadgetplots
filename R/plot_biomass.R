@@ -13,9 +13,9 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
   if (inherits(fit, 'gadget.fit')) {
 
     if(biomass) {
-      fit$res.by.year$value <- fit$res.by.year$catch/1e6
+      fit$res.by.year$value <- fit$res.by.year$total.biomass/1e6
     } else {
-      fit$res.by.year$value <- fit$res.by.year$num.catch/1e6
+      fit$res.by.year$value <- fit$res.by.year$total.number/1e6
     }
 
     if(geom_area) {

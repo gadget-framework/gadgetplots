@@ -42,6 +42,8 @@ plot_likelihood <- function(fit, type = "direct", base_size = 8) {
       dplyr::filter(!is.na(.data$num)) %>%
       dplyr::summarise(val = sum(.data$num*.data$weight)) %>%
       dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(val = 100*.data$val/sum(.data$val)) %>%
       ggplot2::ggplot(ggplot2::aes(x="",y=.data$val,fill = .data$component)) +
       ggplot2::geom_bar(stat='identity',width = 1) +
       ggplot2::coord_polar("y",start = 0) +

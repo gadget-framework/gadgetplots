@@ -6,7 +6,17 @@
 
 plot_agelength <- function(fit, name = NULL, base_size = 8) {
 
-  if(is.null(name)) name <- unique(fit$catchdist.fleets$name)
+  if(is.null(name)) {
+    name <- unique(fit$catchdist.fleets$name)
+
+    name <- name[sapply(name, function(x) {
+      fit$catchdist.fleets %>%
+        dplyr::filter(.data$name == x) %>%
+        pull(.data$age) %>%
+        unique() %>%
+        length() > 1
+    })]
+  }
 
   rlang::set_names(name) %>%
     purrr::map(function(x) {

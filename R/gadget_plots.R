@@ -141,8 +141,14 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
     if(!quiet) message("Plotting likelihood")
 
     ggplot2::ggsave(
-      file = paste0("Likelihood_weighted.", file_type),
+      file = paste0("Likelihood.", file_type),
       plot = print(plot_likelihood(fit)),
+      path = path, bg = "white", width = width*0.7, height = height*0.7, units = units,
+      dpi = res)
+
+    ggplot2::ggsave(
+      file = paste0("Likelihood_weighted.", file_type),
+      plot = print(plot_likelihood(fit, type = "weighted")),
       path = path, bg = "white", width = width*0.7, height = height*0.7, units = units,
       dpi = res)
 

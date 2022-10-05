@@ -1,7 +1,7 @@
 #' @title Plot catch distributions
 #' @description Plots the length distribution of each \code{fit$catchdist.fleets$name}
 #' @inheritParams plot_annual
-#' @param name A character vector specifying the unique(fit$catchdist.fleets$name) to plot. If \code{NULL}, all names are plotted.
+#' @param name A character vector specifying the unique(fit$catchdist.fleets$name) to plot. If \code{NULL}, all names with relevant data are plotted.
 #' @return A list of \link[ggplot2]{ggplot} objects consisting of a separate plot for each of \code{names}.
 #' @export
 
