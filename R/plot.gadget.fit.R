@@ -1,6 +1,6 @@
 #' @title Plot \code{gadget.fit} object
 #' @description A wrapper function to plot the results from a \link[gadgetutils:g3_fit]{gadget.fit} object.
-#' @param x A gadget fit object. See \code{\link[gadgetutilss]{g3_fit}}.
+#' @param x A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.
 #' @param param Character defining the parameter to plot. See Details.
 #' @param ... Additional parameters passed to the separate plotting functions.
 #' @details A wrapper to plot the results from a \link[gadgetutils:g3_fit]{gadget.fit} object. The function produces a different plots defined by \code{param} argument and additional arguments passed to the respective functions.

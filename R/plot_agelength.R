@@ -12,7 +12,7 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
     name <- name[sapply(name, function(x) {
       fit$catchdist.fleets %>%
         dplyr::filter(.data$name == x) %>%
-        pull(.data$age) %>%
+        dplyr::pull(.data$age) %>%
         unique() %>%
         length() > 1
     })]

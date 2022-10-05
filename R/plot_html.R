@@ -10,7 +10,7 @@
 
 plot_html <- function(fit, path, file_name = 'model_output_figures.html') {
   rmarkdown::render(
-    input = "inst/html-figures.Rmd",
+    input = system.file("html-figures.Rmd", package="gadgetplots"),
     output_file = file.path(path, file_name),
     params = list(fit = fit)
     )
