@@ -57,8 +57,8 @@ Column {.tabset}
 
 ### Catches
 
-```{r}
-plot_catch(fit, type = "fleet")
+```{r, fig.height = 10, fig.width = 26}
+plot_catch(fit, type = "fleet", base_size = 16)
 
 # plotly::subplot(plot_catch(fit, type = "fleet"),
 #                 plot_catch(fit, type = "hr"),
@@ -74,8 +74,8 @@ plot_catch(fit, type = "fleet")
 
 ### Harvest rate
 
-```{r}
-plot_catch(fit, type = "hr")
+```{r, fig.height = 10, fig.width = 25}
+plot_catch(fit, type = "hr", base_size = 16)
 ```
 
 
@@ -94,10 +94,10 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_catchdist(fit, base_size = 14)
+x <- plot_catchdist(fit, base_size = 16)
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -111,14 +111,26 @@ for(i in seq_along(x)) {
 Stock distribution 
 =======================================================================
 
-```{r}
-x <- plot_stockdist(fit, stocks = "separate")
+Column {.tabset}
+-----------------------------------------------------------------------
 
-plotly::subplot(lapply(x, function(k) {
-  k + ggplot2::theme(legend.position = "none")
-}),
-nrows = 2
-)
+### Model fit
+
+```{r, fig.height = 10, fig.width = 25}
+plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16)
+
+# plotly::subplot(lapply(x, function(k) {
+#   k + ggplot2::theme(legend.position = "none")
+# }),
+# nrows = 2
+# )
+
+```
+
+### Stock composition
+
+```{r, fig.height = 10, fig.width = 25}
+plot_stockdist(fit, type = "stock_composition", base_size = 16)
 ```
 
 Suitability
@@ -128,10 +140,10 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_suitability(fit, fleets = NULL, base_size = 14)
+x <- plot_suitability(fit, fleets = NULL, base_size = 16)
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -151,10 +163,10 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_agelength(fit, base_size = 14)
+x <- plot_agelength(fit, base_size = 16)
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 20, results='asis'}
+```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -166,8 +178,8 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r, fig.height = 10, fig.width = 20}
-plot_growth(fit, base_size = 14) + ggplot2::theme(legend.position = "none")
+```{r, fig.height = 10, fig.width = 25}
+plot_growth(fit, base_size = 16) + ggplot2::theme(legend.position = "none")
 ```
 
 Age composition 
@@ -188,20 +200,20 @@ Column {.tabset}
 
 ### Residuals
 
-```{r}
-plotly::ggplotly(plot_resid(fit, base_size = 14))
+```{r,fig.height = 10, fig.width = 25}
+plot_resid(fit, base_size = 16)
 ```
 
 ### Raw likelihood
 
-```{r}
-plotly::ggplotly(plot_likelihood(fit, base_size = 14))
+```{r, fig.height = 10, fig.width = 25}
+plot_likelihood(fit, base_size = 16)
 ```
 
 ### Weighted likelihood
 
-```{r}
-plotly::ggplotly(plot_likelihood(fit, base_size = 14, type = "weighted"))
+```{r, fig.height = 10, fig.width = 25}
+plot_likelihood(fit, base_size = 16, type = "weighted")
 ```
 
 ### Total proportion

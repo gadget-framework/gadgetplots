@@ -56,21 +56,22 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
           ggplot2::geom_line(ggplot2::aes(y=.data$p.ml))  +
           ggplot2::geom_linerange(
             ggplot2::aes(ymax=.data$o.upper,ymin=.data$o.lower)) +
-          ggplot2::facet_wrap(~.data$year+.data$step, drop = FALSE,
-                              ncol = max(2*length(unique(dat$step)),4)) +
+          ggplot2::facet_wrap(
+            ~.data$year+.data$step, drop = FALSE,
+            ncol = max(2*length(unique(dat$step)),4),
+            labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
           ggplot2::labs(x='Age', y='Average length') +
           ggplot2::expand_limits(x = 0) +
-          ggplot2::geom_text(
-            x=-Inf,y=Inf,
-            ggplot2::aes(label=paste(.data$year,.data$step,sep=',')),
-            size = FS(base_size)*0.8,
-            data = dat %>%
-              dplyr::select(.data$year,.data$step) %>%
-              dplyr::distinct(),vjust = 1.5,hjust = -0.1,
-            inherit.aes = FALSE) +
+          # ggplot2::geom_text(
+          #   x=-Inf,y=Inf,
+          #   ggplot2::aes(label=paste(.data$year,.data$step,sep=',')),
+          #   size = FS(base_size)*0.8,
+          #   data = dat %>%
+          #     dplyr::select(.data$year,.data$step) %>%
+          #     dplyr::distinct(),vjust = 1.5,hjust = -0.1,
+          #   inherit.aes = FALSE) +
           ggplot2::theme_classic(base_size = base_size) +
-          ggplot2::theme(strip.background = ggplot2::element_blank(),
-                         strip.text=ggplot2::element_blank())
+          ggplot2::theme(strip.background = ggplot2::element_blank())
       }
     })
 }

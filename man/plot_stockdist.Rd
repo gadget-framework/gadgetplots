@@ -4,12 +4,25 @@
 \alias{plot_stockdist}
 \title{Plot stock distribution}
 \usage{
-plot_stockdist(fit, stocks = NULL, base_size = 8)
+plot_stockdist(
+  fit,
+  stocks = NULL,
+  type = "model_fit",
+  color_palette = scales::hue_pal(),
+  geom_area = FALSE,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{stocks}{Character vector specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted in a single plot. If \code{"separate"}, all stocks are plotted in separate plots.}
+
+\item{type}{Character specifying the plot type. Options: \code{"model_fit"}, \code{"stock_composition"} or \code{"sex_composition"}. See Details.}
+
+\item{color_palette}{A function defining the color palette or a vector of colors to be used for stocks.}
+
+\item{geom_area}{Logical indicating whether stacked area should be plotted instead of lines.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -18,4 +31,12 @@ A \link[ggplot2]{ggplot} object. A list of ggplot objects if \code{stocks = "sep
 }
 \description{
 Plots proportions of stocks by length or age in \code{fit$stockdist}
+}
+\details{
+Possible plot types are:
+\describe{
+  \item{model_fit}{Model fit to data using likelihoods}
+  \item{stock_composition}{Model stock composition}
+  \item{sex_composition}{Model sex composition. Not implemented yet.}
+  }
 }
