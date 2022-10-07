@@ -28,7 +28,8 @@
 #'   \item{likelihood}{Likelihood scores. Uses \code{\link{plot_likelihood}}}
 #'   \item{weighted}{Weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "weighted")}
 #'   \item{pie}{Proportion of summed weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "pie")}
-#'   \item{params}{Parameter values relative to their boundaries (not implemented yet)}
+#'   \item{weight}{Parameter component weights}
+#'   \item{parms}{Parameter values relative to their boundaries}
 #' }
 #' @return Single or a list of \link[ggplot2]{ggplot} objects depending on the arguments.
 #' @export
@@ -120,13 +121,22 @@ plot.gadget.fit <- function(x, param = "annual", ...){
     return(plot_agecomp(fit, ...))
   }
 
-  if(param %in% c("stockdist", "maturity", "matp", "mat")) {
-    return(plot_stockdist(fit, ...))
+  if(param %in% c("stockdist", "stockcomp", "stock_composition", "maturity",
+                  "matp", "mat", "model_fit")) {
+    if(param %in% c("stockcomp", "stock_composition")) {
+      type <- "stock_composition"
+    } else {
+      type <- "model_fit"
+      return(plot_stockdist(fit, type = type, ...))
+    }
   }
 
-  if(param %in% c("params", "parameter")) {
-    warning("Parameter bounds not exported in g3_fit yet. Contact the developers.")
-    return(NULL)
+  if(param %in% c("weight", "weights")) {
+    return(plot_weight(fit, ...))
+  }
+
+  if(param %in% c("param", "params", "parameter")) {
+    return(plot_param(fit, ...))
   }
 
   warning("param not found from the predefined list. Returning NULL")

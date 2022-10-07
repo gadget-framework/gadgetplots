@@ -41,8 +41,7 @@ Load example data to demonstrate the plots:
 
 ```{r}
 library(gadgetplots)
-load("/Users/a22357/ownCloud/GadgetGhl/g3 runs/model_files_no-age-andersen_20221005/data/Optimized TMB model fit.rda")
-# data(fit) # Note that we'll need a better example dataset
+data(fit) # Note that we'll need a better example dataset
 ```
 
 ### Annual (ICES) plot
@@ -119,6 +118,13 @@ plot_catchdist(fit, name = "EggaN_ldist") # synonym: plot(fit, "catchdist")
 plot_stockdist(fit) # synonym: plot(fit, "stockdist")
 ```
 
+### Stock composition
+
+```{r}
+plot_stockdist(fit, type = "stock_composition") # synonym: plot(fit, "stockcomp")
+```
+
+
 ### Suitability (fleet selection)
 
 ```{r}
@@ -165,9 +171,21 @@ plot_likelihood(fit, type = "weighted") # synonym: plot(fit, "weighted")
 plot_likelihood(fit, type = "sums") # synonym: plot(fit, "sums")
 ```
 
+### Parameters
+
+Parameter component weights:
+
+```{r}
+plot_weight(fit) # synonym: plot(fit, "weight")
+```
+
+```{r, fig.height=15}
+# plot_param(fit) # synonym: plot(fit, "param") # need to add bounds to g3_fit
+```
+
 ## Quickly plot central diagnostics
 
-The `gadget_plot()` produces a range of diagnostic plots into a folder specified by the `path` argument. You may also use the `file_type = "html"` argument to save these plots into a single html file. There is also the `plot_html()` to produce the html file directly without a wrapper function. 
+The `gadget_plot()` produces a range of diagnostic plots into a folder specified by the `path` argument. You may also use the `file_type = "html"` argument to save these plots into a single html file. There is also the `make_html()` to produce the html file directly without a wrapper function. 
 
 ## Found a bug or desire a feature?
 

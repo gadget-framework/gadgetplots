@@ -1,7 +1,7 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.1.5**
+**Plot gadget3 model output using ggplot2. R package version 0.1.10**
 
 <!-- badges: start -->
 
@@ -38,8 +38,7 @@ Load example data to demonstrate the plots:
 
 ``` r
 library(gadgetplots)
-load("/Users/a22357/ownCloud/GadgetGhl/g3 runs/model_files_no-age-andersen_20221005/data/Optimized TMB model fit.rda")
-# data(fit) # Note that we'll need a better example dataset
+data(fit) # Note that we'll need a better example dataset
 ```
 
 ### Annual (ICES) plot
@@ -147,13 +146,21 @@ plot_stockdist(fit) # synonym: plot(fit, "stockdist")
 
 ![](man/figures/README-unnamed-chunk-16-1.png)<!-- -->
 
+### Stock composition
+
+``` r
+plot_stockdist(fit, type = "stock_composition") # synonym: plot(fit, "stockcomp")
+```
+
+![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
+
 ### Suitability (fleet selection)
 
 ``` r
 plot_suitability(fit) # synonym: plot(fit, "suitability")
 ```
 
-![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-18-1.png)<!-- -->
 
 ### Average length by age (growth)
 
@@ -161,7 +168,7 @@ plot_suitability(fit) # synonym: plot(fit, "suitability")
 plot_growth(fit) # synonym: plot(fit, "growth")
 ```
 
-![](man/figures/README-unnamed-chunk-18-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-19-1.png)<!-- -->
 
 ### Age-length fit
 
@@ -173,7 +180,7 @@ plot_agelength(fit, name = "EggaN_aldist_female") # synonym: plot(fit, "agelengt
 #> $EggaN_aldist_female
 ```
 
-![](man/figures/README-unnamed-chunk-19-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-20-1.png)<!-- -->
 
 ### Age composition
 
@@ -181,7 +188,7 @@ plot_agelength(fit, name = "EggaN_aldist_female") # synonym: plot(fit, "agelengt
 plot_agecomp(fit) # synonym: plot(fit, "agecomp"), also "stock.std" works
 ```
 
-![](man/figures/README-unnamed-chunk-20-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-21-1.png)<!-- -->
 
 ### Residuals
 
@@ -189,7 +196,7 @@ plot_agecomp(fit) # synonym: plot(fit, "agecomp"), also "stock.std" works
 plot_resid(fit) # synonym: plot(fit, "resid")
 ```
 
-![](man/figures/README-unnamed-chunk-21-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-22-1.png)<!-- -->
 
 ### Likelihood
 
@@ -197,26 +204,40 @@ plot_resid(fit) # synonym: plot(fit, "resid")
 plot_likelihood(fit) # synonym: plot(fit, "likelihood")
 ```
 
-![](man/figures/README-unnamed-chunk-22-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-23-1.png)<!-- -->
 
 ``` r
 plot_likelihood(fit, type = "weighted") # synonym: plot(fit, "weighted")
 ```
 
-![](man/figures/README-unnamed-chunk-23-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-24-1.png)<!-- -->
 
 ``` r
-plot_likelihood(fit, type = "pie") # synonym: plot(fit, "pie")
+plot_likelihood(fit, type = "sums") # synonym: plot(fit, "sums")
 ```
 
-![](man/figures/README-unnamed-chunk-24-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-25-1.png)<!-- -->
+
+### Parameters
+
+Parameter component weights:
+
+``` r
+plot_weight(fit) # synonym: plot(fit, "weight")
+```
+
+![](man/figures/README-unnamed-chunk-26-1.png)<!-- -->
+
+``` r
+# plot_param(fit) # synonym: plot(fit, "param") # need to add bounds to g3_fit
+```
 
 ## Quickly plot central diagnostics
 
 The `gadget_plot()` produces a range of diagnostic plots into a folder
 specified by the `path` argument. You may also use the
 `file_type = "html"` argument to save these plots into a single html
-file. There is also the `plot_html()` to produce the html file directly
+file. There is also the `make_html()` to produce the html file directly
 without a wrapper function.
 
 ## Found a bug or desire a feature?

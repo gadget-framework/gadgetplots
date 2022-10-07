@@ -11,7 +11,7 @@ plot_growth <- function(fit, base_size = 8) {
     ggplot2::ggplot(ggplot2::aes(.data$age,
                                  .data$mean_length,
                                  color=.data$stock)) +
-    ggplot2::geom_line() +
+    ggplot2::geom_line(size = base_size/16) +
     ggplot2::facet_wrap(~.data$year) +
     ggplot2::labs(y='Average length',x='Age',color='Stock') +
     ggplot2::theme_classic(base_size = base_size) +

@@ -23,7 +23,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
   # if (!dir.exists(path)) dir.create(path)
 
   if(file_type == "html") {
-    plot_html(fit = fit, path = path)
+    make_html(fit = fit, path = path)
   } else {
 
     if(!file_type %in% c("eps", "ps", "tex", "pdf", "jpeg", "tiff", "png", "bmp", "svg", "wmf")) stop("file_type has to be one of those listed in device argument for ggplot2")

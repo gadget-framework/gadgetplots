@@ -1,4 +1,4 @@
-#' @title Wrapper to save diagnostic graphs to a single html document
+#' @title Save diagnostic graphs to a single html document
 #' @inheritParams plot_annual
 #' @inheritParams gadget_plots
 #' @param file_name Character specifying the name of the html file without path. Must include the file extension.
@@ -8,7 +8,7 @@
 #' @import flexdashboard
 #' @export
 
-plot_html <- function(fit, path, file_name = 'model_output_figures.html') {
+make_html <- function(fit, path, file_name = 'model_output_figures.html') {
   rmarkdown::render(
     input = system.file("html-figures.Rmd", package="gadgetplots"),
     output_file = file.path(path, file_name),

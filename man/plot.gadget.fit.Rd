@@ -45,6 +45,7 @@ Valid \code{param} options are:
   \item{likelihood}{Likelihood scores. Uses \code{\link{plot_likelihood}}}
   \item{weighted}{Weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "weighted")}
   \item{pie}{Proportion of summed weighted likelihood scores. Uses \code{\link{plot_likelihood}}(..., type = "pie")}
-  \item{params}{Parameter values relative to their boundaries (not implemented yet)}
+  \item{weight}{Parameter component weights}
+  \item{parms}{Parameter values relative to their boundaries}
 }
 }

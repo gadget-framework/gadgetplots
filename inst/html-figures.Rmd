@@ -52,13 +52,15 @@ plotly::ggplotly(
 Catches
 =======================================================================
 
-Column {.tabset}
+Row
 -----------------------------------------------------------------------
 
 ### Catches
 
-```{r, fig.height = 10, fig.width = 26}
-plot_catch(fit, type = "fleet", base_size = 16)
+```{r, fig.height = 10, fig.width = 12.5}
+plot_catch(fit, type = "fleet", base_size = 16) +
+  ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
+  ggplot2::theme(legend.position = "bottom")
 
 # plotly::subplot(plot_catch(fit, type = "fleet"),
 #                 plot_catch(fit, type = "hr"),
@@ -72,10 +74,15 @@ plot_catch(fit, type = "fleet", base_size = 16)
 
 ```
 
+Row
+-----------------------------------------------------------------------
+
 ### Harvest rate
 
-```{r, fig.height = 10, fig.width = 25}
-plot_catch(fit, type = "hr", base_size = 16)
+```{r, fig.height = 10, fig.width = 12.5}
+plot_catch(fit, type = "hr", base_size = 16) +
+  ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
+  ggplot2::theme(legend.position = "bottom")
 ```
 
 
@@ -116,7 +123,7 @@ Column {.tabset}
 
 ### Model fit
 
-```{r, fig.height = 10, fig.width = 25}
+```{r, fig.height = 12, fig.width = 25}
 plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16)
 
 # plotly::subplot(lapply(x, function(k) {
@@ -129,7 +136,7 @@ plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16)
 
 ### Stock composition
 
-```{r, fig.height = 10, fig.width = 25}
+```{r, fig.height = 12, fig.width = 25}
 plot_stockdist(fit, type = "stock_composition", base_size = 16)
 ```
 
@@ -143,7 +150,7 @@ Column {.tabset}
 x <- plot_suitability(fit, fleets = NULL, base_size = 16)
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
+```{r, echo = FALSE, fig.height = 12, fig.width = 25, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -164,9 +171,10 @@ Column {.tabset}
 
 ```{r, echo = FALSE}
 x <- plot_agelength(fit, base_size = 16)
+# x <- lapply(x, function(k) plotly::ggplotly(k))
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
+```{r, echo = FALSE, fig.height = 12, fig.width = 25, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -178,7 +186,7 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r, fig.height = 10, fig.width = 25}
+```{r, fig.height = 12, fig.width = 25}
 plot_growth(fit, base_size = 16) + ggplot2::theme(legend.position = "none")
 ```
 
@@ -188,8 +196,8 @@ Age composition
 Column 
 -----------------------------------------------------------------------
 
-```{r, fig.width=14.5, fig.height=12}
-plotly::ggplotly(plot_agecomp(fit, base_size = 14))
+```{r, fig.width=14.5, fig.height=15}
+plot_agecomp(fit, base_size = 16)
 ```
 
 Residuals & likelihood
@@ -216,7 +224,7 @@ plot_likelihood(fit, base_size = 16)
 plot_likelihood(fit, base_size = 16, type = "weighted")
 ```
 
-### Total proportion
+### Total
 
 ```{r}
 plot_likelihood(fit, base_size = 14, type = "pie")
@@ -231,7 +239,7 @@ Column {.tabset}
 ### Relative to boundaries
 
 ```{r, fig.width=14.5, fig.height=12}
-plotly::ggplotly(plot_param(fit))
+# plotly::ggplotly(plot_param(fit))
 ```
 
 ### Weights
@@ -243,7 +251,9 @@ plot_weight(fit)
 ### Growth parameters & M
 
 ```{r}
-DT::datatable(fit$params %>% dplyr::filter(grepl("K$|Linf|recl$|M$", .data$switch)),
+DT::datatable(fit$params %>% 
+                dplyr::filter(grepl("K$|Linf|recl$|M$", .data$switch)) %>% 
+                dplyr::arrange(switch),
               options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
 ```

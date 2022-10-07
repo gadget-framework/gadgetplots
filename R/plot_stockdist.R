@@ -18,7 +18,7 @@ plot_stockdist <- function(fit, stocks = NULL, type = "model_fit", color_palette
 
   if(inherits(color_palette, "function")) {
     cols <- stats::setNames(color_palette(length(unique(fit$stockdist$stock))),
-                     unique(fit$stockdist$stock))
+                            unique(fit$stockdist$stock))
   } else {
     if(length(color_palette) != length(unique(fit$stockdist$stock))) {
       stop("color_palette has to be a vector with a same length than the number of stocks in the model or a color palette function")
@@ -42,9 +42,9 @@ plot_stockdist <- function(fit, stocks = NULL, type = "model_fit", color_palette
         ggplot2::ggplot(
           ggplot2::aes(x = .data$length, y = .data$obs.ratio,
                        shape = .data$stock, color = .data$stock)) +
-        ggplot2::geom_point() +
         ggplot2::geom_line(
           ggplot2::aes(y = .data$pred.ratio, lty = .data$stock), color = "black") +
+        ggplot2::geom_point(size = base_size/16) +
         ggplot2::facet_wrap(~.data$year+.data$step,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
         ggplot2::labs(y = 'Stock proportion', x = 'Length', color = "Stock",
@@ -69,7 +69,8 @@ plot_stockdist <- function(fit, stocks = NULL, type = "model_fit", color_palette
             ggplot2::scale_fill_manual(values = cols)
         } else {
           ggplot2::ggplot(data = x, ggplot2::aes(x = .data$length, y = .data$p)) +
-            ggplot2::geom_line(ggplot2::aes(color = .data$stock)) +
+            ggplot2::geom_line(ggplot2::aes(color = .data$stock),
+                               size = base_size/16) +
             ggplot2::scale_color_manual(values = cols)
         }
         } +
