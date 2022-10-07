@@ -152,13 +152,26 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       path = path, bg = "white", width = width, height = height, units = units,
       dpi = res)
 
-    ## Likelihood pies served hot
     ggplot2::ggsave(
-      file = paste0("Likelihood_pie.", file_type),
-      plot = print(plot_likelihood(fit, type = "pie")),
-      path = path, bg = "white", width = width*0.7, height = height*0.7, units = units,
-      dpi = res)
+      file = paste0("Likelihood_sums.", file_type),
+      plot = print(plot_likelihood(fit, type = "sums")),
+      path = path, bg = "white", width = width, height = height,
+      units = units,dpi = res)
 
+    ### Parameters
+    if(!quiet) message("Plotting parameters")
+
+    ggplot2::ggsave(
+      file = paste0("Parameters.", file_type),
+      plot = print(plot_param(fit, out_only = TRUE)),
+      path = path, bg = "white", width = width, height = height,
+      units = units,dpi = res)
+
+    ggplot2::ggsave(
+      file = paste0("Parameter_weights.", file_type),
+      plot = print(plot_weight(fit)),
+      path = path, bg = "white", width = width, height = height,
+      units = units,dpi = res)
 
   }
 }

@@ -91,14 +91,14 @@ plot.gadget.fit <- function(x, param = "annual", ...){
     return(plot_catch(fit, type = type, ...))
   }
 
-  if(param %in% c('likelihood', 'weighted', 'pie')) {
-    if(param == "pie") {
-      type <- "pie"
+  if(param %in% c('likelihood', 'weighted', 'sums')) {
+    if(param == "sums") {
+      type <- "sums"
     } else if (param == "weighted") {
       type <- "weighted"
     } else if(!exists("type")) {
       type <- "direct"
-    } else if (!type %in% c("direct", "weighted", "pie")) {
+    } else if (!type %in% c("direct", "weighted", "sums")) {
       type <- "direct"
     }
     return(plot_likelihood(fit, type = type, ...))

@@ -188,7 +188,7 @@ Age composition
 Column 
 -----------------------------------------------------------------------
 
-```{r, fig.width=14.5,fig.height=12}
+```{r, fig.width=14.5, fig.height=12}
 plotly::ggplotly(plot_agecomp(fit, base_size = 14))
 ```
 
@@ -222,11 +222,35 @@ plot_likelihood(fit, base_size = 16, type = "weighted")
 plot_likelihood(fit, base_size = 14, type = "pie")
 ```
 
-Optimized parameters
+Parameters
 =======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Relative to boundaries
+
+```{r, fig.width=14.5, fig.height=12}
+plotly::ggplotly(plot_param(fit))
+```
+
+### Weights
+
+```{r}
+plot_weight(fit)
+```
+
+### Growth parameters & M
+
+```{r}
+DT::datatable(fit$params %>% dplyr::filter(grepl("K$|Linf|recl$|M$", .data$switch)),
+              options = list(pageLength = 500)) %>%
+  DT::formatRound(columns=c('value'), digits=3)
+```
+
+### All parameters 
 
 ```{r}
 DT::datatable(fit$params, options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
 ```
-

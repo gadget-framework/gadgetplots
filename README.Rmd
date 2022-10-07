@@ -162,7 +162,7 @@ plot_likelihood(fit, type = "weighted") # synonym: plot(fit, "weighted")
 ```
 
 ```{r}
-plot_likelihood(fit, type = "pie") # synonym: plot(fit, "pie")
+plot_likelihood(fit, type = "sums") # synonym: plot(fit, "sums")
 ```
 
 ## Quickly plot central diagnostics
