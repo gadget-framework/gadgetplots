@@ -196,7 +196,7 @@ Age composition
 Column 
 -----------------------------------------------------------------------
 
-```{r, fig.width=14.5, fig.height=15}
+```{r, fig.width=25, fig.height=15}
 plot_agecomp(fit, base_size = 16)
 ```
 

@@ -64,18 +64,25 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
 
     ## Stock distribution
     if(!quiet) message("Plotting stock distribution")
-    tmp <- plot_stockdist(fit, stocks = "separate")
 
-    tmp <- lapply(seq_along(tmp), function(i) {
-      tmp[[i]] +
-        ggplot2::ggtitle(names(tmp)[i]) +
-        ggplot2::expand_limits(y = 1) +
-        ggplot2::theme(legend.position = "none")
-    })
+    # tmp <- lapply(seq_along(tmp), function(i) {
+    #   tmp[[i]] +
+    #     ggplot2::ggtitle(names(tmp)[i]) +
+    #     ggplot2::expand_limits(y = 1) +
+    #     ggplot2::theme(legend.position = "none")
+    # })
 
     ggplot2::ggsave(
       file = paste0("Stockdist.", file_type),
-      plot = print(cowplot::plot_grid(plotlist = tmp)),
+      plot = print(plot_stockdist(fit, stocks = "separate")),
+      path = path, bg = "white", width = width, height = height*2, units = units,
+      dpi = res)
+
+    ggplot2::ggsave(
+      file = paste0("Stockcomp.", file_type),
+      plot = print(
+        plot_stockdist(fit, type = "stock_composition",
+                       geom_area = TRUE)),
       path = path, bg = "white", width = width, height = height*2, units = units,
       dpi = res)
 
@@ -108,7 +115,8 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
         ggplot2::ggsave(
           file = paste0("Agelength_", names(tmp)[i], ".", file_type),
           plot = print(tmp[[i]]),
-          path = path, bg = "white", width = width, height = height,
+          path = path, bg = "white", width = width,
+          height = height,
           units = units, dpi = res)
       })
     }
