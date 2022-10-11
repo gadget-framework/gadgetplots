@@ -163,7 +163,7 @@ for(i in seq_along(x)) {
 
 ```
 
-Age-length
+Age
 =======================================================================
 
 Column {.tabset}
@@ -190,11 +190,7 @@ for(i in seq_along(x)) {
 plot_growth(fit, base_size = 16) + ggplot2::theme(legend.position = "none")
 ```
 
-Age composition 
-=======================================================================
-
-Column 
------------------------------------------------------------------------
+### Age composition
 
 ```{r, fig.width=25, fig.height=15}
 plot_agecomp(fit, base_size = 16)
