@@ -239,13 +239,13 @@ Column {.tabset}
 ### Relative to boundaries
 
 ```{r, fig.width=14.5, fig.height=12}
-# plotly::ggplotly(plot_param(fit))
+plotly::ggplotly(plot_param(fit))
 ```
 
 ### Weights
 
 ```{r}
-plot_weight(fit)
+plot_weight(fit, log_scale = TRUE)
 ```
 
 ### Growth parameters & M
