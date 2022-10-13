@@ -19,7 +19,9 @@ plot_param <- function(fit, out_only = FALSE, base_size = 8) {
         ggplot2::ggplot(
           data = dat,
           ggplot2::aes(.data$switch,.data$rho,label=.data$switch,
-                       text = paste("value :", round(.data$value)))) +
+                       text = paste("value :", round(.data$value),
+                                    "\nlower:", round(.data$lower),
+                                    "\nupper:", round(.data$upper)))) +
           ggplot2::geom_point() +
           ggplot2::coord_flip() +
           ggplot2::labs(x = "", y = "Rho") +
