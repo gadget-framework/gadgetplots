@@ -15,6 +15,7 @@ plot_annual <- function(fit, color_palette = scales::hue_pal(), base_size = 8, .
 
   if(inherits(color_palette, "function")) {
     cols <- color_palette(length(unique(fit$res.by.year$stock)) + 1)
+    names(cols) <- c(unique(fit$res.by.year$stock), "Total")
   } else {
     if(length(color_palette) != length(unique(fit$res.by.year$stock)) + 1) {
       stop("color_palette has to be a vector of 1 + number of stocks in the model or a color palette function")
