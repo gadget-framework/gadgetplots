@@ -6,6 +6,8 @@
 
 plot_weight <- function(fit, log_scale = FALSE, base_size = 8) {
 
+  if (is.list(fit$params$value)) fit$params$value <- unlist(fit$params$value)
+
   dat <- fit$params %>%
     dplyr::filter(grepl("weight$", .data$switch)) %>%
     dplyr::mutate(switch = gsub("_weight$", "", .data$switch))
