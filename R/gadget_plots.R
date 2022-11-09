@@ -39,6 +39,16 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
     print(plot_annual(fit))
     grDevices::dev.off()
 
+    ## Catches
+    if(!quiet) message("Catches")
+    ggplot2::ggsave(
+      file = paste0("Catches_by_fleet.", file_type),
+      plot = plot_catch(fit, type = "fleet") +
+      ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
+      ggplot2::theme(legend.position = "bottom"),
+      path = path, bg = "white", width = width, height = height, units = units,
+      dpi = res)
+
     ## Survey indices
     if(!quiet) message("Plotting survey indices")
     ggplot2::ggsave(
