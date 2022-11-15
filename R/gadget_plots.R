@@ -20,7 +20,12 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
   # if (is.null(path)){
   #   path <- file.path(getwd(), 'figs')
   # }
-  # if (!dir.exists(path)) dir.create(path)
+  
+  ## Stop if the directory for saving figures does not exist
+  if (!dir.exists(path)){
+    # Is dir.create(path) a better option
+    stop(paste0("The following directory for saving figures does not exist: path = ", path))
+  }
 
   if(file_type == "html") {
     make_html(fit = fit, path = path)
