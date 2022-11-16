@@ -107,37 +107,39 @@ plot_stockdist <- function(fit, stocks = NULL, type = "model_fit", color_palette
                      strip.text = ggplot2::element_blank())
   }
 
-  if(length(unique(fit$stockdist$name)) == 1) {
-
-    if(fit$stockdist$length %>% unique() %>% length() > 1) {
-
-      if(is.null(stocks)) {
-        lenplot(type = type, stocks = unique(fit$stockdist$stock),
-                geom_area = geom_area, color_palette = cols)
-      } else {
-
-        if(stocks == "separate") stocks <- unique(fit$stockdist$stock)
-
-        legend <- cowplot::get_legend(
-          lenplot(type = type, stocks = stocks, geom_area = geom_area,
-                  color_palette = cols))
-
-        cowplot::plot_grid(
+  ## Loop over stockdist names for plots
+  unique(fit$stockdist$name) %>% 
+    purrr::set_names(.,.) %>% 
+    purrr::map(function(x){
+      
+      dat <- fit$stockdist %>% dplyr::filter(name == x)
+      
+      if (length(unique(dat$length)) > 1){
+        
+        if(is.null(stocks)) {
+          lenplot(type = type, stocks = unique(fit$stockdist$stock),
+                  geom_area = geom_area, color_palette = cols)
+        } else {
+          
+          if(stocks == "separate") stocks <- unique(fit$stockdist$stock)
+          
+          legend <- cowplot::get_legend(
+            lenplot(type = type, stocks = stocks, geom_area = geom_area,
+                    color_palette = cols))
+          
           cowplot::plot_grid(
-            plotlist = lapply(stocks, function(k) {
-              lenplot(type = type, stocks = k, geom_area = geom_area,
-                      color_palette = cols) +
-                ggplot2::theme(legend.position = "none") +
-                ggplot2::ggtitle(k)
-            })
-          ), legend, ncol = 1, rel_heights = c(1, .1)
-        )
+            cowplot::plot_grid(
+              plotlist = lapply(stocks, function(k) {
+                lenplot(type = type, stocks = k, geom_area = geom_area,
+                        color_palette = cols) +
+                  ggplot2::theme(legend.position = "none") +
+                  ggplot2::ggtitle(k)
+              })
+            ), legend, ncol = 1, rel_heights = c(1, .1)
+          )
+        }
+      } else {
+        fit$stockdist %>% lenageplot()
       }
-    } else {
-      fit$stockdist %>% lenageplot()
-    }
-  } else {
-    stop("Multiple names in fit$stockdist has not been implemented yet.")
-  }
-
+    })
 }
