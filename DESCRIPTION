@@ -19,6 +19,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: gadgetutils, ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo, 
+Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo, 
   cowplot, rmarkdown, flexdashboard, DT, plotly
+Suggests: gadgetutils
 RoxygenNote: 7.2.1

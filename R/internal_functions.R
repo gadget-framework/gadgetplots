@@ -73,3 +73,4 @@ NULL
 
 # Define global variables
 utils::globalVariables(c(".data"))
+utils::globalVariables(".")

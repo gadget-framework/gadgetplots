@@ -4,7 +4,6 @@
 #' @param color_palette A function defining the color palette to be used or a vector of colors which is 1 longer than the number of stocks in the model. The extra color will be used for total estimate. See \link[ggplot2]{scale_color_manual}.
 #' @param ... Additional arguments passed to \code{plot_*} functions. See Details.
 #' @return A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot objects.
-#' @import gadgetutils
 #' @examples
 #' data(fit)
 #' # Annual plot with custom colors

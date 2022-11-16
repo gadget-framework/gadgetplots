@@ -112,7 +112,7 @@ plot_stockdist <- function(fit, stocks = NULL, type = "model_fit", color_palette
     purrr::set_names(.,.) %>% 
     purrr::map(function(x){
       
-      dat <- fit$stockdist %>% dplyr::filter(name == x)
+      dat <- fit$stockdist %>% dplyr::filter(.data$name == x)
       
       if (length(unique(dat$length)) > 1){
         
