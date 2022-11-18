@@ -123,8 +123,12 @@ Column {.tabset}
 
 ### Model fit
 
-```{r, fig.height = 12, fig.width = 25}
-plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16)
+```{r, echo = FALSE, fig.height = 12, fig.width = 25}
+if (!is.null(fit$stockdist)){ 
+  plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16) 
+}else{
+  cat('No stock distribution data')
+}
 
 # plotly::subplot(lapply(x, function(k) {
 #   k + ggplot2::theme(legend.position = "none")
@@ -136,8 +140,12 @@ plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16)
 
 ### Stock composition
 
-```{r, fig.height = 12, fig.width = 25}
-plot_stockdist(fit, type = "stock_composition", base_size = 16)
+```{r, echo = FALSE, fig.height = 12, fig.width = 25}
+if (!is.null(fit$stockdist)){ 
+  plot_stockdist(fit, type = "stock_composition", base_size = 16) 
+}else{
+  cat('No stock distribution data')
+}
 ```
 
 Suitability
