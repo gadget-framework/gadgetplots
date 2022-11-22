@@ -10,6 +10,14 @@ plot_si <- function(fit, base_size = 8, type = "direct") {
     dplyr::mutate(
       name = paste0(
         gsub("surveyindices\\.", "", .data$name), " (", .data$length, ")"))
+  
+  ## Covert year to year+step if multiple steps exist
+  steps <- unique(x$step)
+  if (length(steps) > 1){
+    x <- 
+      x %>% 
+      mutate(year = year + (step-1)/length(steps))
+  }
 
   if(type == "scatter") {
 
