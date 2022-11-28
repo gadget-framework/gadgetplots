@@ -20,11 +20,11 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
   # if (is.null(path)){
   #   path <- file.path(getwd(), 'figs')
   # }
-  
+
   ## Stop if the directory for saving figures does not exist
   if (!dir.exists(path)){
-    # Is dir.create(path) a better option
-    stop(paste0("The following directory for saving figures does not exist: path = ", path))
+    dir.create(path) # This might not be allowed when submitting to CRAN
+    # stop(paste0("The following directory for saving figures does not exist: path = ", path))
   }
 
   if(file_type == "html") {
@@ -71,7 +71,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       if(!quiet) message(i, "/", length(tmp))
 
       ggplot2::ggsave(
-        file = paste0("Catchdistribution_", names(tmp)[i], ".", file_type),
+        file = paste0("Catch_distribution_", names(tmp)[i], ".", file_type),
         plot = print(tmp[[i]]),
         path = path, bg = "white", width = width, height = height*2,
         units = units, dpi = res)
@@ -79,30 +79,31 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
 
     ## Stock distribution
     if (!is.null(fit$stockdist)){
-      
+
       if(!quiet) message("Plotting stock distribution")
-      
-      # tmp <- lapply(seq_along(tmp), function(i) {
-      #   tmp[[i]] +
-      #     ggplot2::ggtitle(names(tmp)[i]) +
-      #     ggplot2::expand_limits(y = 1) +
-      #     ggplot2::theme(legend.position = "none")
-      # })
-      
-      ggplot2::ggsave(
-        file = paste0("Stockdist.", file_type),
-        plot = print(plot_stockdist(fit, stocks = "separate")),
-        path = path, bg = "white", width = width, height = height*2, units = units,
-        dpi = res)
-      
-      ggplot2::ggsave(
-        file = paste0("Stockcomp.", file_type),
-        plot = print(
-          plot_stockdist(fit, type = "stock_composition",
-                         geom_area = TRUE)),
-        path = path, bg = "white", width = width, height = height*2, units = units,
-        dpi = res) 
-      
+      tmp <- plot_stockdist(fit, stocks = "separate")
+
+      lapply(seq_along(tmp), function(i) {
+        if(!quiet) message(i, "/", length(tmp))
+
+        ggplot2::ggsave(
+          file = paste0("Stock_distribution_", names(tmp)[i], ".", file_type),
+          plot = print(tmp[[i]]),
+          path = path, bg = "white", width = width, height = height*2,
+          units = units, dpi = res)
+      })
+
+      tmp <- plot_stockdist(fit, type = "stock_composition", geom_area = TRUE)
+
+      lapply(seq_along(tmp), function(i) {
+        if(!quiet) message(i, "/", length(tmp))
+
+        ggplot2::ggsave(
+          file = paste0("Stock_composition_", names(tmp)[i], ".", file_type),
+          plot = print(tmp[[i]]),
+          path = path, bg = "white", width = width, height = height*2,
+          units = units, dpi = res)
+      })
     }
     else{
       if (!quiet) message("No stockdist data to plot")
