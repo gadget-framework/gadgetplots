@@ -252,11 +252,11 @@ plotly::ggplotly(plot_param(fit))
 plot_weight(fit, log_scale = TRUE)
 ```
 
-### Growth parameters & M
+### Growth parameters & Z
 
 ```{r}
 DT::datatable(fit$params %>% 
-                dplyr::filter(grepl("K$|Linf|recl$|M$", .data$switch)) %>% 
+                dplyr::filter(grepl("K$|Linf|recl$|M$|rec.sd|init.F", .data$switch)) %>% 
                 dplyr::arrange(switch),
               options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
