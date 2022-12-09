@@ -16,7 +16,7 @@
 #' @export
 
 # Dev params
-# type = "model_fit"; color_palette = scales::hue_pal(); geom_area = FALSE; base_size = 8
+# stocks = NULL; component_name = NULL; type = "model_fit"; color_palette = scales::hue_pal(); geom_area = FALSE; base_size = 8
 plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "model_fit", color_palette = scales::hue_pal(), geom_area = FALSE, base_size = 8) {
 
   ## Check whether fit contains stockdist
@@ -25,11 +25,15 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
     return(NULL)
   }
 
+  all_stocks <- c(stats::na.exclude(unique(fit$stockdist$stock)))
+  all_stock_res <- rev(c(stats::na.exclude(unique(fit$stockdist$stock_re))))
+
   if(inherits(color_palette, "function")) {
-    cols <- stats::setNames(color_palette(length(unique(fit$stockdist$stock))),
-                            unique(fit$stockdist$stock))
+
+    cols <- stats::setNames(color_palette(length(c(all_stocks, all_stock_res))),
+                            c(all_stocks, all_stock_res))
   } else {
-    if(length(color_palette) != length(unique(fit$stockdist$stock))) {
+    if(length(color_palette) != length(c(all_stocks, all_stock_res))) {
       stop("color_palette has to be a vector with a same length than the number of stocks in the model or a color palette function")
     } else {
       cols <- color_palette
@@ -42,15 +46,31 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
 
       if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
 
-      fit$stockdist %>%
-        dplyr::filter(name == stockdist_name) %>%
+      x <- fit$stockdist %>%
+        dplyr::filter(.data$name == stockdist_name) %>%
         dplyr::mutate(
           pred.ratio =
             ifelse(.data$pred.ratio == 0, NA,
                    ifelse(is.nan(.data$pred.ratio), 0, .data$pred.ratio)),
           obs.ratio = ifelse(is.na(.data$pred.ratio), NA, .data$obs.ratio)
-        ) %>%
-        dplyr::filter(.data$stock %in% stocks) %>%
+        )
+
+      if (all(is.na(x$stock_re)) & all(!is.na(x$stock))) {
+        if(is.null(stocks)) stocks <- c(stats::na.exclude(unique(fit$stockdist$stock)))
+        x <- x %>% dplyr::filter(.data$stock %in% stocks)
+        stock_label <- "Stock"
+      } else if (all(!is.na(x$stock_re)) & all(is.na(x$stock))) {
+        if(is.null(stocks)) stocks <- c(stats::na.exclude(unique(fit$stockdist$stock_re)))
+        x <- x %>%
+          dplyr::filter(.data$stock_re %in% stocks) %>%
+          dplyr::select(-.data$stock) %>%
+          dplyr::rename("stock" = "stock_re")
+        stock_label <- "Stock component"
+      } else {
+        stop("Both stock and stock_re in the same data. Don't know what to do.")
+      }
+
+      x %>%
         ggplot2::ggplot(
           ggplot2::aes(x = .data$length, y = .data$obs.ratio,
                        shape = .data$stock, color = .data$stock)) +
@@ -59,8 +79,8 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
         ggplot2::geom_point(size = base_size/16) +
         ggplot2::facet_wrap(~.data$year+.data$step,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
-        ggplot2::labs(y = 'Stock proportion', x = 'Length', color = "Stock",
-                      lty = "Stock", shape = "Stock") +
+        ggplot2::labs(y = 'Stock proportion', x = 'Length', color = stock_label,
+                      lty = stock_label, shape = stock_label) +
         ggplot2::scale_color_manual(values = cols) +
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position = "bottom",
@@ -143,12 +163,20 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
         if(is.null(stocks)) {
 
           lenplot(
-            type = type, stocks = unique(fit$stockdist$stock),
-            stockdist_name = x, geom_area = geom_area, color_palette = cols)
+            type = type, stocks = NULL, stockdist_name = x,
+            geom_area = geom_area, color_palette = cols)
 
         } else {
 
-          if(stocks == "separate") stocks <- unique(fit$stockdist$stock)
+          if(stocks == "separate") {
+            if (all(is.na(dat$stock_re)) & all(!is.na(dat$stock))) {
+              stocks <- c(stats::na.exclude(unique(fit$stockdist$stock)))
+            } else if (all(!is.na(dat$stock_re)) & all(is.na(dat$stock))) {
+              stocks <- c(stats::na.exclude(unique(fit$stockdist$stock_re)))
+            } else {
+              stop("Both stock and stock_re in the same data. Don't know what to do.")
+            }
+          }
 
           legend <- cowplot::get_legend(
             lenplot(type = type, stocks = stocks, geom_area = geom_area,

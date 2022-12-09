@@ -14,22 +14,25 @@ plot_catchdist <- function(fit, name = NULL, base_size = 8) {
       dat <- fit$catchdist.fleets %>%
         dplyr::filter(.data$name == x)
       if(length(unique(dat$age))==1){
+        if(any(sapply(intersect(c("stock", "stock_re"), colnames(dat)), function(k) sum(!is.na(dat[[k]])) > 0))) {
+          warning("The length data appears to be allocated to stocks. The plotted length distribution is wrong.")
+        }
         dat %>%
           dplyr::ungroup() %>%
-          ggplot2::ggplot(ggplot2::aes(.data$lower,.data$predicted)) +
-          ggplot2::geom_line(ggplot2::aes(.data$lower,.data$observed),col='gray') +
+          ggplot2::ggplot(ggplot2::aes(.data$avg.length,.data$predicted)) +
+          ggplot2::geom_line(ggplot2::aes(.data$avg.length,.data$observed),col='gray') +
           ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
                               ncol = max(2*length(unique(dat$step)),4))  +
           ggplot2::geom_line() +
           ggplot2::geom_text(
             data = dat %>%
               dplyr::ungroup() %>%
-              dplyr::filter(.data$lower == min(.data$lower)) %>%
+              dplyr::filter(.data$avg.length == min(.data$avg.length)) %>%
               dplyr::mutate(y=Inf,
                             label = paste(.data$year,.data$step,sep=',')) %>%
-              dplyr::select(.data$step,.data$lower,.data$y,.data$year,.data$label),
+              dplyr::select(.data$step,.data$avg.length,.data$y,.data$year,.data$label),
 
-            ggplot2::aes(.data$lower,.data$y,label=.data$label),
+            ggplot2::aes(.data$avg.length,.data$y,label=.data$label),
             vjust = 1.3,hjust = -.05,
             size = FS(base_size)*0.8,
             inherit.aes = FALSE) +
@@ -42,6 +45,8 @@ plot_catchdist <- function(fit, name = NULL, base_size = 8) {
                           strip.background = ggplot2::element_blank(),
                           strip.text.x = ggplot2::element_blank())
       } else {
+        # group_cols <- intersect(c("year", "step", "area", "stock", "stock_re"))
+
         dat %>%
           dplyr::group_by(.data$year,.data$step,.data$age) %>%
           dplyr::summarise(predicted=sum(.data$predicted),
