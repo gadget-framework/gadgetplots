@@ -10,6 +10,17 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.width=12.5,
+  fig.height=5,
+  # collapse = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
 Annual plot
 =======================================================================
 
@@ -57,8 +68,8 @@ Row
 
 ### Catches
 
-```{r, fig.height = 10, fig.width = 12.5}
-plot_catch(fit, type = "fleet", base_size = 16) +
+```{r, fig.height = 5, fig.width = 6.25}
+plot_catch(fit, type = "fleet", base_size = 12) +
   ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
   ggplot2::theme(legend.position = "bottom")
 
@@ -79,8 +90,8 @@ Row
 
 ### Harvest rate
 
-```{r, fig.height = 10, fig.width = 12.5}
-plot_catch(fit, type = "hr", base_size = 16) +
+```{r, fig.height = 5, fig.width = 6.25}
+plot_catch(fit, type = "hr", base_size = 12) +
   ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
   ggplot2::theme(legend.position = "bottom")
 ```
@@ -101,10 +112,10 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_catchdist(fit, base_size = 16)
+x <- plot_catchdist(fit)
 ```
 
-```{r, echo = FALSE, fig.height = 10, fig.width = 25, results='asis'}
+```{r, echo = FALSE, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -121,28 +132,29 @@ Stock distribution
 Column {.tabset}
 -----------------------------------------------------------------------
 
-### Model fit
+```{r, echo = FALSE}
+if (!is.null(fit$stockdist)) 
+  x <- plot_stockdist(fit, type = "model_fit", stocks = "separate") 
+```
 
-```{r, echo = FALSE, fig.height = 12, fig.width = 25}
+```{r, echo = FALSE, results='asis'}
 if (!is.null(fit$stockdist)){ 
-  plot_stockdist(fit, type = "model_fit", stocks = "separate", base_size = 16) 
-}else{
+  for(i in seq_along(x)) {
+    
+    cat("  \n###",  names(x)[i], "  \n")
+    print(x[[i]])
+    cat("  \n")
+  }
+} else {
   cat('No stock distribution data')
 }
-
-# plotly::subplot(lapply(x, function(k) {
-#   k + ggplot2::theme(legend.position = "none")
-# }),
-# nrows = 2
-# )
-
 ```
 
 ### Stock composition
 
-```{r, echo = FALSE, fig.height = 12, fig.width = 25}
+```{r, echo = FALSE}
 if (!is.null(fit$stockdist)){ 
-  plot_stockdist(fit, type = "stock_composition", base_size = 16) 
+  plot_stockdist(fit, type = "stock_composition") 
 }else{
   cat('No stock distribution data')
 }
@@ -155,10 +167,10 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_suitability(fit, fleets = NULL, base_size = 16)
+x <- plot_suitability(fit, fleets = NULL)
 ```
 
-```{r, echo = FALSE, fig.height = 12, fig.width = 25, results='asis'}
+```{r, echo = FALSE, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -178,11 +190,11 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r, echo = FALSE}
-x <- plot_agelength(fit, base_size = 16)
+x <- plot_agelength(fit)
 # x <- lapply(x, function(k) plotly::ggplotly(k))
 ```
 
-```{r, echo = FALSE, fig.height = 12, fig.width = 25, results='asis'}
+```{r, echo = FALSE, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -194,14 +206,14 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r, fig.height = 12, fig.width = 25}
-plot_growth(fit, base_size = 16) + ggplot2::theme(legend.position = "none")
+```{r}
+plot_growth(fit) + ggplot2::theme(legend.position = "none")
 ```
 
 ### Age composition
 
-```{r, fig.height = 12, fig.width = 25}
-plot_agecomp(fit, base_size = 16)
+```{r}
+plot_agecomp(fit)
 ```
 
 Residuals & likelihood
@@ -212,20 +224,20 @@ Column {.tabset}
 
 ### Residuals
 
-```{r,fig.height = 10, fig.width = 25}
-plot_resid(fit, base_size = 16)
+```{r,fig.height = 5, fig.width = 12.5}
+plot_resid(fit)
 ```
 
 ### Raw likelihood
 
-```{r, fig.height = 10, fig.width = 25}
-plot_likelihood(fit, base_size = 16)
+```{r, fig.height = 5, fig.width = 12.5}
+plot_likelihood(fit)
 ```
 
 ### Weighted likelihood
 
-```{r, fig.height = 10, fig.width = 25}
-plot_likelihood(fit, base_size = 16, type = "weighted")
+```{r, fig.height = 5, fig.width = 12.5}
+plot_likelihood(fit, type = "weighted")
 ```
 
 ### Total
@@ -242,7 +254,7 @@ Column {.tabset}
 
 ### Relative to boundaries
 
-```{r, fig.width=14.5, fig.height=12}
+```{r}
 plotly::ggplotly(plot_param(fit))
 ```
 

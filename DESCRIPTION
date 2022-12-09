@@ -1,7 +1,7 @@
 Package: gadgetplots
 Type: Package
 Title: Plot gadget3 models
-Version: 0.1.19
+Version: 0.1.20
 Authors@R: c(person("Bjarki Thor", "Elvarsson", email="bjarki.elvarsson@hafogvatn.is",role = c("aut")),
              person("Mikko", "Vihtakari", email = "mikko.vihtakari@hi.no",
                   role = c("aut", "cre"), 

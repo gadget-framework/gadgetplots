@@ -20,7 +20,7 @@ gadget_plots(
 
 \item{path}{Directory path for saving figures}
 
-\item{file_type}{Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}}.}
+\item{file_type}{Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}} and the \code{\link{make_html}} function.}
 
 \item{quiet}{Logical indicating whether to print messages about the plotting process (set to \code{FALSE} to suppress the messages.}
 

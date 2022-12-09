@@ -7,6 +7,7 @@
 plot_stockdist(
   fit,
   stocks = NULL,
+  component_name = NULL,
   type = "model_fit",
   color_palette = scales::hue_pal(),
   geom_area = FALSE,
@@ -18,6 +19,8 @@ plot_stockdist(
 
 \item{stocks}{Character vector specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted in a single plot. If \code{"separate"}, all stocks are plotted in separate plots.}
 
+\item{component_name}{Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list. Only applicable for \code{type = "model_fit"}.}
+
 \item{type}{Character specifying the plot type. Options: \code{"model_fit"}, \code{"stock_composition"} or \code{"sex_composition"}. See Details.}
 
 \item{color_palette}{A function defining the color palette or a vector of colors to be used for stocks.}
@@ -27,7 +30,7 @@ plot_stockdist(
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
 \value{
-A \link[ggplot2]{ggplot} object. A list of ggplot objects if \code{stocks = "separate"} or if there are multiple data sources (\code{unique(fit$stockdist$name)}).
+A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 }
 \description{
 Plots proportions of stocks by length or age in \code{fit$stockdist}
@@ -35,8 +38,8 @@ Plots proportions of stocks by length or age in \code{fit$stockdist}
 \details{
 Possible plot types are:
 \describe{
-  \item{model_fit}{Model fit to data using likelihoods}
-  \item{stock_composition}{Model stock composition}
+  \item{model_fit}{Model fit to data using likelihoods. Separate plot for each \code{unique(fit$stockdist$name)}.}
+  \item{stock_composition}{Overall model stock composition}
   \item{sex_composition}{Model sex composition. Not implemented yet.}
   }
 }
