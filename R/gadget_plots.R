@@ -93,17 +93,18 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
           units = units, dpi = res)
       })
 
+      if(!quiet) message("Plotting model stock composition")
       tmp <- plot_stockdist(fit, type = "stock_composition", geom_area = TRUE)
 
-      lapply(seq_along(tmp), function(i) {
-        if(!quiet) message(i, "/", length(tmp))
+      # lapply(seq_along(tmp), function(i) {
+      #   if(!quiet) message(i, "/", length(tmp))
 
         ggplot2::ggsave(
-          file = paste0("Stock_composition_", names(tmp)[i], ".", file_type),
-          plot = print(tmp[[i]]),
+          file = paste0("Stock_composition", ".", file_type),
+          plot = print(tmp),
           path = path, bg = "white", width = width, height = height*2,
           units = units, dpi = res)
-      })
+      # })
     }
     else{
       if (!quiet) message("No stockdist data to plot")
