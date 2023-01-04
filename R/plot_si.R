@@ -6,10 +6,19 @@
 
 plot_si <- function(fit, base_size = 8, type = "direct") {
 
-  x <- fit$sidat %>%
+  x <-
+    fit$sidat %>%
+    # dplyr::group_by(name) %>%
+    # dplyr::mutate(
+    #   diff_to_mean = observed - mean(observed),
+    #   ssr = sum((observed - predicted)^2),
+    #   sst = sum((observed - diff_to_mean)^2),
+    #   r2 = 1 - ssr/sst) %>%
     dplyr::mutate(
       name = paste0(
-        gsub("surveyindices\\.", "", .data$name), " (", .data$length, ")"))
+        gsub("surveyindices\\.", "", .data$name), " (len:", .data$length,
+        ", a=", round(.data$intercept, 1), ", b=", round(.data$slope, 3), ")")
+      )
 
   ## Covert year to year+step if multiple steps exist
   steps <- unique(x$step)
