@@ -14,7 +14,6 @@ plot_ldist <- function(fit, base_size = 8) {
     ggplot2::geom_line() +
     ggplot2::facet_wrap(
       ~.data$year+.data$step,drop = FALSE,
-      ncol = max(2*length(unique(fit$stock.full$step)),4),
       labeller = ggplot2::label_wrap_gen(multi_line=FALSE))  +
     ggplot2::theme_classic(base_size = base_size) +
     ggplot2::labs(x = "Length", y = "Number", color = "Stock") +
