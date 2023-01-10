@@ -47,7 +47,7 @@ plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, 
     ggplot2::geom_line() +
     ggplot2::labs(
       y = ifelse(is.null(min_catch_length), "Harvest rate",
-                 paste("Harvest rate for >= ", min_catch_length)),
+                 paste("Harvest rate for >= ", min_catch_length, " length units")),
       x = 'Year', color = 'Stock') +
     ggplot2::coord_cartesian(expand = FALSE) +
     ggplot2::expand_limits(y = 0) +

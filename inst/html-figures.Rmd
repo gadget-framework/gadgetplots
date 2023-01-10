@@ -160,6 +160,16 @@ if (!is.null(fit$stockdist)){
 }
 ```
 
+### Length distribution
+
+```{r, echo = FALSE}
+if (!is.null(fit$stock.full)){ 
+  plot_ldist(fit) 
+}else{
+  cat('No data')
+}
+```
+
 Suitability
 =======================================================================
 
