@@ -1,4 +1,4 @@
-#' @title Plot length distribution of model stocks by year
+#' @title Plot model length distributions for stocks by year
 #' @inheritParams plot_annual
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 #' @export

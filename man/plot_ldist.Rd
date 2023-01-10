@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ldist.R
 \name{plot_ldist}
 \alias{plot_ldist}
-\title{Plot length distribution of model stocks by year}
+\title{Plot model length distributions for stocks by year}
 \usage{
 plot_ldist(fit, base_size = 8)
 }
@@ -15,5 +15,5 @@ plot_ldist(fit, base_size = 8)
 A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 }
 \description{
-Plot length distribution of model stocks by year
+Plot model length distributions for stocks by year
 }

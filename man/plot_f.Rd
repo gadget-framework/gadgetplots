@@ -19,3 +19,6 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot fishing mortality
 }
+\seealso{
+plot_hr
+}

@@ -59,6 +59,7 @@ plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, 
 #' @inheritParams plot_annual
 #' @param stock Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @seealso plot_hr
 #' @export
 
 plot_f <- function(fit, stock = NULL, base_size = 8) {
