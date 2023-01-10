@@ -73,15 +73,18 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
       x %>%
         ggplot2::ggplot(
           ggplot2::aes(x = .data$length, y = .data$obs.ratio,
-                       shape = .data$stock, color = .data$stock)) +
+                       lty = .data$stock # shape = .data$stock, color = .data$stock
+          )) +
+        ggplot2::geom_line(color = "grey") +
         ggplot2::geom_line(
           ggplot2::aes(y = .data$pred.ratio, lty = .data$stock), color = "black") +
-        ggplot2::geom_point(size = base_size/16) +
+        # ggplot2::geom_point(size = base_size/16) +
         ggplot2::facet_wrap(~.data$year+.data$step,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
-        ggplot2::labs(y = 'Stock proportion', x = 'Length', color = stock_label,
-                      lty = stock_label, shape = stock_label) +
-        ggplot2::scale_color_manual(values = cols) +
+        ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label
+                      #color = stock_label, shape = stock_label
+        ) +
+        # ggplot2::scale_color_manual(values = cols) +
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position = "bottom",
                        strip.background = ggplot2::element_blank())
@@ -152,7 +155,11 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
 
   # type == "model_fit" case
   ## Loop over stockdist names for plots
-  unique(fit$stockdist$name) %>%
+  if(is.null(component_name)) {
+    component_name <- unique(fit$stockdist$name)
+  }
+
+  component_name %>%
     purrr::set_names(.,.) %>%
     purrr::map(function(x) {
 
@@ -178,11 +185,11 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
             }
           }
 
-          legend <- cowplot::get_legend(
-            lenplot(type = type, stocks = stocks, geom_area = geom_area,
-                    stockdist_name = x, color_palette = cols))
+          # legend <- cowplot::get_legend(
+          #   lenplot(type = type, stocks = stocks, geom_area = geom_area,
+          #           stockdist_name = x, color_palette = cols))
 
-          cowplot::plot_grid(
+          #cowplot::plot_grid(
             cowplot::plot_grid(
               plotlist = lapply(stocks, function(k) {
                 lenplot(type = type, stocks = k, geom_area = geom_area,
@@ -190,7 +197,7 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
                   ggplot2::theme(legend.position = "none") +
                   ggplot2::ggtitle(k)
               })
-            ), legend, ncol = 1, rel_heights = c(1, .1)
+           # ), legend, ncol = 1, rel_heights = c(1, .1)
           )
         }
       } else {
