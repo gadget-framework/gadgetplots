@@ -37,10 +37,10 @@ plotly::ggplotly(plot_catch(fit)) %>%
                              orientation='h'))
 ```
 
-### F
+### Harvest rate
 
 ```{r}
-plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
+plotly::ggplotly(plot_hr(fit) + ggplot2::theme(legend.position = "none"))
 ```
 
 

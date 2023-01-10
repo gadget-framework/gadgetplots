@@ -8,12 +8,12 @@ plot_si <- function(fit, base_size = 8, type = "direct") {
 
   x <-
     fit$sidat %>%
-    dplyr::group_by(name) %>%
+    dplyr::group_by(.data$name) %>%
     dplyr::mutate(
-      ssr = sum((predicted - mean(observed))^2),
-      sse = sum((observed - predicted)^2),
-      sst = sum((observed - mean(observed))^2),
-      r2 = ssr/(ssr+sse)
+      ssr = sum((.data$predicted - mean(.data$observed))^2),
+      sse = sum((.data$observed - .data$predicted)^2),
+      sst = sum((.data$observed - mean(.data$observed))^2),
+      r2 = .data$ssr/(.data$ssr+.data$sse)
     ) %>%
     dplyr::mutate(
       name = paste0(

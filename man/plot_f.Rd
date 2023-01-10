@@ -2,18 +2,14 @@
 % Please edit documentation in R/plot_f.R
 \name{plot_f}
 \alias{plot_f}
-\title{Plot recruitment}
+\title{Plot fishing mortality}
 \usage{
-plot_f(fit, stock = NULL, total = TRUE, panelrow = FALSE, base_size = 8)
+plot_f(fit, stock = NULL, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{stock}{Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.}
-
-\item{total}{Logical indicating whether total F should be plotted.}
-
-\item{panelrow}{something here}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -21,5 +17,5 @@ plot_f(fit, stock = NULL, total = TRUE, panelrow = FALSE, base_size = 8)
 A \link[ggplot2]{ggplot} object.
 }
 \description{
-Plot recruitment
+Plot fishing mortality
 }
