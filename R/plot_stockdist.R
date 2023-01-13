@@ -47,6 +47,7 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
       if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
 
       x <- fit$stockdist %>%
+        dplyr::filter(.data$predicted > 1e-4) %>%
         dplyr::filter(.data$name == stockdist_name) %>%
         dplyr::mutate(
           pred.ratio =
