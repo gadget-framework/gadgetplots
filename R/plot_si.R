@@ -1,47 +1,56 @@
 #' @title Plot of survey indices
 #' @inheritParams plot_annual
-#' @param type Character specifying the plot type: \code{"direct"} plots the model fit to survey data by year, and \code{"scatter"} produces a x-y scatter plot for the fitted and observed index.
+#' @param type Character specifying the plot type: \code{"model_fit"} plots the model fit to survey data by year, \code{"regression"} plots the regression lines together with transformed fitted and observed index values, and \code{"scatter"} produces a x-y scatter plot for the fitted and observed index using similarly transformed values than in \code{"model_fit"}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_si <- function(fit, base_size = 8, type = "direct") {
+plot_si <- function(fit, base_size = 8, type = "model_fit") {
+
+  if(length(unique(fit$sidat$type)) > 1 | unique(fit$sidat$type) != "log") {
+    warning("Regression parameters have been calculated assuming log space. That does not seem to be the case here. Note that the estimates will be wrong.")
+  }
 
   x <-
     fit$sidat %>%
     dplyr::group_by(.data$name) %>%
     dplyr::mutate(
-      ssr = sum((.data$predicted - mean(.data$observed))^2),
-      sse = sum((.data$observed - .data$predicted)^2),
-      sst = sum((.data$observed - mean(.data$observed))^2),
-      r2 = .data$ssr/(.data$ssr+.data$sse)
+      ssr = sum((log(.data$number) - mean(log(.data$observed)))^2),
+      sse = sum((log(.data$observed) - log(.data$number))^2),
+      sst = sum((log(.data$observed) - mean(log(.data$observed)))^2),
+      r2 = stats::cor(log(.data$observed), log(.data$number))^2 # .data$ssr/(.data$ssr+.data$sse)
     ) %>%
     dplyr::mutate(
       name = paste0(
         gsub("surveyindices\\.", "", .data$name), " (len:", .data$length,
         ", a=", round(.data$intercept, 1), ", b=", round(.data$slope, 3),
-        ", R2ish=", round(.data$r2, 2), ")")
-      )
+        ", R2=", round(.data$r2, 2), ")")
+    )
 
-  ## Covert year to year+step if multiple steps exist
+  ## Convert year to year+step if multiple steps exist
   steps <- unique(x$step)
-  if (length(steps) > 1){
-    x <-
-      x %>%
+  if (length(steps) > 1) {
+    x <- x %>%
       dplyr::mutate(year = .data$year + (.data$step-1)/length(steps))
   }
 
   if(type == "scatter") {
 
-    x %>%
-      ggplot2::ggplot(ggplot2::aes(.data$observed,.data$predicted,label=.data$year)) +
-      ggplot2::geom_text(size = 0.8*FS(base_size)) +
+    ggplot2::ggplot(x, ggplot2::aes(.data$predicted,.data$observed,label=.data$year)) +
+      ggplot2::geom_abline(slope = 1, intercept = 0, color = "grey") +
+      ggplot2::geom_text(size = 0.8*base_size/2.845276) +
       ggplot2::facet_wrap(~.data$name,scales = 'free') +
-      ggplot2::geom_abline(slope = 1, lty = 2) +
-      ggplot2::labs(y='Predicted value', x='Observed') +
-      # ggplot2::geom_hline(data = dplyr::filter(x,.data$year==max(.data$year)),
-      #                     ggplot2::aes(yintercept=.data$predicted),col='green') +
-      # ggplot2::geom_vline(data=dplyr::filter(x,.data$year==max(.data$year)),
-      #                     ggplot2::aes(xintercept=.data$predicted),col='green') +
+      ggplot2::labs(x='Predicted', y='Observed') +
+      ggplot2::theme_classic(base_size = base_size) +
+      ggplot2::theme(strip.background = ggplot2::element_blank())
+
+  } else if(type == "regression") {
+
+    ggplot2::ggplot(x, ggplot2::aes(log(.data$number),log(.data$observed),label=.data$year)) +
+      ggplot2::geom_text(size = 0.8*base_size/2.845276) +
+      ggplot2::facet_wrap(~.data$name,scales = 'free') +
+      ggplot2::geom_abline(ggplot2::aes(slope = .data$slope, intercept = .data$intercept),
+                           color = "blue") +
+      ggplot2::labs(x='Predicted', y='Observed') +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
 

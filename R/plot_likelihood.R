@@ -13,22 +13,25 @@
 
 plot_likelihood <- function(fit, type = "direct", base_size = 8) {
 
+  x <- fit$likelihood %>%
+    dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))
+
   if(type == "direct") {
-    fit$likelihood %>%
+    x %>%
       dplyr::filter(.data$year!='all') %>%
       dplyr::mutate(year = as.numeric(.data$year)) %>%
-      dplyr::filter(!is.na(.data$num), .data$num > 0) %>%
-      ggplot2::ggplot(ggplot2::aes(.data$year, .data$num)) +
+      dplyr::filter(!is.na(.data$value), .data$value > 0) %>%
+      ggplot2::ggplot(ggplot2::aes(.data$year, .data$value)) +
       ggplot2::geom_point() +
       ggplot2::facet_wrap(~.data$component,scales = 'free_y') +
       ggplot2::labs(x='Year',y='Score') +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
   } else if(type == "weighted") {
-    fit$likelihood %>%
+    x %>%
       dplyr::filter(.data$year!='all') %>%
       dplyr::mutate(year = as.numeric(.data$year)) %>%
-      dplyr::mutate(val = .data$weight*.data$num) %>%
+      dplyr::mutate(val = .data$weight*.data$value) %>%
       dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
       ggplot2::ggplot(ggplot2::aes(.data$year, .data$val)) +
       ggplot2::geom_point() +
@@ -37,10 +40,10 @@ plot_likelihood <- function(fit, type = "direct", base_size = 8) {
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
   } else {
-    fit$likelihood %>%
+    x %>%
       dplyr::group_by(.data$component) %>%
-      dplyr::filter(!is.na(.data$num)) %>%
-      dplyr::summarise(val = sum(.data$num*.data$weight)) %>%
+      dplyr::filter(!is.na(.data$value)) %>%
+      dplyr::summarise(val = sum(.data$value*.data$weight)) %>%
       dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
       dplyr::ungroup() %>%
       # dplyr::mutate(val = 100*.data$val/sum(.data$val)) %>%

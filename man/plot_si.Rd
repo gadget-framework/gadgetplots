@@ -4,14 +4,14 @@
 \alias{plot_si}
 \title{Plot of survey indices}
 \usage{
-plot_si(fit, base_size = 8, type = "direct")
+plot_si(fit, base_size = 8, type = "model_fit")
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
-\item{type}{Character specifying the plot type: \code{"direct"} plots the model fit to survey data by year, and \code{"scatter"} produces a x-y scatter plot for the fitted and observed index.}
+\item{type}{Character specifying the plot type: \code{"model_fit"} plots the model fit to survey data by year, \code{"regression"} plots the regression lines together with transformed fitted and observed index values, and \code{"scatter"} produces a x-y scatter plot for the fitted and observed index using similarly transformed values than in \code{"model_fit"}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
