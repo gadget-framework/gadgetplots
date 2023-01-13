@@ -4,10 +4,12 @@
 \alias{plot_ldist}
 \title{Plot model length distributions for stocks by year}
 \usage{
-plot_ldist(fit, base_size = 8)
+plot_ldist(fit, ggridges = FALSE, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+
+\item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

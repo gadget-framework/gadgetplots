@@ -4,10 +4,14 @@
 \alias{plot_agecomp}
 \title{Plot of age composition from the model}
 \usage{
-plot_agecomp(fit, base_size = 8)
+plot_agecomp(fit, scales = NULL, ggridges = FALSE, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+
+\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+
+\item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

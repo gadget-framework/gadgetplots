@@ -1,7 +1,7 @@
 Package: gadgetplots
 Type: Package
 Title: Plot gadget3 models
-Version: 0.1.32
+Version: 0.1.33
 Authors@R: c(person("Bjarki Thor", "Elvarsson", email = "bjarki.elvarsson@hafogvatn.is",role = c("aut")),
              person("Mikko", "Vihtakari", email = "mikko.vihtakari@hi.no",
                   role = c("aut", "cre"), 
@@ -20,6 +20,6 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
 Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo, 
-  cowplot, rmarkdown, flexdashboard, DT, plotly
+  cowplot, rmarkdown, flexdashboard, DT, plotly, ggridges
 Suggests: gadgetutils
 RoxygenNote: 7.2.2

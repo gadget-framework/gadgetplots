@@ -164,7 +164,7 @@ if (!is.null(fit$stockdist)){
 
 ```{r, echo = FALSE}
 if (!is.null(fit$stock.full)){ 
-  plot_ldist(fit) 
+  plot_ldist(fit, ggridges = TRUE) 
 }else{
   cat('No data')
 }
@@ -223,7 +223,7 @@ plot_growth(fit) + ggplot2::theme(legend.position = "none")
 ### Age composition
 
 ```{r}
-plot_agecomp(fit)
+plotly::ggplotly(plot_agecomp(fit))
 ```
 
 Residuals & likelihood
