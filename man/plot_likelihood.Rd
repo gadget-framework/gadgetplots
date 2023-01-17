@@ -4,12 +4,14 @@
 \alias{plot_likelihood}
 \title{Plot likelihood summary}
 \usage{
-plot_likelihood(fit, type = "direct", base_size = 8)
+plot_likelihood(fit, type = "total", log_scale = FALSE, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{type}{Character specifying the plot type. Options: \code{"direct"}, \code{"weighted"} or \code{"sums"}. See Details.}
+\item{type}{Character specifying the plot type. Options: \code{"direct"}, \code{"weighted"} or \code{"total"}. See Details.}
+
+\item{log_scale}{Logical indicating whether the value axis should be log10 transformed.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -25,6 +27,6 @@ Possible plot types are:
   \item{direct}{Default value, plots direct comparisons of data with model
   output.}
   \item{weighted}{Plots the weighted likelihood value for each component.}
-  \item{bat}{Plots the sums of weighted likelihood values by component.}
+  \item{total (or any other string)}{Plots the sums of weighted and raw likelihood values by component.}
   }
 }

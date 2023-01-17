@@ -9,7 +9,7 @@ plot_weight(fit, log_scale = FALSE, base_size = 8)
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{log_scale}{Logical indicating whether the axis should be log10 transformed.}
+\item{log_scale}{Logical indicating whether the value axis should be log10 transformed.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

@@ -1,17 +1,18 @@
 #' @title Plot likelihood summary
 #' @inheritParams plot_annual
-#' @param type Character specifying the plot type. Options: \code{"direct"}, \code{"weighted"} or \code{"sums"}. See Details.
+#' @param type Character specifying the plot type. Options: \code{"direct"}, \code{"weighted"} or \code{"total"}. See Details.
 #' @details Possible plot types are:
 #' \describe{
 #'   \item{direct}{Default value, plots direct comparisons of data with model
 #'   output.}
 #'   \item{weighted}{Plots the weighted likelihood value for each component.}
-#'   \item{bat}{Plots the sums of weighted likelihood values by component.}
+#'   \item{total (or any other string)}{Plots the sums of weighted and raw likelihood values by component.}
 #'   }
+#' @param log_scale Logical indicating whether the value axis should be log10 transformed.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_likelihood <- function(fit, type = "direct", base_size = 8) {
+plot_likelihood <- function(fit, type = "total", log_scale = FALSE, base_size = 8) {
 
   x <- fit$likelihood %>%
     dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))
@@ -40,26 +41,44 @@ plot_likelihood <- function(fit, type = "direct", base_size = 8) {
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
   } else {
-    x %>%
+    tmp <- x %>%
       dplyr::group_by(.data$component) %>%
       dplyr::filter(!is.na(.data$value)) %>%
-      dplyr::summarise(val = sum(.data$value*.data$weight)) %>%
-      dplyr::filter(!is.na(.data$val), .data$val > 0) %>%
+      dplyr::summarise(
+        weighted_score = sum(.data$value*.data$weight),
+        raw_score = sum(.data$value)
+      ) %>%
+      dplyr::filter(!is.na(.data$weighted_score), .data$weighted_score > 0) %>% # Remove components that have been explicitly removed by setting weight to 0
       dplyr::ungroup() %>%
-      # dplyr::mutate(val = 100*.data$val/sum(.data$val)) %>%
-      ggplot2::ggplot(ggplot2::aes(x=.data$component,y=.data$val)) +
-      # ggplot2::ggplot(ggplot2::aes(x="",y=.data$val,fill = .data$component)) +
-      ggplot2::geom_col(fill = "grey", color = "black") +
-      ggplot2::labs(x = "Component", y = "Summed likelihood score") +
-      ggplot2::scale_y_continuous(expand = c(0, 0)) +
+      tidyr::pivot_longer(cols = c("weighted_score", "raw_score"))
+
+    # axis_scalar <- max(tmp[tmp$name == "raw_score", "value"])/
+    #   max(tmp[tmp$name == "weighted_score", "value"])
+
+    ggplot2::ggplot(
+      tmp,
+      ggplot2::aes(x=.data$component, y=.data$value, fill = .data$name)) +
+      ggplot2::geom_col(position = ggplot2::position_dodge()) + {
+        if(log_scale) ggplot2::scale_y_log10(expand = c(0, 0))
+      } + {
+        if(!log_scale) ggplot2::scale_y_continuous(expand = c(0, 0))
+      } +
+      # scale_y_continuous(
+      #   "Total weighted likelihood score",
+      #   sec.axis = sec_axis(~ . * axis_scalar, name = "Total raw likelihood score"),
+      #   expand = c(0, 0)
+      # ) +
+      ggplot2::labs(
+        x = "Component", y = "Summed likelihood score",
+        subtitle =
+          paste("Total score:",
+                round(sum(tmp[tmp$name == "raw_score", "value"]), 1),
+                "/",
+                round(sum(tmp[tmp$name == "weighted_score", "value"]), 1),
+                "(raw / weighted)")
+        ) +
+      ggplot2::scale_fill_hue("Score type", breaks = c("raw_score", "weighted_score"), labels = c("Raw", "Weighted")) +
       ggplot2::coord_flip() +
-      # ggplot2::geom_bar(stat='identity',width = 1) +
-      # ggplot2::coord_polar("y",start = 0) +
-      # ggplot2::geom_text(ggplot2::aes(label = paste0(round(.data$val, 0), "%")),
-      #                    position = ggplot2::position_stack(vjust = 0.5)) +
-      # ggplot2::scale_fill_brewer("Component (proportion\nof weighted score)",
-      #                            palette="Spectral") +
-      #ggplot2::theme_void(base_size = base_size)
       ggplot2::theme_classic(base_size = base_size)
   }
 }
