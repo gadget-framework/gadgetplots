@@ -28,7 +28,7 @@ plot_ldist <- function(fit, ggridges = FALSE, base_size = 8) {
         dplyr::mutate(p = .data$number/sum(.data$number)),
       ggplot2::aes(x = .data$length, y = .data$year, height = 100*.data$p,
                    fill = .data$stock, group = interaction(.data$year, .data$stock))) +
-      ggridges::geom_ridgeline(alpha = 0.5, size = 0.5/2.13) +
+      ggridges::geom_ridgeline(alpha = 0.5, size = 0.1/2.13) +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_y_reverse(breaks = seq(1900,2050,2)) +
       ggplot2::labs(x = "Length", y = "Year", fill = "Stock") +

@@ -1,11 +1,18 @@
 #' @title Plot of age composition from the model
 #' @inheritParams plot_annual
-#' @inheritParams plot_ldist
+#' @param type Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.
+#' @details Possible plot types are:
+#' \describe{
+#'   \item{bar}{Facetted bar plot with year on x-axis, abundance on y-axis and ages along rows. Year classes are colored.}
+#'   \item{ggridges}{Same as above but the bars are overlapping.}
+#'   \item{bubble (or any other string)}{Bubble plot with year on x-axis, age on y-axis and point size scaled to abundance. Year classes are colored.}
+#'   }
+#' Note that both \code{"bar"} and \code{"bubble"} contain extra information as text for \code{plotly::ggplotly}.
 #' @param scales Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_agecomp <- function(fit, scales = NULL, ggridges = FALSE, base_size = 8) {
+plot_agecomp <- function(fit, type = "bubble", scales = NULL, base_size = 8) {
 
   year_span <-
     fit$stock.std %>%
@@ -20,7 +27,7 @@ plot_agecomp <- function(fit, scales = NULL, ggridges = FALSE, base_size = 8) {
   dat <- fit$stock.std %>%
     dplyr::mutate(yc = as.factor(.data$year - .data$age))
 
-  if(!ggridges) {
+  if(type == "bar") {
     suppressWarnings({
       ggplot2::ggplot(
         dat,
@@ -46,7 +53,14 @@ plot_agecomp <- function(fit, scales = NULL, ggridges = FALSE, base_size = 8) {
                        strip.background = ggplot2::element_blank(),
                        strip.text.x = ggplot2::element_blank())
     })
-  } else {
+  } else if(type == "ggridges") {
+    # From: https://stackoverflow.com/a/47614529/1082004
+    make_bar <- function(x, y, width = 0.9) {
+      xoff <- width/2
+      data.frame(x = c(x-xoff*(1+2e-8), x-xoff*(1+1e-8), x-xoff, x+xoff, x+xoff*(1+1e-8), x+xoff*(1+2e-8)),
+                 height = c(NA, 0, y, y, 0, NA))
+    }
+
     ggplot2::ggplot(
       dat %>%
         dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
@@ -65,6 +79,35 @@ plot_agecomp <- function(fit, scales = NULL, ggridges = FALSE, base_size = 8) {
       ggplot2::labs(x = "Age", y = "Year") +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.position = "none")
+  } else {
+    suppressWarnings({
+      ggplot2::ggplot(
+        dat %>%
+          dplyr::mutate(number = ifelse(.data$number == 0, NA, .data$number/1e6)) %>%
+          dplyr::rename("year class" = "yc"),
+        ggplot2::aes(.data$year,.data$age, size = .data$number)) +
+        ggplot2::geom_point(
+          ggplot2::aes(color = .data$`year class`,
+                       text = paste(
+                         "abundance (1e6): ", round(.data$number))
+                       )
+          ) +
+        ggplot2::labs(
+          x = 'Year',
+          y = 'Age',
+          size = 'Abundance (in millions)') +
+        ggplot2::scale_color_manual(
+          values = rep(pal, ceiling(nlevels(dat$yc) / length(pal))),
+          guide = 'none') +
+        ggplot2::scale_x_continuous(breaks = seq(1900,2050,2)) +
+        ggplot2::scale_y_reverse() +
+        ggplot2::scale_size_area(guide = ggplot2::guide_legend(nrow = 1)) +
+        ggplot2::theme_classic(base_size = base_size) +
+        ggplot2::theme(legend.position='bottom',
+                       panel.spacing = ggplot2::unit(0,'cm'),
+                       # plot.margin = ggplot2::unit(c(0,0,0,0),'cm'),
+                       strip.background = ggplot2::element_blank(),
+                       strip.text.x = ggplot2::element_blank())
+    })
   }
-
 }

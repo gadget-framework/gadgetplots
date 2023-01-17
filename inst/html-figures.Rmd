@@ -223,7 +223,7 @@ plot_growth(fit) + ggplot2::theme(legend.position = "none")
 ### Age composition
 
 ```{r}
-plotly::ggplotly(plot_agecomp(fit))
+plotly::ggplotly(plot_agecomp(fit, type = "bubble")) %>% plotly::hide_legend()
 ```
 
 Residuals & likelihood
@@ -253,7 +253,7 @@ plot_likelihood(fit, type = "weighted")
 ### Total
 
 ```{r}
-plot_likelihood(fit, base_size = 14, type = "pie")
+plot_likelihood(fit, type = "total")
 ```
 
 Parameters

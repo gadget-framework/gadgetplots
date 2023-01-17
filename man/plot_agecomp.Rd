@@ -4,14 +4,14 @@
 \alias{plot_agecomp}
 \title{Plot of age composition from the model}
 \usage{
-plot_agecomp(fit, scales = NULL, ggridges = FALSE, base_size = 8)
+plot_agecomp(fit, type = "bubble", scales = NULL, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+\item{type}{Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.}
 
-\item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
+\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -20,4 +20,13 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 Plot of age composition from the model
+}
+\details{
+Possible plot types are:
+\describe{
+  \item{bar}{Facetted bar plot with year on x-axis, abundance on y-axis and ages along rows. Year classes are colored.}
+  \item{ggridges}{Same as above but the bars are overlapping.}
+  \item{bubble (or any other string)}{Bubble plot with year on x-axis, age on y-axis and point size scaled to abundance. Year classes are colored.}
+  }
+Note that both \code{"bar"} and \code{"bubble"} contain extra information as text for \code{plotly::ggplotly}.
 }

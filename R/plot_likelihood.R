@@ -3,16 +3,16 @@
 #' @param type Character specifying the plot type. Options: \code{"direct"}, \code{"weighted"} or \code{"total"}. See Details.
 #' @details Possible plot types are:
 #' \describe{
-#'   \item{direct}{Default value, plots direct comparisons of data with model
-#'   output.}
+#'   \item{direct}{Plots direct comparisons of data with model output.}
 #'   \item{weighted}{Plots the weighted likelihood value for each component.}
 #'   \item{total (or any other string)}{Plots the sums of weighted and raw likelihood values by component.}
 #'   }
 #' @param log_scale Logical indicating whether the value axis should be log10 transformed.
+#' @param use_proportions Logical indicating whether proportions of summed likelihood scores should be used instead of summed likelihood score values when \code{type = "total"}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_likelihood <- function(fit, type = "total", log_scale = FALSE, base_size = 8) {
+plot_likelihood <- function(fit, type = "total", log_scale = FALSE, use_proportions = TRUE, base_size = 8) {
 
   x <- fit$likelihood %>%
     dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))
@@ -50,33 +50,38 @@ plot_likelihood <- function(fit, type = "total", log_scale = FALSE, base_size = 
       ) %>%
       dplyr::filter(!is.na(.data$weighted_score), .data$weighted_score > 0) %>% # Remove components that have been explicitly removed by setting weight to 0
       dplyr::ungroup() %>%
-      tidyr::pivot_longer(cols = c("weighted_score", "raw_score"))
+      tidyr::pivot_longer(cols = c("weighted_score", "raw_score")) %>%
+      dplyr::group_by(.data$name) %>%
+      dplyr::mutate(prop = .data$value/sum(.data$value))
 
-    # axis_scalar <- max(tmp[tmp$name == "raw_score", "value"])/
-    #   max(tmp[tmp$name == "weighted_score", "value"])
 
-    ggplot2::ggplot(
-      tmp,
-      ggplot2::aes(x=.data$component, y=.data$value, fill = .data$name)) +
-      ggplot2::geom_col(position = ggplot2::position_dodge()) + {
-        if(log_scale) ggplot2::scale_y_log10(expand = c(0, 0))
-      } + {
-        if(!log_scale) ggplot2::scale_y_continuous(expand = c(0, 0))
-      } +
-      # scale_y_continuous(
-      #   "Total weighted likelihood score",
-      #   sec.axis = sec_axis(~ . * axis_scalar, name = "Total raw likelihood score"),
-      #   expand = c(0, 0)
-      # ) +
+    ggplot2::ggplot(tmp) + {
+      if(use_proportions)
+        ggplot2::geom_col(
+          ggplot2::aes(x=.data$component, y=.data$prop, fill = .data$name),
+          position = ggplot2::position_dodge())
+    } + {
+      if(!use_proportions)
+        ggplot2::geom_col(
+          ggplot2::aes(x=.data$component, y=.data$value, fill = .data$name),
+          position = ggplot2::position_dodge())
+    } + {
+      if(log_scale) ggplot2::scale_y_log10(expand = c(0, 0))
+    } + {
+      if(!log_scale) ggplot2::scale_y_continuous(expand = c(0, 0))
+    } +
       ggplot2::labs(
-        x = "Component", y = "Summed likelihood score",
+        x = "Component",
+        y = ifelse(use_proportions,
+                   "Proportion of summed likelihood score",
+                   "Summed likelihood score"),
         subtitle =
-          paste("Total score:",
+          paste("Total summed score:",
                 round(sum(tmp[tmp$name == "raw_score", "value"]), 1),
                 "/",
                 round(sum(tmp[tmp$name == "weighted_score", "value"]), 1),
                 "(raw / weighted)")
-        ) +
+      ) +
       ggplot2::scale_fill_hue("Score type", breaks = c("raw_score", "weighted_score"), labels = c("Raw", "Weighted")) +
       ggplot2::coord_flip() +
       ggplot2::theme_classic(base_size = base_size)
