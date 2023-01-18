@@ -1,10 +1,11 @@
 #' @title Plot of survey indices
 #' @inheritParams plot_annual
-#' @param type Character specifying the plot type: \code{"model_fit"} plots the model fit to survey data by year, \code{"regression"} plots the regression lines together with transformed fitted and observed index values, and \code{"scatter"} produces a x-y scatter plot for the fitted and observed index using similarly transformed values than in \code{"model_fit"}.
+#' @param type Character specifying the plot type: \code{"model_fit"} plots the model fit to survey index data by year, \code{"regression"} plots regression lines together with logarithms of model biomass/abundance and observed index values, and \code{"scatter"} produces a scatter plot for the predicted and observed index using the same values than in \code{"model_fit"}. See details.
+#' @details Relationship between a survey index (I) and model biomass or abundance (B) over a defined length range is expressed as \eqn{I = e^a B^b}, where \eqn{e^a} is the catchability (also called q) and b the stock size dependent catchability (see \code{type = "model_fit"}). Whether I is compared to model biomass or abundance, depends on the units of I (i.e. column name of the data object; "number" -> abundance, "weight" -> biomass). The survey index I is called "observed" in the figure, and "predicted" is derived as \eqn{exp(a + b \; log(B))}. The a and b can be visualized using a log-linear formula \eqn{log(I) = a + b \;  log(B)} (see \code{type = "regression"}; log-linear regressions shown using blue lines). The coefficient of determination \eqn{R^2} is calculated using this regression. To compare the observed and predicted values in the model fit plot, use \code{type = "scatter"}. The grey line represents a diagonal line with a slope of 1 and intercept of 0 (i.e. \eqn{I = B}, \eqn{a = 0}, \eqn{b = 1}).
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_si <- function(fit, base_size = 8, type = "model_fit") {
+plot_si <- function(fit, type = "model_fit", base_size = 8) {
 
   if(length(unique(fit$sidat$type)) > 1 | unique(fit$sidat$type) != "log") {
     warning("Regression parameters have been calculated assuming log space. That does not seem to be the case here. Note that the estimates will be wrong.")
@@ -39,7 +40,7 @@ plot_si <- function(fit, base_size = 8, type = "model_fit") {
       ggplot2::geom_abline(slope = 1, intercept = 0, color = "grey") +
       ggplot2::geom_text(size = 0.8*base_size/2.845276) +
       ggplot2::facet_wrap(~.data$name,scales = 'free') +
-      ggplot2::labs(x='Predicted', y='Observed') +
+      ggplot2::labs(x='Predicted (exp(a + b log(B)))', y='Observed index (I)') +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
 
@@ -50,7 +51,7 @@ plot_si <- function(fit, base_size = 8, type = "model_fit") {
       ggplot2::facet_wrap(~.data$name,scales = 'free') +
       ggplot2::geom_abline(ggplot2::aes(slope = .data$slope, intercept = .data$intercept),
                            color = "blue") +
-      ggplot2::labs(x='Predicted', y='Observed') +
+      ggplot2::labs(x='Model biomass/abundance (log(B))', y='Observed index (log(I))') +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
 
