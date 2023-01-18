@@ -45,6 +45,7 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
           y = ifelse(biomass, "Biomass ('000 tons)", "Abundance (millions)"),
           x='Year',col='Stock') +
         ggplot2::coord_cartesian(expand = FALSE) +
+        ggplot2::expand_limits(y = 0) +
         ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
         ggplot2::theme_classic(base_size = base_size)
 
@@ -74,6 +75,7 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
                                    .data$total.biomass/1e6,
                                    col=.data$id)) +
       ggplot2::geom_line() +
+      ggplot2::expand_limits(y = 0) +
       ggplot2::facet_wrap(~stock, ncol = if (panelrow) 1 else NULL) +
       ggplot2::labs(y="Biomass (in '000 tonnes)", x='Year',col='Model')
 
