@@ -18,7 +18,8 @@ plot_likelihood <- function(fit, type = "total", log_scale = FALSE, use_proporti
   x <- fit$likelihood %>%
     dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))
   } else(
-    x <- fit$likelihood 
+    x <- fit$likelihood %>% 
+      dplyr::mutate(value =.data$num)
   )
 
   if(type == "direct") {
