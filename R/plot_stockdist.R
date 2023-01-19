@@ -26,7 +26,11 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
   }
 
   all_stocks <- c(stats::na.exclude(unique(fit$stockdist$stock)))
-  all_stock_res <- rev(c(stats::na.exclude(unique(fit$stockdist$stock_re))))
+  if(!is.null(fit$stockdist$stock_re)) {
+    all_stock_res <- rev(c(stats::na.exclude(unique(fit$stockdist$stock_re))))
+  } else {
+    all_stock_res <- NULL
+  }
 
   if(inherits(color_palette, "function")) {
 
@@ -47,7 +51,7 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
       if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
 
       x <- fit$stockdist %>%
-        dplyr::filter(.data$predicted > 1e-4) %>%
+        #dplyr::filter(.data$predicted > 1e-4) %>%
         dplyr::filter(.data$name == stockdist_name) %>%
         dplyr::mutate(
           pred.ratio =
