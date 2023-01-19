@@ -29,7 +29,7 @@ Column {data-width=500}
 
 ### Catches
 
-```{r}
+```{r Catches}
 plotly::ggplotly(plot_catch(fit)) %>% 
   plotly::layout(legend=list(x=0, y = 1, 
                              xanchor='left',
@@ -39,7 +39,7 @@ plotly::ggplotly(plot_catch(fit)) %>%
 
 ### Harvest rate
 
-```{r}
+```{r mortalit}
 plotly::ggplotly(plot_hr(fit) + ggplot2::theme(legend.position = "none"))
 ```
 
@@ -49,13 +49,13 @@ Column {data-width=500}
 
 ### Recruitment
 
-```{r}
+```{r recruitment}
 plotly::ggplotly(plot_rec(fit) + ggplot2::theme(legend.position = "none"))
 ```
 
 ### Biomass
 
-```{r}
+```{r biomass} 
 plotly::ggplotly(
   plot_biomass(fit, total = TRUE) + ggplot2::theme(legend.position = "none"))
 ```
@@ -68,7 +68,7 @@ Row
 
 ### Catches
 
-```{r, fig.height = 5, fig.width = 6.25}
+```{r catchplot, fig.height = 5, fig.width = 6.25}
 plot_catch(fit, type = "fleet", base_size = 12) +
   ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
   ggplot2::theme(legend.position = "bottom")
@@ -90,7 +90,7 @@ Row
 
 ### Harvest rate
 
-```{r, fig.height = 5, fig.width = 6.25}
+```{r hrplot, fig.height = 5, fig.width = 6.25}
 plot_catch(fit, type = "hr", base_size = 12) +
   ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
   ggplot2::theme(legend.position = "bottom")
@@ -100,7 +100,7 @@ plot_catch(fit, type = "hr", base_size = 12) +
 Survey indices
 =======================================================================
 
-```{r}
+```{r siplot}
 plotly::ggplotly(plot_si(fit))
 ```
 
@@ -111,7 +111,7 @@ Catch distributions
 Column {.tabset}
 -----------------------------------------------------------------------
 
-```{r, echo = FALSE}
+```{r catchdist, echo = FALSE}
 x <- plot_catchdist(fit)
 ```
 
@@ -132,12 +132,12 @@ Stock distribution
 Column {.tabset}
 -----------------------------------------------------------------------
 
-```{r, echo = FALSE}
+```{r stockdist, echo = FALSE}
 if (!is.null(fit$stockdist)) 
   x <- plot_stockdist(fit, type = "model_fit", stocks = "separate") 
 ```
 
-```{r, echo = FALSE, results='asis'}
+```{r stockdist2, echo = FALSE, results='asis'}
 if (!is.null(fit$stockdist)){ 
   for(i in seq_along(x)) {
     
@@ -152,7 +152,7 @@ if (!is.null(fit$stockdist)){
 
 ### Stock composition
 
-```{r, echo = FALSE}
+```{r stockcomp, echo = FALSE}
 if (!is.null(fit$stockdist)){ 
   plot_stockdist(fit, type = "stock_composition") 
 }else{
@@ -162,7 +162,7 @@ if (!is.null(fit$stockdist)){
 
 ### Length distribution
 
-```{r, echo = FALSE}
+```{r ldist, echo = FALSE}
 if (!is.null(fit$stock.full)){ 
   plot_ldist(fit, ggridges = TRUE) 
 }else{
@@ -176,11 +176,11 @@ Suitability
 Column {.tabset}
 -----------------------------------------------------------------------
 
-```{r, echo = FALSE}
+```{r suits, echo = FALSE}
 x <- plot_suitability(fit, fleets = NULL)
 ```
 
-```{r, echo = FALSE, results='asis'}
+```{r suits2, echo = FALSE, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -199,12 +199,12 @@ Age
 Column {.tabset}
 -----------------------------------------------------------------------
 
-```{r, echo = FALSE}
+```{r agelength, echo = FALSE}
 x <- plot_agelength(fit)
 # x <- lapply(x, function(k) plotly::ggplotly(k))
 ```
 
-```{r, echo = FALSE, results='asis'}
+```{r agelength2, echo = FALSE, results='asis'}
 
 for(i in seq_along(x)) {
   
@@ -216,13 +216,13 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r}
+```{r growth}
 plot_growth(fit) + ggplot2::theme(legend.position = "none")
 ```
 
 ### Age composition
 
-```{r}
+```{r agecompositions}
 plotly::ggplotly(plot_agecomp(fit, type = "bubble")) %>% plotly::hide_legend()
 ```
 
@@ -234,25 +234,25 @@ Column {.tabset}
 
 ### Residuals
 
-```{r,fig.height = 5, fig.width = 12.5}
+```{r resids,fig.height = 5, fig.width = 12.5}
 plot_resid(fit)
 ```
 
 ### Raw likelihood
 
-```{r, fig.height = 5, fig.width = 12.5}
+```{r rawlik, fig.height = 5, fig.width = 12.5}
 plot_likelihood(fit)
 ```
 
 ### Weighted likelihood
 
-```{r, fig.height = 5, fig.width = 12.5}
+```{r wgtlik, fig.height = 5, fig.width = 12.5}
 plot_likelihood(fit, type = "weighted")
 ```
 
 ### Total
 
-```{r}
+```{r totlik}
 plot_likelihood(fit, type = "total")
 ```
 
@@ -264,21 +264,21 @@ Column {.tabset}
 
 ### Relative to boundaries
 
-```{r}
+```{r boundplot}
 plotly::ggplotly(plot_param(fit))
 ```
 
 ### Weights
 
-```{r}
+```{r weightplot}
 plot_weight(fit, log_scale = TRUE)
 ```
 
 ### Growth parameters & Z
 
-```{r}
+```{r grparams}
 DT::datatable(fit$params %>% 
-                dplyr::filter(grepl("K$|Linf|recl$|M$|rec.sd|init.F", .data$switch)) %>% 
+                dplyr::filter(grepl("K$|Linf|recl$|M$|rec.sd|init.F|bbin", .data$switch)) %>% 
                 dplyr::arrange(switch),
               options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
@@ -286,7 +286,7 @@ DT::datatable(fit$params %>%
 
 ### All parameters 
 
-```{r}
+```{r allparams}
 DT::datatable(fit$params, options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
 ```
