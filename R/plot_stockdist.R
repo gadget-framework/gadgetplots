@@ -72,14 +72,13 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, color_pale
                        lty = .data$stock # shape = .data$stock, color = .data$stock
           )) +
         ggplot2::geom_line(color = "grey") +
-        ggplot2::geom_line(
-          ggplot2::aes(y = .data$pred.ratio, lty = .data$stock), color = "black") +
-        # ggplot2::geom_point(size = base_size/16) +
+        ggplot2::geom_line(ggplot2::aes(y = .data$pred.ratio, lty = .data$stock),
+                           color = "black") +
         ggplot2::facet_wrap(~.data$year+.data$step,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
-        ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label
-                      #color = stock_label, shape = stock_label
-        ) +
+        ggplot2::expand_limits(y = c(0,1)) +
+        ggplot2::scale_y_continuous(breaks = seq(0,1,0.25)) +
+        ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label) +
         # ggplot2::scale_color_manual(values = cols) +
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position = "bottom",
