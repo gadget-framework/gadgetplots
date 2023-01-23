@@ -217,7 +217,7 @@ for(i in seq_along(x)) {
 ### Growth
 
 ```{r}
-plot_growth(fit) + ggplot2::theme(legend.position = "none")
+plot_growth(fit) + ggplot2::theme(legend.position = "bottom")
 ```
 
 ### Age composition

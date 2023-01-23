@@ -4,7 +4,13 @@
 \alias{plot_agecomp}
 \title{Plot of age composition from the model}
 \usage{
-plot_agecomp(fit, type = "bubble", scales = NULL, base_size = 8)
+plot_agecomp(
+  fit,
+  type = "bubble",
+  scales = NULL,
+  biomass = FALSE,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
@@ -12,6 +18,8 @@ plot_agecomp(fit, type = "bubble", scales = NULL, base_size = 8)
 \item{type}{Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+
+\item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

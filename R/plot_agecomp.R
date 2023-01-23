@@ -1,5 +1,6 @@
 #' @title Plot of age composition from the model
 #' @inheritParams plot_annual
+#' @inheritParams plot_biomass
 #' @param type Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.
 #' @details Possible plot types are:
 #' \describe{
@@ -12,7 +13,7 @@
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_agecomp <- function(fit, type = "bubble", scales = NULL, base_size = 8) {
+plot_agecomp <- function(fit, type = "bubble", scales = NULL, biomass = FALSE, base_size = 8) {
 
   year_span <-
     fit$stock.std %>%
@@ -25,24 +26,44 @@ plot_agecomp <- function(fit, type = "bubble", scales = NULL, base_size = 8) {
                     "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
 
   dat <- fit$stock.std %>%
+    dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
+    dplyr::summarise(
+      number = sum(.data$number, na.rm = TRUE)/1e6, # millions
+      weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
+      .groups = "drop") %>%
     dplyr::mutate(yc = as.factor(.data$year - .data$age))
 
   if(type == "bar") {
     suppressWarnings({
-      ggplot2::ggplot(
-        dat,
-        ggplot2::aes(.data$year,.data$number/1e6),col='black') +
-        ggplot2::geom_bar(stat='identity',
-                          ggplot2::aes(fill = .data$yc,
-                                       text = paste("age:", round(.data$age)))) +
-        ggplot2::facet_wrap(~.data$age,ncol=1,scales = scales, strip.position="right") +
+      ggplot2::ggplot(dat) + {
+        if(!biomass) ggplot2::geom_bar(
+          stat='identity',
+          ggplot2::aes(
+            .data$year,.data$number,
+            fill = .data$yc,
+            text = paste("age:", round(.data$age))
+          ),
+          col = 'black', size = 0.5/2.13)} + {
+            if(biomass) ggplot2::geom_bar(
+              stat='identity',
+              ggplot2::aes(
+                .data$year,.data$weight,
+                fill = .data$yc,
+                text = paste("age:", round(.data$age))),
+              col = 'black', size = 0.5/2.13)} +
+        ggplot2::facet_wrap(
+          ~.data$age, ncol=1, scales = scales, strip.position="right"
+        ) +
         # ggplot2::geom_segment(ggplot2::aes(x=.data$year-0.5,
         #                                    xend=.data$year+.5),
         #                       y=Inf, yend=-Inf,lty=2,col='gray',
         #                       data = year_span, inherit.aes = FALSE) +
         # ggplot2::geom_text(ggplot2::aes(-Inf,Inf,label=paste('Age',.data$age)),
         #                    hjust=2,vjust=2,col='gray') +
-        ggplot2::labs(x='Year',y='Abundance (in millions)') +
+        ggplot2::labs(
+          x = 'Year',
+          y = ifelse(biomass, 'Biomass (kt)', 'Abundance (in millions)')
+        ) +
         ggplot2::scale_fill_manual(
           values = rep(pal, ceiling(nlevels(dat$yc) / length(pal)))) +
         ggplot2::scale_x_continuous(breaks = seq(1900,2050,2)) +
@@ -63,8 +84,6 @@ plot_agecomp <- function(fit, type = "bubble", scales = NULL, base_size = 8) {
 
     ggplot2::ggplot(
       dat %>%
-        dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
-        dplyr::summarise(number = sum(.data$number), .groups = "drop") %>%
         dplyr::group_by(.data$year) %>%
         dplyr::mutate(p = .data$number/sum(.data$number)) %>%
         dplyr::mutate(bars = purrr::map2(.data$age, .data$p, ~make_bar(.x, .y))) %>%
@@ -79,29 +98,45 @@ plot_agecomp <- function(fit, type = "bubble", scales = NULL, base_size = 8) {
       ggplot2::labs(x = "Age", y = "Year") +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.position = "none")
+
   } else {
     suppressWarnings({
       ggplot2::ggplot(
         dat %>%
-          dplyr::mutate(number = ifelse(.data$number == 0, NA, .data$number/1e6)) %>%
-          dplyr::rename("year class" = "yc"),
-        ggplot2::aes(.data$year,.data$age, size = .data$number)) +
-        ggplot2::geom_point(
-          ggplot2::aes(color = .data$`year class`,
-                       text = paste(
-                         "abundance (1e6): ", round(.data$number))
-                       )
-          ) +
+          dplyr::mutate(number = ifelse(.data$number == 0, NA, .data$number),
+                        weight = ifelse(.data$weight == 0, NA, .data$weight)) %>%
+          dplyr::rename("year class" = "yc")
+      ) + {
+        if(!biomass) ggplot2::geom_point(
+          ggplot2::aes(
+            .data$year,.data$age, size = .data$number,
+            color = .data$`year class`,
+            text = paste(
+              "abundance (1e6): ", round(.data$number))
+          ),
+          shape = 21, stroke = 1
+        ) } + {
+          if(biomass) ggplot2::geom_point(
+            ggplot2::aes(
+              .data$year,.data$age, size = .data$weight,
+              color = .data$`year class`,
+              text = paste(
+                "biomass (1e6): ", round(.data$weight))
+            ),
+            shape = 21, stroke = 1
+          ) } +
         ggplot2::labs(
           x = 'Year',
           y = 'Age',
-          size = 'Abundance (in millions)') +
+          size = ifelse(biomass, 'Biomass (kt)', 'Abundance (in millions)')
+        ) +
         ggplot2::scale_color_manual(
           values = rep(pal, ceiling(nlevels(dat$yc) / length(pal))),
           guide = 'none') +
         ggplot2::scale_x_continuous(breaks = seq(1900,2050,2)) +
         ggplot2::scale_y_reverse() +
-        ggplot2::scale_size_area(guide = ggplot2::guide_legend(nrow = 1)) +
+        ggplot2::scale_size_area(guide = ggplot2::guide_legend(nrow = 1),
+                                 max_size = 12) +
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position='bottom',
                        panel.spacing = ggplot2::unit(0,'cm'),

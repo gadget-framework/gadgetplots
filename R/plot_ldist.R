@@ -24,7 +24,7 @@ plot_ldist <- function(fit, ggridges = FALSE, base_size = 8) {
   } else {
     ggplot2::ggplot(
       fit$stock.full %>%
-        dplyr::group_by(.data$year) %>%
+        dplyr::group_by(.data$year, .data$step) %>%
         dplyr::mutate(p = .data$number/sum(.data$number)),
       ggplot2::aes(x = .data$length, y = .data$year, height = 100*.data$p,
                    fill = .data$stock, group = interaction(.data$year, .data$stock))) +
