@@ -134,7 +134,7 @@ Column {.tabset}
 
 ```{r stockdist, echo = FALSE}
 if (!is.null(fit$stockdist)) 
-  x <- plot_stockdist(fit, type = "model_fit", stocks = "separate") 
+  x <- plot_stockdist(fit, stocks = "separate") 
 ```
 
 ```{r stockdist2, echo = FALSE, results='asis'}
@@ -150,15 +150,26 @@ if (!is.null(fit$stockdist)){
 }
 ```
 
-### Stock composition
+### Composition by length
 
-```{r stockcomp, echo = FALSE}
+```{r stockcomplength, echo = FALSE}
 if (!is.null(fit$stockdist)){ 
-  plot_stockdist(fit, type = "stock_composition") 
-}else{
+  plot_stockcomp(fit) + ggplot2::theme(legend.position = "bottom")
+} else {
   cat('No stock distribution data')
 }
 ```
+
+### Composition by age
+
+```{r stockcompage, echo = FALSE}
+if (!is.null(fit$stockdist)){ 
+  plot_stockcomp(fit, by_age = TRUE) + ggplot2::theme(legend.position = "bottom")
+} else {
+  cat('No stock distribution data')
+}
+```
+
 
 ### Length distribution
 

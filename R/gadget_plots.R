@@ -94,7 +94,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       })
 
       if(!quiet) message("Plotting model stock composition")
-      tmp <- plot_stockdist(fit, type = "stock_composition", geom_area = TRUE)
+      tmp <- plot_stockcomp(fit, geom_area = TRUE)
 
       # lapply(seq_along(tmp), function(i) {
       #   if(!quiet) message(i, "/", length(tmp))

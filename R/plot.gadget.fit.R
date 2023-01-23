@@ -18,8 +18,9 @@
 #'   \item{catch}{Catches by fleet. Uses \code{\link{plot_catch}}(..., type = "fleet")}
 #'   \item{hr}{Harvest rate. Uses \code{\link{plot_catch}}(..., type = "hr")}
 #'   \item{si}{Survey indices. Uses \code{\link{plot_si}}}
-#'   \item{catchdist}{Catch distribution. Uses \code{\link{plot_catchdist}}}
-#'   \item{stockdist}{Stock distribution. Uses \code{\link{plot_stockdist}}}
+#'   \item{catchdist}{Catch distribution comparison to data. Uses \code{\link{plot_catchdist}}}
+#'   \item{stockdist}{Stock distribution comparison to data. Uses \code{\link{plot_stockdist}}}
+#'   \item{stockcomp}{Model stock composition. Uses \code{\link{plot_stockcomp}}}
 #'   \item{suitablity}{Suitability (fleet selection). Uses \code{\link{plot_suitability}}}
 #'   \item{growth}{Average length by age. Uses \code{\link{plot_growth}}}
 #'   \item{agelength}{Age-length (growth parameter) fit. Uses \code{\link{plot_agelength}}}
@@ -121,14 +122,12 @@ plot.gadget.fit <- function(x, param = "annual", ...){
     return(plot_agecomp(fit, ...))
   }
 
-  if(param %in% c("stockdist", "stockcomp", "stock_composition", "maturity",
-                  "matp", "mat", "model_fit")) {
-    if(param %in% c("stockcomp", "stock_composition")) {
-      type <- "stock_composition"
-    } else {
-      type <- "model_fit"
-      return(plot_stockdist(fit, type = type, ...))
-    }
+  if(param %in% c("stockdist", "maturity", "matp", "mat", "model_fit")) {
+    return(plot_stockdist(fit,  ...))
+  }
+
+  if(param %in% c("stockcomp", "stock_composition")) {
+    return(plot_stockcomp(fit, ...))
   }
 
   if(param %in% c("weight", "weights")) {

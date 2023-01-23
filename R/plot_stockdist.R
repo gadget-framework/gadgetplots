@@ -1,23 +1,16 @@
 #' @title Plot stock distribution
 #' @description Plots proportions of stocks by length or age in \code{fit$stockdist}
 #' @inheritParams plot_annual
-#' @inheritParams plot_biomass
 #' @param stocks Character vector specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted in a single plot. If \code{"separate"}, all stocks are plotted in separate plots.
-#' @param component_name Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list. Only applicable for \code{type = "model_fit"}.
-#' @param type Character specifying the plot type. Options: \code{"model_fit"}, \code{"stock_composition"} or \code{"sex_composition"}. See Details.
+#' @param component_name Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list. .
 #' @param color_palette A function defining the color palette or a vector of colors to be used for stocks.
-#' @details Possible plot types are:
-#' \describe{
-#'   \item{model_fit}{Model fit to data using likelihoods. Separate plot for each \code{unique(fit$stockdist$name)}.}
-#'   \item{stock_composition}{Overall model stock composition}
-#'   \item{sex_composition}{Model sex composition. Not implemented yet.}
-#'   }
-#' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
+#' @details Plots model fit to data using likelihoods. Separate plot for each \code{unique(fit$stockdist$name)}.
+#' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{stocks} argument.
 #' @export
 
 # Dev params
-# stocks = NULL; component_name = NULL; type = "model_fit"; color_palette = scales::hue_pal(); geom_area = FALSE; base_size = 8
-plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "model_fit", color_palette = scales::hue_pal(), geom_area = FALSE, base_size = 8) {
+# stocks = NULL; component_name = NULL; color_palette = scales::hue_pal(); base_size = 8
+plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, color_palette = scales::hue_pal(), base_size = 8) {
 
   ## Check whether fit contains stockdist
   if (is.null(fit$stockdist)) {
@@ -44,11 +37,9 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
     }
   }
 
-  lenplot <- function(type, stocks = NULL, stockdist_name = component_name, geom_area, color_palette) {
+  lenplot <- function(stocks = NULL, stockdist_name = component_name, color_palette) {
 
-    if(type == "model_fit") {
-
-      if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
+  if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
 
       x <- fit$stockdist %>%
         #dplyr::filter(.data$predicted > 1e-4) %>%
@@ -93,35 +84,6 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position = "bottom",
                        strip.background = ggplot2::element_blank())
-    } else {
-
-      x <- fit$stock.full %>%
-        dplyr::group_by(.data$year, .data$step, .data$stock, .data$length) %>%
-        dplyr::summarise(n = sum(.data$number), .groups = "drop") %>%
-        dplyr::group_by(.data$year, .data$step, .data$length) %>%
-        dplyr::mutate(p = .data$n/sum(.data$n)) %>%
-        dplyr::filter(.data$stock %in% stocks)
-
-      {
-        if(geom_area) {
-          ggplot2::ggplot(data = x, ggplot2::aes(x = .data$length, y = .data$p)) +
-            ggplot2::geom_area(ggplot2::aes(fill = .data$stock)) +
-            ggplot2::scale_fill_manual(values = cols)
-        } else {
-          ggplot2::ggplot(data = x, ggplot2::aes(x = .data$length, y = .data$p)) +
-            ggplot2::geom_line(ggplot2::aes(color = .data$stock),
-                               size = base_size/16) +
-            ggplot2::scale_color_manual(values = cols)
-        }
-        } +
-        ggplot2::labs(y = 'Stock proportion', x = 'Length', color = "Stock",
-                      fill = "Stock") +
-        ggplot2::facet_wrap(~.data$year+.data$step,
-                            labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
-        ggplot2::theme_classic(base_size = base_size) +
-        ggplot2::theme(legend.position = "bottom",
-                       strip.background = ggplot2::element_blank())
-    }
   }
 
   lenageplot <- function(x) {
@@ -148,17 +110,6 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
   }
 
 
-  # type == "stock_composition" case
-
-  if(type == "stock_composition") {
-    return(lenplot(type == "stock_composition",
-                   stocks = unique(fit$stockdist$stock),
-                   geom_area = geom_area,
-                   color_palette = cols)
-    )
-  }
-
-  # type == "model_fit" case
   ## Loop over stockdist names for plots
   if(is.null(component_name)) {
     component_name <- unique(fit$stockdist$name)
@@ -174,9 +125,7 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
 
         if(is.null(stocks)) {
 
-          lenplot(
-            type = type, stocks = NULL, stockdist_name = x,
-            geom_area = geom_area, color_palette = cols)
+          lenplot(stocks = NULL, stockdist_name = x, color_palette = cols)
 
         } else {
 
@@ -191,14 +140,12 @@ plot_stockdist <- function(fit, stocks = NULL, component_name = NULL, type = "mo
           }
 
           # legend <- cowplot::get_legend(
-          #   lenplot(type = type, stocks = stocks, geom_area = geom_area,
-          #           stockdist_name = x, color_palette = cols))
+          #   lenplot(stocks = stocks, stockdist_name = x, color_palette = cols))
 
           #cowplot::plot_grid(
             cowplot::plot_grid(
               plotlist = lapply(stocks, function(k) {
-                lenplot(type = type, stocks = k, geom_area = geom_area,
-                        stockdist_name = x, color_palette = cols) +
+                lenplot(stocks = k, stockdist_name = x, color_palette = cols) +
                   ggplot2::theme(legend.position = "none") +
                   ggplot2::ggtitle(k)
               })
