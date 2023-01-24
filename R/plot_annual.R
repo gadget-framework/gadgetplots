@@ -33,7 +33,7 @@ plot_annual <- function(fit, color_palette = scales::hue_pal(), base_size = 8, .
     ggplot2::scale_fill_manual(values = cols)
   p3 <- plot_hr(fit, base_size = base_size) +
     ggplot2::theme(legend.position = 'none') +
-    ggplot2::ggtitle("F") +
+    ggplot2::ggtitle("Harvest rate") +
     ggplot2::scale_color_manual(values = cols)
   p4 <- plot_biomass(fit, base_size = base_size, total = TRUE, ...) +
     ggplot2::theme(legend.position = 'bottom') +

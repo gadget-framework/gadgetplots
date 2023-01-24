@@ -1,5 +1,7 @@
 ---
 title: "Gadget model output"
+author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'Update', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
+date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'gadget-framework', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -10,12 +12,24 @@ editor_options:
   chunk_output_type: console
 ---
 
+<style>
+
+.navbar-brand {
+  display: grid;
+  margin: auto;
+  padding: 5px;
+}
+
+.navbar-author {
+  margin-left: 0px;
+}
+</style>
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
   fig.width=12.5,
   fig.height=5,
-  # collapse = TRUE,
   message = FALSE,
   warning = FALSE
 )

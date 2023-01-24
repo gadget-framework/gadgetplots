@@ -7,6 +7,7 @@
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
+# total = FALSE; geom_area = FALSE; biomass = TRUE; panelrow = FALSE; base_size = 8
 plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, panelrow = FALSE, base_size = 8){
 
   if (length(fit) == 1) fit <- fit[[1]]
@@ -20,10 +21,12 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
 
     if(geom_area) {
       pl <-
-        ggplot2::ggplot(fit$res.by.year,
-                        ggplot2::aes(.data$year,
-                                     .data$value,
-                                     fill = .data$stock)) +
+        ggplot2::ggplot(
+          fit$res.by.year, # %>%
+          #   dplyr::filter(.data$value > 0 & .data$value < 500),
+          ggplot2::aes(.data$year,
+                       .data$value,
+                       fill = .data$stock)) +
         ggplot2::geom_area() +
         ggplot2::labs(
           y = ifelse(biomass, "Biomass ('000 tons)", "Abundance (millions)"),
@@ -36,10 +39,12 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
     } else {
 
       pl <-
-        ggplot2::ggplot(fit$res.by.year,
-                        ggplot2::aes(.data$year,
-                                     .data$value,
-                                     col=.data$stock)) +
+        ggplot2::ggplot(
+          fit$res.by.year, # %>%
+          #   dplyr::filter(.data$value > 0 & .data$value < 500),
+          ggplot2::aes(.data$year,
+                       .data$value,
+                       col=.data$stock)) +
         ggplot2::geom_line() +
         ggplot2::labs(
           y = ifelse(biomass, "Biomass ('000 tons)", "Abundance (millions)"),
