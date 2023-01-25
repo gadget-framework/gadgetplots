@@ -4,12 +4,22 @@
 \alias{plot_ldist}
 \title{Plot model length distributions for stocks by year}
 \usage{
-plot_ldist(fit, ggridges = FALSE, base_size = 8)
+plot_ldist(
+  fit,
+  ggridges = FALSE,
+  scales = "fixed",
+  by_age = FALSE,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
+
+\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+
+\item{by_age}{Logical indicating whether the length distributions should be grouped by age.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -18,4 +28,7 @@ A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code
 }
 \description{
 Plot model length distributions for stocks by year
+}
+\details{
+Do not trust the absolute numbers when \code{by_age = TRUE}. They are estimated from normal distributions by using \code{number * dnorm(1:120, mean = mean_length, sd = stddev_length)}.
 }

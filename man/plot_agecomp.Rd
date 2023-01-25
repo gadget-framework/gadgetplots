@@ -7,7 +7,7 @@
 plot_agecomp(
   fit,
   type = "bubble",
-  scales = NULL,
+  scales = "fixed",
   biomass = FALSE,
   base_size = 8
 )

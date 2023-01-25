@@ -13,7 +13,7 @@
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_agecomp <- function(fit, type = "bubble", scales = NULL, biomass = FALSE, base_size = 8) {
+plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE, base_size = 8) {
 
   year_span <-
     fit$stock.std %>%
