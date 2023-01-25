@@ -20,7 +20,6 @@ plot_ldist <- function(fit, ggridges = FALSE, scales = "fixed", by_age = FALSE, 
 
     x <- fit$stock.std %>%
       dplyr::filter(!is.na(.data$mean_length)) %>%
-      dplyr::mutate(stddev_length = sqrt(.data$stddev_length)) %>% # to fix a bug in g3_fit
       split(list(.$year, .$step, .$area, .$stock, .$age), drop = TRUE)
 
     x <- lapply(x, function(k) {
