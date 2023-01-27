@@ -1,19 +1,19 @@
 #' @title Plot model length distributions for stocks by year
 #' @inheritParams plot_annual
 #' @inheritParams plot_agecomp
-#' @param ggridges Logical indicating whether to return a ggridges plot instead of a facetted plot.
-#' @param by_age Logical indicating whether the length distributions should be grouped by age.
+#' @param type Character specifying the plot type. Options: \code{"line"}, \code{"bar"}, or \code{"ggridges"}.
+#' @param by_age Logical indicating whether the length distributions should be grouped by age. Works only with \code{type = "line"}.
 #' @param ncol Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}
 #' @details Do not trust the absolute numbers when \code{by_age = TRUE}. They are estimated from normal distributions by using \code{number * dnorm(1:120, mean = mean_length, sd = stddev_length)}.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 #' @export
 
-plot_ldist <- function(fit, ggridges = FALSE, by_age = FALSE, scales = "fixed", ncol = NULL, base_size = 8) {
+plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", ncol = NULL, base_size = 8) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
-  if(by_age & ggridges) {
-    message("by_age only works in classic ggplot. Changing ggridges to FALSE.")
+  if(by_age & type != "line") {
+    message("by_age only works with type = 'line'. Changing to that.")
   }
 
   if(by_age) {
@@ -42,7 +42,7 @@ plot_ldist <- function(fit, ggridges = FALSE, by_age = FALSE, scales = "fixed", 
       ggplot2::labs(x = "Length", y = 'Abundance (in millions)', color = "Stock") +
       ggplot2::theme(legend.position = "bottom",
                      strip.background = ggplot2::element_blank())
-  } else if(!ggridges) {
+  } else if(type == "line") {
     ggplot2::ggplot(
       data = fit$stock.full,
       ggplot2::aes(.data$length,.data$number/1e6, color = .data$stock)
@@ -54,6 +54,23 @@ plot_ldist <- function(fit, ggridges = FALSE, by_age = FALSE, scales = "fixed", 
         scales = scales, ncol = ncol)  +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::labs(x = "Length", y = 'Abundance (in millions)', color = "Stock") +
+      ggplot2::theme(legend.position = "bottom",
+                     strip.background = ggplot2::element_blank())
+
+  } else if(type == "bar") {
+    ggplot2::ggplot(
+      data = fit$stock.full,
+      ggplot2::aes(.data$length,.data$number/1e6, fill = .data$stock,
+                   color = .data$stock)
+    ) +
+      ggplot2::geom_col() +
+      ggplot2::facet_wrap(
+        ~.data$year+.data$step, drop = FALSE,
+        labeller = ggplot2::label_wrap_gen(multi_line=FALSE),
+        scales = scales, ncol = ncol)  +
+      ggplot2::theme_classic(base_size = base_size) +
+      ggplot2::labs(x = "Length", y = 'Abundance (in millions)', color = "Stock",
+                    fill = "Stock") +
       ggplot2::theme(legend.position = "bottom",
                      strip.background = ggplot2::element_blank())
   } else {
