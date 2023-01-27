@@ -251,7 +251,7 @@ for(i in seq_along(x)) {
 
 ### Growth
 
-```{r growth}
+```{r growth, fig.width=12, fig.height=6}
 plot_growth(fit) + ggplot2::theme(legend.position = "bottom")
 ```
 
@@ -260,6 +260,13 @@ plot_growth(fit) + ggplot2::theme(legend.position = "bottom")
 ```{r agecompositions}
 plotly::ggplotly(plot_agecomp(fit, type = "bubble")) %>% plotly::hide_legend()
 ```
+
+### Age group stdev
+
+```{r agestdec}
+plot_growth(fit, type = "stdev") + ggplot2::theme(legend.position = "bottom")
+```
+
 
 Residuals & likelihood
 =======================================================================
