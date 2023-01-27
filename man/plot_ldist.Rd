@@ -6,7 +6,7 @@
 \usage{
 plot_ldist(
   fit,
-  ggridges = FALSE,
+  type = "line",
   by_age = FALSE,
   scales = "fixed",
   ncol = NULL,
@@ -16,9 +16,9 @@ plot_ldist(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
+\item{type}{Character specifying the plot type. Options: \code{"line"}, \code{"bar"}, or \code{"ggridges"}.}
 
-\item{by_age}{Logical indicating whether the length distributions should be grouped by age.}
+\item{by_age}{Logical indicating whether the length distributions should be grouped by age. Works only with \code{type = "line"}.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
