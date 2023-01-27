@@ -184,12 +184,11 @@ if (!is.null(fit$stockdist)){
 }
 ```
 
-
 ### Length distribution
 
 ```{r ldist, echo = FALSE}
 if (!is.null(fit$stock.full)){ 
-  plot_ldist(fit, ggridges = TRUE) 
+  plot_ldist(fit) 
 }else{
   cat('No data')
 }

@@ -4,7 +4,7 @@
 \alias{plot_growth}
 \title{Plot of average growth for each stock}
 \usage{
-plot_growth(fit, base_size = 8)
+plot_growth(fit, stdev = TRUE, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
