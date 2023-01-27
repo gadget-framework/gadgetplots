@@ -7,8 +7,9 @@
 plot_ldist(
   fit,
   ggridges = FALSE,
-  scales = "fixed",
   by_age = FALSE,
+  scales = "fixed",
+  ncol = NULL,
   base_size = 8
 )
 }
@@ -17,9 +18,11 @@ plot_ldist(
 
 \item{ggridges}{Logical indicating whether to return a ggridges plot instead of a facetted plot.}
 
+\item{by_age}{Logical indicating whether the length distributions should be grouped by age.}
+
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
-\item{by_age}{Logical indicating whether the length distributions should be grouped by age.}
+\item{ncol}{Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

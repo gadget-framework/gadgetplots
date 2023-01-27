@@ -15,7 +15,7 @@ plot_agecomp(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{type}{Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.}
+\item{type}{Character specifying the plot type. Options: \code{"bar"}, \code{"line"}, \code{"ggridges"} or \code{"bubble"}. See Details.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
@@ -33,6 +33,7 @@ Plot of age composition from the model
 Possible plot types are:
 \describe{
   \item{bar}{Facetted bar plot with year on x-axis, abundance on y-axis and ages along rows. Year classes are colored.}
+  \item{line}{Facetted line plot with year on x-axis, abundance on y-axis and ages along rows. Stocks are colored.}
   \item{ggridges}{Same as above but the bars are overlapping.}
   \item{bubble (or any other string)}{Bubble plot with year on x-axis, age on y-axis and point size scaled to abundance. Year classes are colored.}
   }

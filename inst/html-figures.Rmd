@@ -195,6 +195,17 @@ if (!is.null(fit$stock.full)){
 }
 ```
 
+### Age distribution
+
+```{r ldist, echo = FALSE}
+if (!is.null(fit$stock.full)){ 
+  plot_adist(fit) 
+}else{
+  cat('No data')
+}
+```
+
+
 Suitability
 =======================================================================
 

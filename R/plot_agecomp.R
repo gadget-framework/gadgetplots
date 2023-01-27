@@ -1,10 +1,11 @@
 #' @title Plot of age composition from the model
 #' @inheritParams plot_annual
 #' @inheritParams plot_biomass
-#' @param type Character specifying the plot type. Options: \code{"bar"}, \code{"ggridges"} or \code{"bubble"}. See Details.
+#' @param type Character specifying the plot type. Options: \code{"bar"}, \code{"line"}, \code{"ggridges"} or \code{"bubble"}. See Details.
 #' @details Possible plot types are:
 #' \describe{
 #'   \item{bar}{Facetted bar plot with year on x-axis, abundance on y-axis and ages along rows. Year classes are colored.}
+#'   \item{line}{Facetted line plot with year on x-axis, abundance on y-axis and ages along rows. Stocks are colored.}
 #'   \item{ggridges}{Same as above but the bars are overlapping.}
 #'   \item{bubble (or any other string)}{Bubble plot with year on x-axis, age on y-axis and point size scaled to abundance. Year classes are colored.}
 #'   }
@@ -25,15 +26,59 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
                     "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00",
                     "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
 
-  dat <- fit$stock.std %>%
-    dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
-    dplyr::summarise(
-      number = sum(.data$number, na.rm = TRUE)/1e6, # millions
-      weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
-      .groups = "drop") %>%
-    dplyr::mutate(yc = as.factor(.data$year - .data$age))
+  if(type != "line") {
+    dat <- fit$stock.std %>%
+      dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
+      dplyr::summarise(
+        number = sum(.data$number, na.rm = TRUE)/1e6, # millions
+        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
+        .groups = "drop") %>%
+      dplyr::mutate(yc = as.factor(.data$year - .data$age))
+  }
 
-  if(type == "bar") {
+  if(type == "line") {
+
+    dat <- fit$stock.std %>%
+      dplyr::group_by(.data$year, .data$step, .data$area, .data$stock, .data$age) %>%
+      dplyr::summarise(
+        number = sum(.data$number, na.rm = TRUE)/1e6, # millions
+        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
+        .groups = "drop") %>%
+      dplyr::mutate(yc = as.factor(.data$year - .data$age))
+
+    suppressWarnings({
+      ggplot2::ggplot(dat) + {
+        if(!biomass) ggplot2::geom_line(
+          ggplot2::aes(
+            .data$year,.data$number,
+            color = .data$stock,
+            text = paste("age:", round(.data$age))
+          ),
+        )} + {
+          if(biomass) ggplot2::geom_line(
+            ggplot2::aes(
+              .data$year,.data$weight,
+              color = .data$stock,
+              text = paste("age:", round(.data$age))),
+          )} +
+        ggplot2::facet_wrap(
+          ~.data$age, ncol=1, scales = scales, strip.position="right"
+        ) +
+        ggplot2::labs(
+          x = 'Year',
+          y = ifelse(biomass, 'Biomass (kt)', 'Abundance (in millions)'),
+          color = 'Stock'
+        ) +
+        ggplot2::scale_x_continuous(breaks = seq(1900,2050,2), expand = c(0,0)) +
+        ggplot2::theme_classic(base_size = base_size) +
+        ggplot2::theme(legend.position = 'bottom',
+                       panel.spacing = ggplot2::unit(0,'cm'),
+                       # plot.margin = ggplot2::unit(c(0,0,0,0),'cm'),
+                       strip.background = ggplot2::element_blank(),
+                       strip.text.x = ggplot2::element_blank())
+    })
+
+  } else if(type == "bar") {
     suppressWarnings({
       ggplot2::ggplot(dat) + {
         if(!biomass) ggplot2::geom_bar(
