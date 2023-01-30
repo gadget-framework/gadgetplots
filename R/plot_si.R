@@ -11,8 +11,7 @@ plot_si <- function(fit, type = "model_fit", base_size = 8) {
     warning("Regression parameters have been calculated assuming log space. That does not seem to be the case here. Note that the estimates will be wrong.")
   }
 
-  x <-
-    fit$sidat %>%
+  x <- fit$sidat %>%
     dplyr::group_by(.data$name) %>%
     dplyr::mutate(
       ssr = sum((log(.data$number) - mean(log(.data$observed)))^2),
@@ -20,12 +19,41 @@ plot_si <- function(fit, type = "model_fit", base_size = 8) {
       sst = sum((log(.data$observed) - mean(log(.data$observed)))^2),
       r2 = stats::cor(log(.data$observed), log(.data$number))^2 # .data$ssr/(.data$ssr+.data$sse)
     ) %>%
+    dplyr::mutate(name = gsub("surveyindices\\.", "", .data$name))
+
+  tmp <- fit$params %>%
+    dplyr::filter(grepl("weight$", .data$switch),
+                  grepl(paste(x$name %>% unique(), collapse = "|"), .data$switch))
+
+  if(length(tmp) > 0) {
+    if(any(!is.na(tmp$value))) {
+      tmp <- tmp %>%
+        dplyr::mutate(switch = gsub("_weight$|adist_surveyindices|_log_", "", .data$switch)) %>%
+        dplyr::select(.data$switch, .data$value) %>%
+        dplyr::rename("name" = "switch") %>%
+        dplyr::mutate(value = unname(unlist(.data$value)),
+                      weight = round(100*.data$value/max(.data$value), 1))
+
+      x <- dplyr::left_join(x, tmp, by = "name")
+    } else {
+      x$weight <- rep(NA, nrow(x))
+    }
+  } else {
+    x$weight <- rep(NA, nrow(x))
+  }
+
+  x <- x %>%
     dplyr::mutate(
       name = paste0(
         gsub("surveyindices\\.", "", .data$name), " (len:", .data$length,
         ", a=", round(.data$intercept, 1), ", b=", round(.data$slope, 3),
-        ", R2=", round(.data$r2, 2), ")")
+        ", R2=", round(.data$r2, 2), ", w=", .data$weight, "% of SI max)")
     )
+
+  fit$params %>%
+    dplyr::filter(grepl("weight$", .data$switch),
+                  grepl(paste(gsub("surveyindices\\.", "", x$name) %>% unique(), collapse = "|"), .data$switch)) %>%
+    dplyr::mutate(switch = gsub("_weight$", "", .data$switch))
 
   ## Convert year to year+step if multiple steps exist
   steps <- unique(x$step)
