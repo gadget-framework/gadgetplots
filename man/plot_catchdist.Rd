@@ -4,10 +4,12 @@
 \alias{plot_catchdist}
 \title{Plot catch distributions}
 \usage{
-plot_catchdist(fit, name = NULL, base_size = 8)
+plot_catchdist(fit, type = "line", name = NULL, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+
+\item{type}{Character specifying the plot type: \code{"step"} uses stepwise lines to show the aggregation intervals. \code{"line"} uses lines through average values between lower and upper intervals.}
 
 \item{name}{A character vector specifying the unique(fit$catchdist.fleets$name) to plot. If \code{NULL}, all names with relevant data are plotted.}
 

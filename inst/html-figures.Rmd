@@ -126,7 +126,7 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r catchdist, echo = FALSE}
-x <- plot_catchdist(fit)
+x <- plot_catchdist(fit, type = "step")
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -188,7 +188,7 @@ if (!is.null(fit$stockdist)){
 
 ```{r ldist, echo = FALSE}
 if (!is.null(fit$stock.full)){ 
-  plot_ldist(fit) 
+  plot_ldist(fit, scales = "free_y") 
 }else{
   cat('No data')
 }
