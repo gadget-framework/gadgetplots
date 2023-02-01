@@ -148,10 +148,10 @@ Column {.tabset}
 
 ```{r stockdist, echo = FALSE}
 if (!is.null(fit$stockdist)) 
-  x <- plot_stockdist(fit, stocks = "separate") 
+  x <- plot_stockdist(fit, stocks = "separate", base_size = 6) 
 ```
 
-```{r stockdist2, echo = FALSE, results='asis'}
+```{r stockdist2, echo = FALSE, results='asis', fig.width=12.5, fig.height=6}
 if (!is.null(fit$stockdist)){ 
   for(i in seq_along(x)) {
     
