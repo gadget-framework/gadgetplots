@@ -2,11 +2,11 @@
 #' @inheritParams plot_annual
 #' @param type Character specifying the plot type. Options: \code{"annual"}, \code{"mean"} or \code{"stdev"}. See Details.
 #' @param stdev Logical indicating whether standard deviation should be shown on both sides of mean for plots that use mean lengths.
-#' @param add_growth_models Logical indicating whether growth models extracted from growth parameters should be plotted together with the data. Uses grep and does not always work.
+#' @param add_models Logical indicating whether growth models extracted from growth parameters should be plotted together with the data. Uses grep and does not always work.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models = FALSE, base_size = 8) {
+plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE, base_size = 8) {
 
   dat <- fit$stock.std %>%
     dplyr::filter(.data$number > 0) %>%
@@ -16,7 +16,7 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models =
 
   ## Growth model data
 
-  if(add_growth_models) {
+  if(add_models) {
     if(length(grep("K$", fit$params$switch)) ==
        length(grep("Linf$", fit$params$switch)) &
        all(gsub("\\.K", "", grep("K$", fit$params$switch, value = TRUE)) ==
@@ -49,8 +49,8 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models =
       }) %>% dplyr::bind_rows()
 
     } else {
-      warning("Did not correct growth parameters. Turning add_growth_models to FALSE")
-      add_growth_models <- FALSE
+      warning("Did not correct growth parameters. Turning add_models to FALSE")
+      add_models <- FALSE
     }
   }
 
@@ -98,7 +98,7 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models =
         data = dat,
         ggplot2::aes(.data$age, .data$mean_length, color=.data$stock),
         linewidth = base_size/16) + {
-          if(add_growth_models & exists("growth_model_dat")) {
+          if(add_models & exists("growth_model_dat")) {
             ggplot2::geom_line(
               data = growth_model_dat,
               ggplot2::aes(x = .data$age, y = .data$length, lty = .data$model))
@@ -127,7 +127,7 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models =
         ggplot2::geom_line(
           ggplot2::aes(.data$age, .data$mean, color=.data$type),
           linewidth = base_size/16) + {
-          if(add_growth_models & exists("growth_model_dat")) {
+          if(add_models & exists("growth_model_dat")) {
             ggplot2::geom_line(
               data = growth_model_dat,
               ggplot2::aes(x = .data$age, y = .data$length, lty = .data$model))
@@ -149,7 +149,7 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_growth_models =
           ggplot2::aes(.data$age, .data$mean, color=.data$stock,
                        linetype = .data$type),
           linewidth = base_size/16) + {
-            if(add_growth_models & exists("growth_model_dat")) {
+            if(add_models & exists("growth_model_dat")) {
               ggplot2::geom_line(
                 data = growth_model_dat,
                 ggplot2::aes(x = .data$age, y = .data$length, lty = .data$model))

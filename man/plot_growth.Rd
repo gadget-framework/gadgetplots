@@ -8,7 +8,7 @@ plot_growth(
   fit,
   type = "annual",
   stdev = FALSE,
-  add_growth_models = FALSE,
+  add_models = FALSE,
   base_size = 8
 )
 }
@@ -19,7 +19,7 @@ plot_growth(
 
 \item{stdev}{Logical indicating whether standard deviation should be shown on both sides of mean for plots that use mean lengths.}
 
-\item{add_growth_models}{Logical indicating whether growth models extracted from growth parameters should be plotted together with the data. Uses grep and does not always work.}
+\item{add_models}{Logical indicating whether growth models extracted from growth parameters should be plotted together with the data. Uses grep and does not always work.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
