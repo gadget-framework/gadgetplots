@@ -66,7 +66,7 @@ plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
       ggplot2::facet_wrap(~.data$year+.data$step,
                           labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
       ggplot2::labs(y = 'Proportion', x = 'Age') +
-      ggplot2::theme_bw(base_size = base_size) +
+      ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank(),
                      axis.text.y = ggplot2::element_blank(),
                      axis.ticks.y = ggplot2::element_blank())
@@ -150,9 +150,9 @@ plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
               suppressWarnings({
                 # By age
                 if(type == "line") {
-                  p <- lenlineplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p <- lenlineplot(dat %>% dplyr::filter(.data$stock == k))
                 } else {
-                  p <- lenstepplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p <- lenstepplot(dat %>% dplyr::filter(.data$stock == k))
                 }
 
                 p +
@@ -197,9 +197,9 @@ plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
               suppressWarnings({
                 # By age
                 if(type == "line") {
-                  p <- agelineplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p <- agelineplot(dat %>% dplyr::filter(.data$stock == k))
                 } else {
-                  p <- agestepplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p <- agestepplot(dat %>% dplyr::filter(.data$stock == k))
                 }
 
                 p +
