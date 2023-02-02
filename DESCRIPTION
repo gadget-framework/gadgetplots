@@ -20,6 +20,6 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
 Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo, 
-  cowplot, rmarkdown, flexdashboard, DT, plotly, ggridges
+  cowplot, rmarkdown, flexdashboard, DT, plotly, ggridges, gadget3
 Suggests: gadgetutils
 RoxygenNote: 7.2.2

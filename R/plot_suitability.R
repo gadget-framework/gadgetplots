@@ -13,7 +13,7 @@ plot_suitability <- function(fit, fleets = "all", base_size = 8) {
         fit$suitability %>%
           dplyr::filter(.data$fleet == x) %>%
           ggplot2::ggplot(ggplot2::aes(.data$length,.data$suit, color = .data$stock)) +
-          ggplot2::geom_line(size = base_size/16) +
+          ggplot2::geom_line(linewidth = base_size/16) +
           ggplot2::facet_wrap(~.data$year + .data$step) +
           ggplot2::labs(y='Suitability',x='Length', color = 'Stock') +
           ggplot2::geom_text(
@@ -43,16 +43,21 @@ plot_suitability <- function(fit, fleets = "all", base_size = 8) {
 
     if(fleets == "all") fleets <- unique(fit$suitability$fleet)
 
-    fit$suitability %>%
+    dat <- fit$suitability %>%
       dplyr::ungroup() %>%
-      dplyr::filter(.data$fleet %in% fleets) %>%
-      ggplot2::ggplot(ggplot2::aes(.data$length,.data$suit, color = .data$stock,
-                                   lty = .data$fleet)) +
-      ggplot2::geom_line(size = base_size/16) +
+      dplyr::filter(.data$fleet %in% fleets)
+
+    ggplot2::ggplot(
+      data = dat,
+      ggplot2::aes(.data$length,.data$suit, color = .data$stock)) + {
+        if(length(fleets) > 1) ggplot2::geom_line(ggplot2::aes(lty = .data$fleet), size = base_size/16)
+      } + {
+        if(length(fleets) == 1) ggplot2::geom_line(size = base_size/16)
+      } +
       ggplot2::facet_wrap(~.data$year + .data$step) +
-      ggplot2::labs(y='Suitability',x='Length', lty = 'Fleet', color = 'Stock') +
+      ggplot2::labs(y='Suitability',x='Length', color = 'Stock', if(length(fleets) > 1) {lty = 'Fleet'}) +
       ggplot2::geom_text(
-        data=fit$suitability %>%
+        data = dat %>%
           dplyr::ungroup() %>%
           dplyr::select(.data$year,.data$step) %>%
           dplyr::mutate(y=Inf,

@@ -2,6 +2,7 @@
 
 S3method(plot,gadget.fit)
 export("%>%")
+export(g3plot_exponentiall50)
 export(gadget_plots)
 export(getCores)
 export(make_html)
