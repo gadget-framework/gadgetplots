@@ -4,7 +4,7 @@
 \alias{plot_catchdist}
 \title{Plot catch distributions}
 \usage{
-plot_catchdist(fit, type = "line", name = NULL, base_size = 8)
+plot_catchdist(fit, type = "step", name = NULL, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}

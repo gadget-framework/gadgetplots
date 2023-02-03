@@ -6,7 +6,8 @@
 #' @return A list of \link[ggplot2]{ggplot} objects consisting of a separate plot for each of \code{names}.
 #' @export
 
-plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
+# type = "step"; name = NULL; base_size = 8
+plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
 
   # Plot functions
 
@@ -195,7 +196,7 @@ plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
           cowplot::plot_grid(
             plotlist = lapply(unique(dat$stock), function(k) {
               suppressWarnings({
-                # By age
+
                 if(type == "line") {
                   p <- agelineplot(dat %>% dplyr::filter(.data$stock == k))
                 } else {
@@ -214,27 +215,68 @@ plot_catchdist <- function(fit, type = "line", name = NULL, base_size = 8) {
           cowplot::plot_grid(
             plotlist = lapply(unique(dat$stock_re), function(k) {
               suppressWarnings({
-                # By age
+
                 if(type == "line") {
-                  p <- agelineplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p1 <- agelineplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p2 <- lenlineplot(
+                    dat %>%
+                      dplyr::filter(.data$stock_re == k) %>%
+                      dplyr::group_by(.data$year, .data$step, .data$stock_re,
+                                      .data$lower, .data$upper, .data$avg.length) %>%
+                      dplyr::summarise(predicted = sum(.data$predicted, na.rm = TRUE),
+                                       observed = sum(.data$observed, na.rm = TRUE),
+                                       .groups = "drop")
+                  )
                 } else {
-                  p <- agestepplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p1 <- agestepplot(dat %>% dplyr::filter(.data$stock_re == k))
+                  p2 <- lenstepplot(
+                    dat %>%
+                      dplyr::filter(.data$stock_re == k) %>%
+                      dplyr::group_by(.data$year, .data$step, .data$stock_re,
+                                      .data$lower, .data$upper, .data$avg.length) %>%
+                      dplyr::summarise(predicted = sum(.data$predicted, na.rm = TRUE),
+                                       observed = sum(.data$observed, na.rm = TRUE),
+                                       .groups = "drop")
+                  )
                 }
 
-                p +
+                cowplot::plot_grid(
+                  p1 +
                   ggplot2::theme(legend.position = "none") +
-                  ggplot2::ggtitle(k)
+                  ggplot2::ggtitle(k),
+                  p2, ncol = 1)
               })
             })
           )
 
         } else {
 
-          # By age
+
           if(type == "line") {
-            agelineplot(dat)
+            p1 <- agelineplot(dat)
+            p2 <- lenlineplot(
+              dat %>%
+                dplyr::group_by(.data$year, .data$step, .data$stock_re,
+                                .data$lower, .data$upper, .data$avg.length) %>%
+                dplyr::summarise(predicted = sum(.data$predicted, na.rm = TRUE),
+                                 observed = sum(.data$observed, na.rm = TRUE),
+                                 .groups = "drop")
+            )
+
+            cowplot::plot_grid(p1, p2, ncol = 2)
+
           } else {
-            agestepplot(dat)
+            p1 <- agestepplot(dat)
+            p2 <- lenstepplot(
+              dat %>%
+                dplyr::group_by(.data$year, .data$step, .data$stock_re,
+                                .data$lower, .data$upper, .data$avg.length) %>%
+                dplyr::summarise(predicted = sum(.data$predicted, na.rm = TRUE),
+                                 observed = sum(.data$observed, na.rm = TRUE),
+                                 .groups = "drop")
+            )
+
+            cowplot::plot_grid(p1, p2, ncol = 2)
           }
         }
 
