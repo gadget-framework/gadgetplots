@@ -131,6 +131,8 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
 
   ## Data handling & loop
 
+  if (!('stock_re' %in% names(fit$catchdist.fleets))) fit$catchdist.fleets$stock_re <- NA
+  
   if(is.null(name)) name <- unique(fit$catchdist.fleets$name)
 
   rlang::set_names(name) %>%

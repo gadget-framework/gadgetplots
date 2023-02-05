@@ -45,6 +45,7 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
   }
 
   ## Plot loop
+  if (!('stock_re' %in% names(fit$catchdist.fleets))) fit$catchdist.fleets$stock_re <- NA
 
   rlang::set_names(name) %>%
     purrr::map(function(x) {
