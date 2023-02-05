@@ -41,7 +41,7 @@ plot_stockdist <- function(
 
   ## Account for the stock or stock_re columns
   all_stocks <- c(stats::na.exclude(unique(fit$stockdist$stock)))
-  if(!all(is.na(fit$stockdist$stock_re))) {
+  if(!is.null(fit$stockdist$stock_re) && !all(is.na(fit$stockdist$stock_re))) {
     all_stock_res <- rev(c(stats::na.exclude(unique(fit$stockdist$stock_re))))
   } else {
     all_stock_res <- NULL
