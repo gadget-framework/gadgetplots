@@ -1,7 +1,7 @@
 ---
 title: "Gadget model output"
-author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'Update', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
-date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'gadget-framework', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
+author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'No data', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
+date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'on iteration', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns

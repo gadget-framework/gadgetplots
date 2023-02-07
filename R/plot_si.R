@@ -28,7 +28,7 @@ plot_si <- function(fit, type = "model_fit", base_size = 8) {
   if(length(tmp) > 0) {
     if(any(!is.na(tmp$value))) {
       tmp <- tmp %>%
-        dplyr::mutate(switch = gsub("_weight$|adist_surveyindices|_log_", "", .data$switch)) %>%
+        dplyr::mutate(switch = gsub("_weight$|adist_surveyindices|cdist_surveyindices|_log_", "", .data$switch)) %>%
         dplyr::select(.data$switch, .data$value) %>%
         dplyr::rename("name" = "switch") %>%
         dplyr::mutate(value = unname(unlist(.data$value)),
