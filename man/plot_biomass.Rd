@@ -9,7 +9,7 @@ plot_biomass(
   total = FALSE,
   geom_area = FALSE,
   biomass = TRUE,
-  panelrow = FALSE,
+  min_catch_length = NULL,
   base_size = 8
 )
 }
@@ -22,7 +22,7 @@ plot_biomass(
 
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 
-\item{panelrow}{something here}
+\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

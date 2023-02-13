@@ -283,7 +283,7 @@ plot_resid(fit)
 ### Raw likelihood
 
 ```{r rawlik, fig.height = 5, fig.width = 12.5}
-plot_likelihood(fit)
+plot_likelihood(fit, type = "direct")
 ```
 
 ### Weighted likelihood

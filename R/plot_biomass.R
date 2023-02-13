@@ -1,102 +1,92 @@
 #' @title Plot stock biomasses
 #' @inheritParams plot_annual
 #' @param total Logical indicating whether total biomass should be plotted. Has no effect if \code{geom_area = TRUE}.
+#' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).
 #' @param geom_area Logical indicating whether stacked area should be plotted instead of lines.
 #' @param biomass Logical indicating whether biomass should be plotted instead of estimated abundance.
-#' @param panelrow something here
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-# total = FALSE; geom_area = FALSE; biomass = TRUE; panelrow = FALSE; base_size = 8
-plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, panelrow = FALSE, base_size = 8){
+# total = FALSE; geom_area = FALSE; biomass = TRUE;base_size = 8
+plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, min_catch_length = NULL, base_size = 8){
 
   if (length(fit) == 1) fit <- fit[[1]]
-  if (inherits(fit, 'gadget.fit')) {
+  if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
-    if(biomass) {
-      fit$res.by.year$value <- fit$res.by.year$total.biomass/1e6
-    } else {
-      fit$res.by.year$value <- fit$res.by.year$total.number/1e6
-    }
-
-    if(geom_area) {
-      pl <-
-        ggplot2::ggplot(
-          fit$res.by.year, # %>%
-          #   dplyr::filter(.data$value > 0 & .data$value < 500),
-          ggplot2::aes(.data$year,
-                       .data$value,
-                       fill = .data$stock)) +
-        ggplot2::geom_area() +
-        ggplot2::labs(
-          y = ifelse(biomass, "Biomass ('000 tons)", "Abundance (millions)"),
-          x='Year',col='Stock') +
-        ggplot2::coord_cartesian(expand = FALSE) +
-        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-        ggplot2::theme_classic(base_size = base_size)
-
-
-    } else {
-
-      pl <-
-        ggplot2::ggplot(
-          fit$res.by.year, # %>%
-          #   dplyr::filter(.data$value > 0 & .data$value < 500),
-          ggplot2::aes(.data$year,
-                       .data$value,
-                       col=.data$stock)) +
-        ggplot2::geom_line() +
-        ggplot2::labs(
-          y = ifelse(biomass, "Biomass ('000 tons)", "Abundance (millions)"),
-          x='Year',col='Stock') +
-        ggplot2::coord_cartesian(expand = FALSE) +
-        ggplot2::expand_limits(y = 0) +
-        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-        ggplot2::theme_classic(base_size = base_size)
-
-      if (total){
-        pl <-
-          pl + ggplot2::geom_line(
-            ggplot2::aes(.data$year,
-                         .data$total.value),
-            data =
-              fit$res.by.year %>%
-              dplyr::group_by(.data$year) %>%
-              dplyr::summarise(total.value = sum(.data$value)) %>%
-              dplyr::mutate(stock = 'Total')
-
-          )
-      }
-    }
-  } else{
-
-    ## Extract components from each fit and bind together
-    dat <- bind_fit_components(fit, component = 'res.by.year')
-
-    ## Plot
-    pl <-
-      ggplot2::ggplot(dat,
-                      ggplot2::aes(.data$year,
-                                   .data$total.biomass/1e6,
-                                   col=.data$id)) +
-      ggplot2::geom_line() +
-      ggplot2::expand_limits(y = 0) +
-      ggplot2::facet_wrap(~stock, ncol = if (panelrow) 1 else NULL) +
-      ggplot2::labs(y="Biomass (in '000 tonnes)", x='Year',col='Model')
-
-    if (total){
-
-      pl <-
-        pl + ggplot2::geom_line(
-          ggplot2::aes(.data$year, .data$total.biomass/1e6),
-          data =
-            dat %>%
-            dplyr::group_by(.data$id, .data$year) %>%
-            dplyr::summarise(total.biomass = sum(.data$total.biomass)) %>%
-            dplyr::mutate(stock = 'Total'))
-
-    }
+  if(!is.null(min_catch_length)) {
+    dat <- fit$stock.full %>%
+      dplyr::filter(.data$length >= min_catch_length) %>%
+      dplyr::mutate(biomass = .data$number * .data$mean_weight) %>%
+      dplyr::group_by(.data$year, .data$step, .data$area) %>%
+      dplyr::summarise(
+        total.number = sum(.data$number, na.rm = TRUE),
+        total.biomass = sum(.data$biomass, na.rm = TRUE),
+        .groups = "drop"
+      ) %>% dplyr::ungroup()
+  } else {
+    dat <- fit$res.by.year
   }
-  return(pl)
+
+  if(biomass) {
+    ylab <- "Biomass (kt)"
+    dat$value <- dat$total.biomass/1e6
+  } else {
+    ylab <- "Abundance (millions)"
+    dat$value <- dat$total.number/1e6
+  }
+
+  #dat <- dat %>%
+   # dplyr::select(.data$stock, .data$year, .data$step, .data$area, .data$value)
+
+  if(total & !geom_area & !is.null(min_catch_length)) {
+    dat <- dat %>% dplyr::bind_rows(
+      dat %>%
+        dplyr::group_by(.data$year, .data$step, .data$area) %>%
+        dplyr::summarise(value = sum(.data$value)) %>%
+        dplyr::mutate(stock = 'Total')
+    )
+  }
+
+  if(geom_area) {
+
+    ggplot2::ggplot(dat) + {
+      if(!is.null(min_catch_length)) {
+        ggplot2::geom_area(ggplot2::aes(.data$year, .data$value))
+      }
+    } + {
+      if(is.null(min_catch_length)) {
+        ggplot2::geom_area(ggplot2::aes(.data$year, .data$value, fill = .data$stock))
+      }
+    } +
+      ggplot2::labs(
+        y = ifelse(
+          is.null(min_catch_length), ylab,
+          paste(ylab, "for >= ", min_catch_length, " length units")),
+        x='Year',col='Stock') +
+      ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      ggplot2::theme_classic(base_size = base_size)
+
+  } else {
+
+    ggplot2::ggplot(dat) + {
+      if(!is.null(min_catch_length)) {
+        ggplot2::geom_line(ggplot2::aes(.data$year, .data$value))
+      }
+    } + {
+      if(is.null(min_catch_length)) {
+        ggplot2::geom_line(ggplot2::aes(.data$year, .data$value, color = .data$stock))
+      }
+    } +
+      ggplot2::labs(
+        y = ifelse(
+          is.null(min_catch_length), ylab,
+          paste(ylab, "for >= ", min_catch_length, " length units")),
+        x='Year',col='Stock') +
+      ggplot2::expand_limits(y = 0) +
+      ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      ggplot2::theme_classic(base_size = base_size)
+  }
 }
 
