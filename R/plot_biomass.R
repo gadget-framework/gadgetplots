@@ -38,7 +38,7 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
   #dat <- dat %>%
    # dplyr::select(.data$stock, .data$year, .data$step, .data$area, .data$value)
 
-  if(total & !geom_area & !is.null(min_catch_length)) {
+  if(total & !geom_area & is.null(min_catch_length)) {
     dat <- dat %>% dplyr::bind_rows(
       dat %>%
         dplyr::group_by(.data$year, .data$step, .data$area) %>%
