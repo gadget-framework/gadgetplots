@@ -127,12 +127,12 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE,
         ggplot2::geom_line(
           ggplot2::aes(.data$age, .data$mean, color=.data$type),
           linewidth = base_size/16) + {
-          if(add_models & exists("growth_model_dat")) {
-            ggplot2::geom_line(
-              data = growth_model_dat,
-              ggplot2::aes(x = .data$age, y = .data$length, lty = .data$model))
-          }
-        } +
+            if(add_models & exists("growth_model_dat")) {
+              ggplot2::geom_line(
+                data = growth_model_dat,
+                ggplot2::aes(x = .data$age, y = .data$length, lty = .data$model))
+            }
+          } +
         ggplot2::facet_wrap(~.data$stock) +
         ggplot2::expand_limits(x = 0, y = 0) +
         ggplot2::coord_cartesian(expand = FALSE) +
@@ -164,6 +164,22 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE,
         ggplot2::theme(strip.background = ggplot2::element_blank())
     }
   } else {
+
+    tmp <- fit$params %>%
+        dplyr::filter(grepl("init.sd", .data$switch))
+
+    if(nrow(tmp) > 0) {
+      dat <- dat %>%
+        dplyr::bind_rows(
+          tmp %>%
+            dplyr::select(.data$switch, .data$value) %>%
+            dplyr::mutate(stock = sapply(strsplit(.data$switch, "\\."), "[", 1),
+                          age = as.integer(sapply(strsplit(.data$switch, "\\."), "[", 4)),
+                          mean_sd = unlist(.data$value),
+                          type = "Init param") %>%
+            dplyr::select(.data$stock, .data$age, .data$mean_sd, .data$type)
+        )
+    }
 
     ggplot2::ggplot(dat) +
       ggplot2::geom_line(

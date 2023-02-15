@@ -3,10 +3,11 @@
 #' @inheritParams plot_agecomp
 #' @inheritParams plot_ldist
 #' @param type Character specifying the plot type. Options: \code{"line"}, \code{"bar"} or \code{"ggridges"}. See Details.
+#' @param years Numeric vector defining which years to plot. If \code{NULL} (default), all years are plotted.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 #' @export
 
-plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, base_size = 8) {
+plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, years = NULL, base_size = 8) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
@@ -18,6 +19,10 @@ plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, base_si
       .groups = "drop") %>%
     dplyr::mutate(yc = as.factor(.data$year - .data$age))
 
+
+  if(!is.null(years)) {
+    dat <- dat %>% dplyr::filter(.data$year %in% years)
+  }
 
   if(type == "line") {
     ggplot2::ggplot(

@@ -4,7 +4,14 @@
 \alias{plot_adist}
 \title{Plot model age distributions for stocks by year}
 \usage{
-plot_adist(fit, type = "bar", scales = "fixed", ncol = NULL, base_size = 8)
+plot_adist(
+  fit,
+  type = "bar",
+  scales = "fixed",
+  ncol = NULL,
+  years = NULL,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
@@ -14,6 +21,8 @@ plot_adist(fit, type = "bar", scales = "fixed", ncol = NULL, base_size = 8)
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
 \item{ncol}{Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}}
+
+\item{years}{Numeric vector defining which years to plot. If \code{NULL} (default), all years are plotted.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
