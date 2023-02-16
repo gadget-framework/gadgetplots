@@ -45,3 +45,46 @@ g3plot_exponentiall50 <- function(length, alpha, l50, add = FALSE, base_size = 8
 
   }
 }
+
+#' title Plot Andersen suitability using model parameters
+#' inheritParams plot_annual
+#' inheritParams g3plot_exponential50
+
+#' export
+
+# g3plot_andersen <- function(length, p0, p1, p2, p3, p4, p5, add = FALSE, base_size = 8, ...) {
+#
+#   out <- lapply(seq_along(p0), function(i) {
+#     data.frame(
+#       model = ifelse(!is.null(names(p0)), names(alpha)[i], paste("expl50", i, sep = "_")),
+#       length=length,
+#       y=eval(gadget3::g3_suitability_exponentiall50(alpha[i],l50[i])[[2]], list(stock__midlen=length))
+#     )
+#   }) %>% dplyr::bind_rows()
+#
+#   if(!add) {
+#
+#     ggplot2::ggplot(out, ggplot2::aes(.data$length,.data$y)) + {
+#       if(length(unique(out$model)) > 1) ggplot2::geom_line(ggplot2::aes(lty = .data$model))
+#     } + {
+#       if(length(unique(out$model)) == 1) ggplot2::geom_line()
+#     } +
+#       ggplot2::labs(x = "Length", y = "Suitability") +
+#       ggplot2::theme_classic(base_size = base_size)
+#
+#   } else {
+#
+#     if(length(unique(out$model)) > 1) {
+#       ggplot2::geom_line(
+#         data = out,
+#         ggplot2::aes(.data$length,.data$y, lty = .data$model),
+#         inherit.aes = FALSE, ...)
+#     } else {
+#       ggplot2::geom_line(
+#         data = out,
+#         ggplot2::aes(.data$length,.data$y),
+#         inherit.aes = FALSE, ...)
+#     }
+#
+#   }
+# }
