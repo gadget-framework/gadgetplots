@@ -19,10 +19,10 @@ plot_param <- function(fit, out_only = FALSE, base_size = 8) {
       suppressWarnings({
         ggplot2::ggplot(
           data = dat,
-          ggplot2::aes(.data$switch,.data$rho,label=.data$switch,
-                       text = paste("value:", round(.data$value),
-                                    "\nlower:", round(.data$lower),
-                                    "\nupper:", round(.data$upper)))) +
+          ggplot2::aes(.data$switch,.data$rho,
+                       text = paste("value:", round(.data$value,3),
+                                    "\nlower:", round(.data$lower,2),
+                                    "\nupper:", round(.data$upper,2)))) +
           ggplot2::geom_point() +
           ggplot2::coord_flip() +
           ggplot2::labs(x = "", y = "Rho") +

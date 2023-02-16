@@ -50,12 +50,12 @@ plot_sr <- function(fit, spawning_stock = NULL, lag = 1, years = NULL, add_line 
   tmp <- tmp[-1,]
 
   if(!is.null(years)) {
-    tmp <- tmp %>% dplyr::group_by(.data$year %in% years)
+    tmp <- tmp %>% dplyr::filter(.data$year %in% years)
   }
 
   ## Join
 
-  dat <- dplyr::inner_join(tmp, dat)
+  dat <- dplyr::inner_join(tmp, dat, by = c("year", "step"))
 
   ## Plot
 
