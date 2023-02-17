@@ -36,16 +36,16 @@ plot_sr <- function(fit, spawning_stock = NULL, lag = 1, years = NULL, add_line 
       )
   } else stop("Don't know what to do.")
 
-  if (unique(dat$step) == 1) {
-    dat$year <- dat$year - 1
-  } else stop("Other time steps than 1 have not been implemented yet.")
-
   ## Recruitment
 
   tmp <- fit$res.by.year %>%
     dplyr::group_by(.data$year, .data$step) %>%
     dplyr::summarise(recruits = sum(.data$recruitment, na.rm = TRUE),
                      .groups = "drop")
+
+  if (unique(tmp$step) == 1) {
+    tmp$year <- tmp$year - 1
+  } else stop("Other time steps than 1 have not been implemented yet.")
 
   tmp <- tmp[-1,]
 
