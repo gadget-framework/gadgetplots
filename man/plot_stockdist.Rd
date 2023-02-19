@@ -7,7 +7,7 @@
 plot_stockdist(
   fit,
   stocks = NULL,
-  component_name = NULL,
+  name = NULL,
   type = "step",
   show_intervals = FALSE,
   color_palette = scales::hue_pal(),
@@ -19,7 +19,7 @@ plot_stockdist(
 
 \item{stocks}{Character vector specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted in a single plot. If \code{"separate"}, all stocks are plotted in separate plots.}
 
-\item{component_name}{Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list.}
+\item{name}{Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list.}
 
 \item{type}{Character specifying the plot type: \code{"step"} uses stepwise lines to show the aggregation intervals. \code{"line"} uses lines through average values between lower and upper intervals. If you want to show the aggregation intervals and to use average values (i.e. smooth lines), use the \code{show_intervals} argument.}
 

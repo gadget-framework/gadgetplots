@@ -9,7 +9,8 @@ plot_hr(
   stock = NULL,
   min_catch_length = NULL,
   biomass = TRUE,
-  base_size = 8
+  base_size = 8,
+  return_data = FALSE
 )
 }
 \arguments{
@@ -17,11 +18,13 @@ plot_hr(
 
 \item{stock}{Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
 
-\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default).}
+\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.}
 
 \item{biomass}{Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

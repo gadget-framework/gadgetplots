@@ -1,5 +1,6 @@
 #' @title Plot stock biomasses
 #' @inheritParams plot_annual
+#' @inheritParams plot_hr
 #' @param total Logical indicating whether total biomass should be plotted. Has no effect if \code{geom_area = TRUE}.
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).
 #' @param geom_area Logical indicating whether stacked area should be plotted instead of lines.
@@ -8,7 +9,7 @@
 #' @export
 
 # total = FALSE; geom_area = FALSE; biomass = TRUE;base_size = 8
-plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, min_catch_length = NULL, base_size = 8){
+plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, min_catch_length = NULL, return_data = FALSE, base_size = 8){
 
   if (length(fit) == 1) fit <- fit[[1]]
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
@@ -46,6 +47,8 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
         dplyr::mutate(stock = 'Total')
     )
   }
+
+  if(return_data) return(dat)
 
   if(geom_area) {
 

@@ -10,6 +10,7 @@ plot_biomass(
   geom_area = FALSE,
   biomass = TRUE,
   min_catch_length = NULL,
+  return_data = FALSE,
   base_size = 8
 )
 }
@@ -23,6 +24,8 @@ plot_biomass(
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 
 \item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).}
+
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

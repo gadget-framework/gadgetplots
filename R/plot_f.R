@@ -1,13 +1,14 @@
 #' @title Plot harvest rate
 #' @inheritParams plot_annual
 #' @param stock Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.
-#' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default).
+#' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.
 #' @param biomass Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.
+#' @param return_data Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @seealso plot_f
 #' @export
 
-plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, base_size = 8) {
+plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, base_size = 8, return_data = FALSE) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
@@ -37,6 +38,8 @@ plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, 
     dt <- fit$res.by.year %>%
       dplyr::mutate(value = .data$catch/.data$harv.biomass)
   }
+
+  if(return_data) return(dt)
 
   ggplot2::ggplot(dt) + {
     if(!is.null(min_catch_length)) ggplot2::aes(.data$year, .data$value)

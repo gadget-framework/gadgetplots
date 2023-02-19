@@ -4,14 +4,22 @@
 \alias{plot_rec}
 \title{Plot recruitment}
 \usage{
-plot_rec(fit, panelrow = FALSE, stocks = NULL, base_size = 8)
+plot_rec(
+  fit,
+  panelrow = FALSE,
+  stocks = NULL,
+  return_data = FALSE,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{panelrow}{something here}
 
-\item{stocks}{Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.}
+\item{stocks}{Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. If \code{"total"}, total recruitment will be plotted instead.}
+
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

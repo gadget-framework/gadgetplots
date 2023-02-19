@@ -129,10 +129,37 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
                      axis.ticks.y = ggplot2::element_blank())
   }
 
+  agelenstepplot <- function(dat) {
+    dat %>%
+      dplyr::group_by(.data$year, .data$length) %>%
+      dplyr::mutate(
+        total_obs = sum(.data$obs, na.rm = TRUE),
+        total_pred = sum(.data$pred, na.rm = TRUE)) %>%
+      dplyr::group_by(.data$year, .data$length, .data$age) %>%
+      dplyr::mutate(
+        obs_ratio = sum(.data$obs, na.rm = TRUE)/.data$total_obs,
+        pred_ratio = sum(.data$pred, na.rm = TRUE)/.data$total_pred,
+        diff_ratio = .data$obs_ratio - .data$pred_ratio,
+        age = as.integer(gsub("age", "", .data$age))) %>%
+      ggplot2::ggplot(ggplot2::aes(x = .data$age, y = .data$diff_ratio,
+                                   color = .data$lower, group = factor(.data$lower))) +
+      ggplot2::geom_step() +
+      ggplot2::scale_color_viridis_c() +
+      ggplot2::facet_wrap(~.data$year+.data$step,
+                          labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
+      ggplot2::labs(y = 'Difference between observed and predicted ratio',
+                    x = 'Age', color = "Length bin") +
+      ggplot2::theme_classic(base_size = base_size) +
+      ggplot2::theme(
+        legend.position = "bottom",
+        strip.background = ggplot2::element_blank()
+      )
+  }
+
   ## Data handling & loop
 
   if (!('stock_re' %in% names(fit$catchdist.fleets))) fit$catchdist.fleets$stock_re <- NA
-  
+
   if(is.null(name)) name <- unique(fit$catchdist.fleets$name)
 
   rlang::set_names(name) %>%
@@ -229,6 +256,9 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
                                        observed = sum(.data$observed, na.rm = TRUE),
                                        .groups = "drop")
                   )
+                } else if(type == "stratified_step") {
+                  p1 <- agelenstepplot(dat %>% dplyr::filter(.data$stock_re == k)) +
+                    ggplot2::ggtitle(k)
                 } else {
                   p1 <- agestepplot(dat %>% dplyr::filter(.data$stock_re == k))
                   p2 <- lenstepplot(
@@ -242,11 +272,15 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
                   )
                 }
 
+                if(type != "stratified_step") {
                 cowplot::plot_grid(
                   p1 +
-                  ggplot2::theme(legend.position = "none") +
-                  ggplot2::ggtitle(k),
+                    ggplot2::theme(legend.position = "none") +
+                    ggplot2::ggtitle(k),
                   p2, ncol = 1)
+                } else {
+                  p1
+                }
               })
             })
           )
@@ -267,6 +301,8 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
 
             cowplot::plot_grid(p1, p2, ncol = 2)
 
+            } else if(type == "stratified_step") {
+              agelenstepplot(dat)
           } else {
             p1 <- agestepplot(dat)
             p2 <- lenstepplot(

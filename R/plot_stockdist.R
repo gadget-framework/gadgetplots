@@ -2,7 +2,7 @@
 #' @description Plots proportions of stocks by length or age in \code{fit$stockdist}
 #' @inheritParams plot_annual
 #' @param stocks Character vector specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted in a single plot. If \code{"separate"}, all stocks are plotted in separate plots.
-#' @param component_name Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list.
+#' @param name Character vector specifying the likelihood component to plot in \code{unique(fit$stockdist$name)}. If \code{NULL}, all components are plotted as a list.
 #' @param type Character specifying the plot type: \code{"step"} uses stepwise lines to show the aggregation intervals. \code{"line"} uses lines through average values between lower and upper intervals. If you want to show the aggregation intervals and to use average values (i.e. smooth lines), use the \code{show_intervals} argument.
 #' @param show_intervals Logical indicating whether length intervals should be plotted.
 #' @param color_palette A function defining the color palette or a vector of colors to be used for stocks.
@@ -11,9 +11,9 @@
 #' @export
 
 # Dev params
-# stocks = NULL; component_name = NULL; type = "step"; show_intervals = FALSE; color_palette = scales::hue_pal(); base_size = 8
+# stocks = NULL; name = NULL; type = "step"; show_intervals = FALSE; color_palette = scales::hue_pal(); base_size = 8
 plot_stockdist <- function(
-    fit, stocks = NULL, component_name = NULL, type = "step", show_intervals = FALSE,
+    fit, stocks = NULL, name = NULL, type = "step", show_intervals = FALSE,
     color_palette = scales::hue_pal(), base_size = 8
 ) {
 
@@ -61,7 +61,7 @@ plot_stockdist <- function(
   }
 
   ## Plot for length distributions
-  lenplot <- function(stocks = NULL, stockdist_name = component_name, type = type, color_palette) {
+  lenplot <- function(stocks = NULL, stockdist_name = name, type = type, color_palette) {
 
     if(is.null(stockdist_name)) stockdist_name <- unique(fit$stockdist$name)[1]
 
@@ -184,11 +184,11 @@ plot_stockdist <- function(
 
 
   ## Loop over stockdist names for plots
-  if(is.null(component_name)) {
-    component_name <- unique(fit$stockdist$name)
+  if(is.null(name)) {
+    name <- unique(fit$stockdist$name)
   }
 
-  component_name %>%
+  name %>%
     purrr::set_names(.,.) %>%
     purrr::map(function(x) {
 
