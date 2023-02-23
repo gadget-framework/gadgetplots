@@ -9,7 +9,7 @@ g3plot_exponentiall50(length, alpha, l50, add = FALSE, base_size = 8, ...)
 \arguments{
 \item{length}{Numeric vector defining the lengths for which suitabilities should be plotted}
 
-\item{alpha}{(Named) numeric vector defining the exponentiall50 slopes. If length > 1, multiple curves will be plotted using a different line type}
+\item{alpha}{(Named) numeric vector defining the exponentiall50 slopes. If length > 1, multiple curves will be plotted using a different line type. See \link[gadget3]{suitability}.}
 
 \item{l50}{Numeric vector defining the exponentiall50 l50 values. Must be same length than \code{alpha}}
 
