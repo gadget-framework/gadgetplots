@@ -14,8 +14,9 @@ g3plot_exponentiall50 <- function(length, alpha, l50, add = FALSE, base_size = 8
   out <- lapply(seq_along(alpha), function(i) {
     data.frame(
       model = ifelse(!is.null(names(alpha)), names(alpha)[i], paste("expl50", i, sep = "_")),
-      length=length,
-      y=eval(gadget3::g3_suitability_exponentiall50(alpha[i],l50[i])[[2]], list(stock__midlen=length))
+      length = length,
+      y = gadget3::g3_eval(gadget3::g3_suitability_exponentiall50(alpha[i],l50[i]),
+                           stock = gadget3::g3_stock('s', length))
     )
   }) %>% dplyr::bind_rows()
 
@@ -58,10 +59,10 @@ g3plot_andersen <- function(length, p0, p1, p2, p3, p4, p5, add = FALSE, base_si
   out <- lapply(seq_along(p0), function(i) {
     data.frame(
       model = ifelse(!is.null(names(p0)), names(p0)[i], paste("andersen", i, sep = "_")),
-      length=length,
-      y=eval(gadget3::g3_suitability_andersen(
+      length = length,
+      y = gadget3::g3_eval(gadget3::g3_suitability_andersen(
         p0 = p0[i], p1 = p1[i], p2 = p2[i], p3 = p3[i],
-        p4 = p4[i], p5 = p5[i])[[2]], list(stock__midlen=length))
+        p4 = p4[i], p5 = p5[i]), stock = gadget3::g3_stock('s', length))
     )
   }) %>% dplyr::bind_rows()
 
@@ -92,27 +93,27 @@ g3plot_andersen <- function(length, p0, p1, p2, p3, p4, p5, add = FALSE, base_si
   }
 }
 
-## Copy unexported gadget3 functions used by gadget3::g3_suitability_andersen
-avoid_zero <- gadget3::g3_native(r = function (a) {
-  # https://github.com/kaskr/adcomp/issues/7#issuecomment-642559660
-  ( pmax(a * 1000, 0) + log1p(exp(pmin(a * 1000, 0) - pmax(a * 1000, 0))) ) / 1000
-}, cpp = '[](Type a) -> Type {
-    return logspace_add(a * 1000.0, (Type)0.0) / 1000.0;
-}')
-
-avoid_zero_vec <- gadget3::g3_native(r = function (a) {
-  # https://github.com/kaskr/adcomp/issues/7#issuecomment-642559660
-  ( pmax(a * 1000, 0) + log1p(exp(pmin(a * 1000, 0) - pmax(a * 1000, 0))) ) / 1000
-}, cpp = '[](vector<Type> a) -> vector<Type> {
-    vector<Type> res(a.size());
-    for(int i = 0; i < a.size(); i++) {
-        res[i] = logspace_add(a[i] * 1000.0, (Type)0.0) / 1000.0;
-    }
-    return res;
-}')
-
-bounded_vec <- gadget3::g3_native(r = function (x, a, b) {
-  a + (b-a)/(1+exp(x))
-}, cpp = '[](vector<Type> x, Type a, Type b) -> vector<Type> {
-    return a + (b-a)/(1+exp(x));
-}')
+# ## Copy unexported gadget3 functions used by gadget3::g3_suitability_andersen
+# avoid_zero <- gadget3::g3_native(r = function (a) {
+#   # https://github.com/kaskr/adcomp/issues/7#issuecomment-642559660
+#   ( pmax(a * 1000, 0) + log1p(exp(pmin(a * 1000, 0) - pmax(a * 1000, 0))) ) / 1000
+# }, cpp = '[](Type a) -> Type {
+#     return logspace_add(a * 1000.0, (Type)0.0) / 1000.0;
+# }')
+#
+# avoid_zero_vec <- gadget3::g3_native(r = function (a) {
+#   # https://github.com/kaskr/adcomp/issues/7#issuecomment-642559660
+#   ( pmax(a * 1000, 0) + log1p(exp(pmin(a * 1000, 0) - pmax(a * 1000, 0))) ) / 1000
+# }, cpp = '[](vector<Type> a) -> vector<Type> {
+#     vector<Type> res(a.size());
+#     for(int i = 0; i < a.size(); i++) {
+#         res[i] = logspace_add(a[i] * 1000.0, (Type)0.0) / 1000.0;
+#     }
+#     return res;
+# }')
+#
+# bounded_vec <- gadget3::g3_native(r = function (x, a, b) {
+#   a + (b-a)/(1+exp(x))
+# }, cpp = '[](vector<Type> x, Type a, Type b) -> vector<Type> {
+#     return a + (b-a)/(1+exp(x));
+# }')
