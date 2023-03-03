@@ -9,8 +9,8 @@
 plot_jitter <- function(jitter_fit, vars = c("nll.summary", "total.biomass", "hr", "recruitment"), base_size = 8, ncol = NULL) {
 
   if("nll.summary" %in% vars) {
-    nll_dat <- bind_fit_components(jitter_fit, 'score') %>%
-      dplyr::mutate(id = factor(.data$id, levels = 1:length(unique(.data$id))))
+    nll_dat <- bind_fit_components(jitter_fit, 'score')
+    nll_dat$id <- factor(1:nrow(nll_dat), levels = 1:nrow(nll_dat))
 
     nll_plot <- ggplot2::ggplot(nll_dat) +
       ggplot2::geom_point(ggplot2::aes(y = .data$nll, x = 1, color = .data$id),
@@ -41,10 +41,9 @@ plot_jitter <- function(jitter_fit, vars = c("nll.summary", "total.biomass", "hr
   if("hr" %in% vars) {
     hr_dat <- lapply(seq_along(jitter_fit), function(i) {
       plot_hr(jitter_fit[[i]], min_catch_length = 0, return_data = TRUE) %>%
-        dplyr::select(.data$year, .data$step, .data$value) %>%
-        dplyr::mutate(id = i, .before = 1)
+        dplyr::select(.data$year, .data$step, .data$value)
     }) %>%
-      dplyr::bind_rows() %>%
+      dplyr::bind_rows(.id = 'id') %>%
       dplyr::mutate(id = factor(.data$id, levels = 1:length(unique(.data$id))))
 
     hr_plot <- ggplot2::ggplot(
