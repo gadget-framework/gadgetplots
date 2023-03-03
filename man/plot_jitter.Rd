@@ -6,9 +6,9 @@
 \usage{
 plot_jitter(
   jitter_fit,
-  vars = c("total.biomass", "hr", "recruitment"),
+  vars = c("nll.summary", "total.biomass", "hr", "recruitment"),
   base_size = 8,
-  ncol = 1
+  ncol = NULL
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ plot_jitter(
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
-\item{ncol}{Number of columns to be used in the plot}
+\item{ncol}{Number of columns to be used in the plot. Set to \code{NULL} for standard layout.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

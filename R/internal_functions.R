@@ -4,6 +4,7 @@
 #' @param fit_list A list of multiple gadget.fit objects
 #' @param component Character specifying the list component in a gadget.fit object
 #' @keywords internal
+#' @export
 bind_fit_components <- function(fit_list, component){
 
   tmp <- lapply(fit_list, function(x, component){
