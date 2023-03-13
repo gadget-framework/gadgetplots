@@ -36,6 +36,10 @@ plot_jitter <- function(jitter_fit, vars = c("nll.summary", "total.biomass", "hr
             axis.ticks.x = ggplot2::element_blank(),
             title = ggplot2::element_text(size = base_size)
           )
+
+    if(nrow(nll_dat) > 15) {
+      nll_plot <- nll_plot + ggplot2::theme(legend.position = "none")
+    }
   }
 
   if("hr" %in% vars) {
