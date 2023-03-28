@@ -4,12 +4,23 @@
 \alias{plot_retro}
 \title{Plot model biomass from a retrospective analysis}
 \usage{
-plot_retro(retro_fit, by_stock = TRUE, base_size = 8, ncol = NULL)
+plot_retro(
+  retro_fit,
+  var = "total.biomass",
+  by_stock = TRUE,
+  min_catch_length = NULL,
+  base_size = 8,
+  ncol = NULL
+)
 }
 \arguments{
 \item{retro_fit}{A list of \code{\link[gadgetutils]{g3_fit}} objects that differ in their terminal year, i.e. the result of a retrospective analysis. The first object should have no years removed and the objects should be sorted chronologically with increasing number of years removed.}
 
+\item{var}{Character argument defining the variable to plot. Only \code{"total.biomass"} and \code{"hr"} are currently implemented.}
+
 \item{by_stock}{Logical indicating whether to produce plots by stock in addition to total biomass.}
+
+\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
