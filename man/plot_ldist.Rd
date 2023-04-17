@@ -8,8 +8,10 @@ plot_ldist(
   fit,
   type = "line",
   by_age = FALSE,
+  stocks = NULL,
   scales = "fixed",
   ncol = NULL,
+  years = NULL,
   base_size = 8
 )
 }
@@ -20,9 +22,13 @@ plot_ldist(
 
 \item{by_age}{Logical indicating whether the length distributions should be grouped by age. Works only with \code{type = "line"}.}
 
+\item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.}
+
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
 \item{ncol}{Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}}
+
+\item{years}{Numeric vector defining which years to plot. If \code{NULL} (default), all years are plotted.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

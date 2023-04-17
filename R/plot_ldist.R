@@ -1,14 +1,16 @@
 #' @title Plot model length distributions for stocks by year
 #' @inheritParams plot_annual
 #' @inheritParams plot_agecomp
+#' @inheritParams plot_adist
 #' @param type Character specifying the plot type. Options: \code{"line"}, \code{"bar"}, or \code{"ggridges"}.
 #' @param by_age Logical indicating whether the length distributions should be grouped by age. Works only with \code{type = "line"}.
+#' @param stocks Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.
 #' @param ncol Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}
 #' @details Do not trust the absolute numbers when \code{by_age = TRUE}. They are estimated from normal distributions by using \code{number * dnorm(1:120, mean = mean_length, sd = stddev_length)}.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
 #' @export
 
-plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", ncol = NULL, base_size = 8) {
+plot_ldist <- function(fit, type = "line", by_age = FALSE, stocks = NULL, scales = "fixed", ncol = NULL, years = NULL, base_size = 8) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
@@ -16,11 +18,14 @@ plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", nco
     message("by_age only works with type = 'line'. Changing to that.")
   }
 
+  if(is.null(stocks)) stocks <- unique(fit$stock.std$stock)
+  if(is.null(years)) years <- unique(fit$stock.std$year)
+
   if(by_age) {
     nasse <- function(length, number, mean, sd) number * stats::dnorm(length, mean = mean, sd = sd)
 
     x <- fit$stock.std %>%
-      dplyr::filter(!is.na(.data$mean_length)) %>%
+      dplyr::filter(!is.na(.data$mean_length), .data$stock %in% stocks, .data$year %in% years) %>%
       split(list(.$year, .$step, .$area, .$stock, .$age), drop = TRUE)
 
     x <- lapply(x, function(k) {
@@ -44,7 +49,7 @@ plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", nco
                      strip.background = ggplot2::element_blank())
   } else if(type == "line") {
     ggplot2::ggplot(
-      data = fit$stock.full,
+      data = fit$stock.full %>% dplyr::filter(.data$stock %in% stocks, .data$year %in% years),
       ggplot2::aes(.data$length,.data$number/1e6, color = .data$stock)
     ) +
       ggplot2::geom_line() +
@@ -59,7 +64,7 @@ plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", nco
 
   } else if(type == "bar") {
     ggplot2::ggplot(
-      data = fit$stock.full,
+      data = fit$stock.full %>% dplyr::filter(.data$stock %in% stocks, .data$year %in% years),
       ggplot2::aes(.data$length,.data$number/1e6, fill = .data$stock,
                    color = .data$stock)
     ) +
@@ -76,6 +81,7 @@ plot_ldist <- function(fit, type = "line", by_age = FALSE, scales = "fixed", nco
   } else {
     ggplot2::ggplot(
       fit$stock.full %>%
+        dplyr::filter(.data$stock %in% stocks, .data$year %in% years) %>%
         dplyr::group_by(.data$year, .data$step) %>%
         dplyr::mutate(p = .data$number/sum(.data$number)),
       ggplot2::aes(
