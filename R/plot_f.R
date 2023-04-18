@@ -92,10 +92,14 @@ plot_f <- function(fit, stock = NULL, fbar_ages = NULL, return_data = FALSE, bas
       dplyr::group_by(.data$year, .data$age) %>%
       dplyr::summarise(
         c = sum(.data$number_consumed),
-        n = sum(.data$number[.data$step==1])) %>%
-      dplyr::mutate(f=-log(1 - .data$c/.data$n)) %>%
+        n = sum(.data$number[.data$step==1]),
+        catch_mass = sum(.data$biomass_consumed)) %>%
+      dplyr::mutate(f = -log(1 - .data$c/.data$n)) %>%
       dplyr::group_by(.data$year) %>%
-      dplyr::summarise(Fbar = mean(.data$f))
+      dplyr::summarise(
+        Fbar = mean(.data$f, na.rm = TRUE),
+        catch_n = sum(c, na.rm = TRUE),
+        catch_mass = sum(catch_mass, na.rm = TRUE))
 
     if(return_data) return(dt)
 
