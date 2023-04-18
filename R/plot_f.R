@@ -32,7 +32,7 @@ plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, 
         by = c("year", "step", "area")
       ) %>%
       dplyr::mutate(value = ifelse(biomass, .data$catch_biom/.data$biomass,
-                            .data$catch_num/.data$abundance))
+                                   .data$catch_num/.data$abundance))
 
   } else {
     dt <- fit$res.by.year %>%
@@ -60,25 +60,55 @@ plot_hr <- function(fit, stock = NULL, min_catch_length = NULL, biomass = TRUE, 
 
 #' @title Plot fishing mortality
 #' @inheritParams plot_annual
-#' @param stock Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted.
+#' @inheritParams plot_hr
+#' @param stock Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{fbar_ages} is defined.
+#' @param fbar_ages Either \code{NULL} or a numeric vector of ages to include to calculate Fbar (averaged F over age ranges) for selected ages instead of F for each stock.
+#' @details The function calculates either average fishing mortality per substock or average fishing mortality over an age range depending on the \code{fbar_ages} argument.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @seealso plot_hr
 #' @export
 
-plot_f <- function(fit, stock = NULL, base_size = 8) {
+plot_f <- function(fit, stock = NULL, fbar_ages = NULL, return_data = FALSE, base_size = 8) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
-  ggplot2::ggplot(
-    fit$res.by.year,
-    ggplot2::aes(.data$year,
-                 .data$`F`,
-                 color=.data$stock)) +
-    ggplot2::geom_line() +
-    ggplot2::labs(y = "F", x = 'Year', color = 'Stock') +
-    ggplot2::coord_cartesian(expand = FALSE) +
-    ggplot2::expand_limits(y = 0) +
-    ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-    ggplot2::theme_classic(base_size = base_size)
+  if(is.null(fbar_ages)) {
+    if(return_data) return(fit$res.by.year)
+
+    ggplot2::ggplot(
+      fit$res.by.year,
+      ggplot2::aes(.data$year,
+                   .data$`F`,
+                   color=.data$stock)) +
+      ggplot2::geom_line() +
+      ggplot2::labs(y = "F", x = 'Year', color = 'Stock') +
+      ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::expand_limits(y = 0) +
+      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      ggplot2::theme_classic(base_size = base_size)
+  } else {
+    dt <- fit$stock.prey %>%
+      dplyr::filter(.data$age %in% fbar_ages) %>%
+      dplyr::group_by(.data$year, .data$age) %>%
+      dplyr::summarise(
+        c = sum(.data$number_consumed),
+        n = sum(.data$number[.data$step==1])) %>%
+      dplyr::mutate(f=-log(1 - .data$c/.data$n)) %>%
+      dplyr::group_by(.data$year) %>%
+      dplyr::summarise(Fbar = mean(.data$f))
+
+    if(return_data) return(dt)
+
+    ggplot2::ggplot(dt, ggplot2::aes(.data$year, .data$Fbar)) +
+      ggplot2::geom_line() +
+      ggplot2::labs(
+        y = paste0("Fbar (", min(fbar_ages), "-", max(fbar_ages), ")"),
+        x = 'Year') +
+      ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::expand_limits(y = 0) +
+      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      ggplot2::theme_classic(base_size = base_size)
+  }
+
 
 }
