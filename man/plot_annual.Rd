@@ -4,10 +4,18 @@
 \alias{plot_annual}
 \title{Plot annual ICES type of graphic returning central model data}
 \usage{
-plot_annual(fit, color_palette = scales::hue_pal(), base_size = 8, ...)
+plot_annual(
+  fit,
+  harvest_rate = TRUE,
+  color_palette = scales::hue_pal(),
+  base_size = 8,
+  ...
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+
+\item{harvest_rate}{A Logical value, if TRUE the harvest rate will be plotted, if FALSE the fishing mortality will be plotted.}
 
 \item{color_palette}{A function defining the color palette to be used or a vector of colors which is 1 longer than the number of stocks in the model. The extra color will be used for total estimate. See \link[ggplot2]{scale_color_manual}.}
 

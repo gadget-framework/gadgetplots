@@ -7,15 +7,18 @@
 #' @param width,height Plot size given in \code{units}. If \code{NULL}, reasonable standard values are used.
 #' @param units Units for plot size. See \code{\link[ggplot2]{ggsave}}
 #' @param res Plot resolution. See the \code{dpi} argument in \code{\link[ggplot2]{ggsave}}
+#' @param ... Additional arguments to plotting functions (only used for plot_annual at the moment)
 #' @return Returns nothing, but makes the requested files.
 #' @export
 
 # Debugging params:
 # path = NULL; quiet = FALSE; width = NULL; height = NULL; units = "cm"; res = 300
-gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NULL, height = NULL, units = "cm", res = 300){
+gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NULL, height = NULL, units = "cm", res = 300, ...){
 
   if(is.null(width) & units == "cm") width <- 18
   if(is.null(height) & units == "cm") height <- 10
+  
+  pars <- list(...)
 
   # if (is.null(path)){
   #   path <- file.path(getwd(), 'figs')
@@ -28,7 +31,8 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
   }
 
   if(file_type == "html") {
-    make_html(fit = fit, path = path)
+    make_html(fit = fit, path = path, 
+              harvest_rate = ifelse('harvest_rate' %in% names(pars), pars$harvest_rate, TRUE))
   } else {
 
     if(!file_type %in% c("eps", "ps", "tex", "pdf", "jpeg", "tiff", "png", "bmp", "svg", "wmf")) stop("file_type has to be one of those listed in device argument for ggplot2")
@@ -41,7 +45,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       file = paste(file.path(path, "Annual_plot"), file_type, sep = "."),
       width = width, height = height,
       units = units,res = res)
-    print(plot_annual(fit))
+    print(plot_annual(fit, ifelse('harvest_rate' %in% names(pars), pars$harvest_rate, TRUE)))
     grDevices::dev.off()
 
     ## Catches

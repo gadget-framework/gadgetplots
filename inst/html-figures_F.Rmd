@@ -1,0 +1,334 @@
+---
+title: "Gadget model output"
+author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'No data', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
+date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'on iteration', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+params: 
+  fit: fit
+editor_options: 
+  chunk_output_type: console
+---
+
+<style>
+
+.navbar-brand {
+  display: grid;
+  margin: auto;
+  padding: 5px;
+}
+
+.navbar-author {
+  margin-left: 0px;
+}
+</style>
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.width=12.5,
+  fig.height=5,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+Annual plot
+=======================================================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Catches
+
+```{r Catches}
+plotly::ggplotly(plot_catch(fit)) %>% 
+  plotly::layout(legend=list(x=0, y = 1, 
+                             xanchor='left',
+                             yanchor='bottom',
+                             orientation='h'))
+```
+
+### F
+
+```{r mortalit}
+plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
+```
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Recruitment
+
+```{r recruitment}
+plotly::ggplotly(plot_rec(fit) + ggplot2::theme(legend.position = "none"))
+```
+
+### Biomass
+
+```{r biomass} 
+plotly::ggplotly(
+  plot_biomass(fit, total = TRUE) + ggplot2::theme(legend.position = "none"))
+```
+
+Catches
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Catches
+
+```{r catchplot, fig.height = 5, fig.width = 6.25}
+plot_catch(fit, type = "fleet", base_size = 12) +
+  ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
+  ggplot2::theme(legend.position = "bottom")
+
+# plotly::subplot(plot_catch(fit, type = "fleet"),
+#                 plot_catch(fit, type = "hr"),
+#                 margin = 0.05,
+#                 titleX = TRUE,
+#                 titleY = TRUE) # %>% 
+# plotly::layout(legend=list(x=0, y = 1, 
+#                            xanchor='left',
+#                            yanchor='bottom',
+#                            orientation='h')) 
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Harvest rate
+
+```{r hrplot, fig.height = 5, fig.width = 6.25}
+plot_catch(fit, type = "hr", base_size = 12) +
+  ggplot2::guides(fill=ggplot2::guide_legend(nrow=2,byrow=TRUE)) +
+  ggplot2::theme(legend.position = "bottom")
+```
+
+
+Survey indices
+=======================================================================
+
+```{r siplot}
+plotly::ggplotly(plot_si(fit))
+```
+
+
+Catch distributions 
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r catchdist, echo = FALSE}
+x <- plot_catchdist(fit, type = "step")
+```
+
+```{r, echo = FALSE, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]])
+  cat("  \n")
+}
+
+```
+
+Stock distribution 
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r stockdist, echo = FALSE}
+if (!is.null(fit$stockdist)) 
+  x <- plot_stockdist(fit, stocks = "separate", base_size = 6) 
+```
+
+```{r stockdist2, echo = FALSE, results='asis', fig.width=12.5, fig.height=6}
+if (!is.null(fit$stockdist)){ 
+  for(i in seq_along(x)) {
+    
+    cat("  \n###",  names(x)[i], "  \n")
+    print(x[[i]])
+    cat("  \n")
+  }
+} else {
+  cat('No stock distribution data')
+}
+```
+
+### Composition by length
+
+```{r stockcomplength, echo = FALSE}
+if (!is.null(fit$stockdist)){ 
+  plot_stockcomp(fit) + ggplot2::theme(legend.position = "bottom")
+} else {
+  cat('No stock distribution data')
+}
+```
+
+### Composition by age
+
+```{r stockcompage, echo = FALSE}
+if (!is.null(fit$stockdist)){ 
+  plot_stockcomp(fit, by_age = TRUE) + ggplot2::theme(legend.position = "bottom")
+} else {
+  cat('No stock distribution data')
+}
+```
+
+### Length distribution
+
+```{r ldist, echo = FALSE}
+if (!is.null(fit$stock.full)){ 
+  plot_ldist(fit, scales = "free_y") 
+}else{
+  cat('No data')
+}
+```
+
+### Age distribution
+
+```{r adist, echo = FALSE}
+if (!is.null(fit$stock.full)){ 
+  plot_adist(fit) 
+}else{
+  cat('No data')
+}
+```
+
+
+Suitability
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r suits, echo = FALSE}
+x <- plot_suitability(fit, fleets = NULL)
+```
+
+```{r suits2, echo = FALSE, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]] + 
+          ggplot2::theme(legend.position = "top")
+  )
+  cat("  \n")
+}
+
+```
+
+Age
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+```{r agelength, echo = FALSE}
+x <- plot_agelength(fit)
+# x <- lapply(x, function(k) plotly::ggplotly(k))
+```
+
+```{r agelength2, echo = FALSE, results='asis'}
+
+for(i in seq_along(x)) {
+  
+  cat("  \n###",  names(x)[i], "  \n")
+  print(x[[i]])
+  cat("  \n")
+}
+```
+
+### Growth
+
+```{r growth, fig.width=12.5, fig.height=6}
+plot_growth(fit) + ggplot2::theme(legend.position = "bottom")
+```
+
+### Age composition
+
+```{r agecompositions}
+plotly::ggplotly(plot_agecomp(fit, type = "bubble")) %>% plotly::hide_legend()
+```
+
+### Age group stdev
+
+```{r agestdec}
+plot_growth(fit, type = "stdev") + ggplot2::theme(legend.position = "bottom")
+```
+
+
+Residuals & likelihood
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Residuals
+
+```{r resids,fig.height = 5, fig.width = 12.5}
+plot_resid(fit)
+```
+
+### Raw likelihood
+
+```{r rawlik, fig.height = 5, fig.width = 12.5}
+plot_likelihood(fit, type = "direct")
+```
+
+### Weighted likelihood
+
+```{r wgtlik, fig.height = 5, fig.width = 12.5}
+plot_likelihood(fit, type = "weighted")
+```
+
+### Total
+
+```{r totlik}
+plot_likelihood(fit, type = "total")
+```
+
+Parameters
+=======================================================================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Relative to boundaries
+
+```{r boundplot}
+plotly::ggplotly(plot_param(fit))
+```
+
+### Weights
+
+```{r weightplot}
+plot_weight(fit, log_scale = TRUE)
+```
+
+### Growth parameters & Z
+
+```{r grparams}
+DT::datatable(fit$params %>% 
+                dplyr::filter(grepl("K$|Linf|recl$|M$|rec.sd|init.F|bbin|_l50$|_alpha|_a50$", .data$switch)) %>% 
+                dplyr::arrange(switch),
+              options = list(pageLength = 500)) %>%
+  DT::formatRound(columns=c('value'), digits=3)
+```
+
+### All parameters 
+
+```{r allparams}
+DT::datatable(fit$params, options = list(pageLength = 500)) %>%
+  DT::formatRound(columns=c('value'), digits=3)
+```

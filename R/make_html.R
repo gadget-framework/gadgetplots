@@ -8,9 +8,10 @@
 #' @import flexdashboard
 #' @export
 
-make_html <- function(fit, path, file_name = 'model_output_figures.html') {
+make_html <- function(fit, path, harvest_rate, file_name = 'model_output_figures.html') {
+  filename <- ifelse(harvest_rate, "html-figures.Rmd", "html-figures_F.Rmd")
   rmarkdown::render(
-    input = system.file("html-figures.Rmd", package="gadgetplots"),
+    input = system.file(filename, package="gadgetplots"),
     output_dir = path,
     output_file = file_name,
     params = list(fit = fit)

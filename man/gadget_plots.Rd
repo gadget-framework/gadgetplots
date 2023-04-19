@@ -12,7 +12,8 @@ gadget_plots(
   width = NULL,
   height = NULL,
   units = "cm",
-  res = 300
+  res = 300,
+  ...
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ gadget_plots(
 \item{units}{Units for plot size. See \code{\link[ggplot2]{ggsave}}}
 
 \item{res}{Plot resolution. See the \code{dpi} argument in \code{\link[ggplot2]{ggsave}}}
+
+\item{...}{Additional arguments to plotting functions (only used for plot_annual at the moment)}
 }
 \value{
 Returns nothing, but makes the requested files.

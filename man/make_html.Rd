@@ -4,12 +4,14 @@
 \alias{make_html}
 \title{Save diagnostic graphs to a single html document}
 \usage{
-make_html(fit, path, file_name = "model_output_figures.html")
+make_html(fit, path, harvest_rate, file_name = "model_output_figures.html")
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{path}{Directory path for saving figures}
+
+\item{harvest_rate}{A Logical value, if TRUE the harvest rate will be plotted, if FALSE the fishing mortality will be plotted.}
 
 \item{file_name}{Character specifying the name of the html file without path. Must include the file extension.}
 }

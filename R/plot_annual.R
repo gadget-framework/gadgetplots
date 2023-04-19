@@ -1,5 +1,6 @@
 #' @title Plot annual ICES type of graphic returning central model data
 #' @param fit A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.
+#' @param harvest_rate A Logical value, if TRUE the harvest rate will be plotted, if FALSE the fishing mortality will be plotted.
 #' @param base_size Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.
 #' @param color_palette A function defining the color palette to be used or a vector of colors which is 1 longer than the number of stocks in the model. The extra color will be used for total estimate. See \link[ggplot2]{scale_color_manual}.
 #' @param ... Additional arguments passed to \code{plot_*} functions. See Details.
@@ -10,7 +11,8 @@
 #' plot_annual(fit, color_palette = scales::brewer_pal(palette = "Spectral"))
 #' @export
 
-plot_annual <- function(fit, color_palette = scales::hue_pal(), base_size = 8, ...) {
+plot_annual <- function(fit, harvest_rate = TRUE, 
+                        color_palette = scales::hue_pal(), base_size = 8, ...) {
 
   if(inherits(color_palette, "function")) {
     cols <- color_palette(length(unique(fit$res.by.year$stock)) + 1)
@@ -27,14 +29,24 @@ plot_annual <- function(fit, color_palette = scales::hue_pal(), base_size = 8, .
     ggplot2::theme(legend.position = 'none') +
     ggplot2::ggtitle("Catches") +
     ggplot2::scale_fill_manual(values = cols)
+  
   p2 <- plot_rec(fit, base_size = base_size, ...) +
     ggplot2::theme(legend.position = 'none') +
     ggplot2::ggtitle("Recruitment") +
     ggplot2::scale_fill_manual(values = cols)
-  p3 <- plot_hr(fit, base_size = base_size) +
-    ggplot2::theme(legend.position = 'none') +
-    ggplot2::ggtitle("Harvest rate") +
-    ggplot2::scale_color_manual(values = cols)
+  
+  if (harvest_rate){
+    p3 <- plot_hr(fit, base_size = base_size) +
+      ggplot2::theme(legend.position = 'none') +
+      ggplot2::ggtitle("Harvest rate") +
+      ggplot2::scale_color_manual(values = cols)  
+  }else{
+    p3 <- plot_f(fit, base_size = base_size) +
+      ggplot2::theme(legend.position = 'none') +
+      ggplot2::ggtitle("F") +
+      ggplot2::scale_color_manual(values = cols)  
+  }
+  
   p4 <- plot_biomass(fit, base_size = base_size, total = TRUE, ...) +
     ggplot2::theme(legend.position = 'bottom') +
     ggplot2::ggtitle("Stock biomass") +
