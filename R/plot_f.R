@@ -98,8 +98,8 @@ plot_f <- function(fit, stock = NULL, fbar_ages = NULL, return_data = FALSE, bas
       dplyr::group_by(.data$year) %>%
       dplyr::summarise(
         Fbar = mean(.data$f, na.rm = TRUE),
-        catch_n = sum(c, na.rm = TRUE),
-        catch_mass = sum(catch_mass, na.rm = TRUE))
+        catch_n = sum(.data$c, na.rm = TRUE),
+        catch_mass = sum(.data$catch_mass, na.rm = TRUE))
 
     if(return_data) return(dt)
 

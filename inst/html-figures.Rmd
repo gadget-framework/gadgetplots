@@ -212,7 +212,7 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r suits, echo = FALSE}
-x <- plot_suitability(fit, fleets = NULL)
+x <- plot_suitability(fit, fleets = NULL, include_missing = FALSE)
 ```
 
 ```{r suits2, echo = FALSE, results='asis'}

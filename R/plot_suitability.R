@@ -2,10 +2,11 @@
 #' @inheritParams plot_annual
 #' @param fleets Character vector specifying the fleets to plot in \code{fit}. If \code{NULL}, all fleets will be plotted in separate plots. Use \code{"all"} to plot all fleets to the same plot.
 #' @param add_models Logical indicating whether models using suitability parameters should be plotted together with the suitabilities estimated from data. The name of the parameter has to be similar to the fleet name. Uses grep and does not always work.
+#' @param include_missing Logical indicating whether years with missing catch data should be plotted.
 #' @return A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot objects.
 #' @export
 
-plot_suitability <- function(fit, fleets = "all", add_models = TRUE, base_size = 8) {
+plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_missing = TRUE, base_size = 8) {
 
   if(is.null(fleets)) {
 
@@ -14,6 +15,16 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, base_size =
 
         dat <- fit$suitability %>%
           dplyr::filter(.data$fleet == x)
+
+        if(!include_missing) {
+          include_years <- dat %>%
+            dplyr::group_by(.data$year) %>%
+            dplyr::summarise(suit = sum(.data$suit)) %>%
+            dplyr::filter(.data$suit > 0) %>%
+            dplyr::pull(.data$year)
+
+          dat <- dat %>% dplyr::filter(.data$year %in% include_years)
+        }
 
         nm <- gsub("_survey|_fishery", "", unique(dat$fleet))
 
@@ -47,7 +58,7 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, base_size =
           ggplot2::facet_wrap(~.data$year + .data$step) +
           ggplot2::labs(y='Suitability',x='Length', color = 'Stock') +
           ggplot2::geom_text(
-            data = fit$suitability %>%
+            data = dat %>%
               dplyr::ungroup() %>%
               dplyr::select(.data$year,.data$step) %>%
               dplyr::mutate(y=Inf,
@@ -78,6 +89,16 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, base_size =
     dat <- fit$suitability %>%
       dplyr::ungroup() %>%
       dplyr::filter(.data$fleet %in% fleets)
+
+    if(!include_missing) {
+      include_years <- dat %>%
+        dplyr::group_by(.data$year) %>%
+        dplyr::summarise(suit = sum(.data$suit)) %>%
+        dplyr::filter(.data$suit > 0) %>%
+        dplyr::pull(.data$year)
+
+      dat <- dat %>% dplyr::filter(.data$year %in% include_years)
+    }
 
     ggplot2::ggplot(
       data = dat,
