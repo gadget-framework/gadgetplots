@@ -1,5 +1,5 @@
 ---
-title: "Gadget model output"
+title: "NEA Greenland halibut"
 author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'No data', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
 date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'on iteration', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
 output: 
@@ -8,6 +8,7 @@ output:
     vertical_layout: fill
 params: 
   fit: fit
+  harvest_rate: harvest_rate
 editor_options: 
   chunk_output_type: console
 ---
@@ -51,10 +52,10 @@ plotly::ggplotly(plot_catch(fit)) %>%
                              orientation='h'))
 ```
 
-### F
+### Harvest rate
 
-```{r mortalit}
-plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
+```{r mortality}
+  plotly::ggplotly(plot_hr(fit, min_catch_length = 45))
 ```
 
 
@@ -212,7 +213,7 @@ Column {.tabset}
 -----------------------------------------------------------------------
 
 ```{r suits, echo = FALSE}
-x <- plot_suitability(fit, fleets = NULL)
+x <- plot_suitability(fit, fleets = NULL, include_missing = FALSE)
 ```
 
 ```{r suits2, echo = FALSE, results='asis'}

@@ -4,7 +4,13 @@
 \alias{make_html}
 \title{Save diagnostic graphs to a single html document}
 \usage{
-make_html(fit, path, harvest_rate, file_name = "model_output_figures.html")
+make_html(
+  fit,
+  path,
+  harvest_rate = TRUE,
+  file_name = "model_output_figures.html",
+  template = "standard"
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
@@ -14,10 +20,19 @@ make_html(fit, path, harvest_rate, file_name = "model_output_figures.html")
 \item{harvest_rate}{A Logical value, if TRUE the harvest rate will be plotted, if FALSE the fishing mortality will be plotted.}
 
 \item{file_name}{Character specifying the name of the html file without path. Must include the file extension.}
+
+\item{template}{Character specifying the html template to use. See details.}
 }
 \value{
 Returns nothing, but makes the requested file.
 }
 \description{
 Save diagnostic graphs to a single html document
+}
+\details{
+The package contains html templates tailored for different stocks needed by the authors. Specify the name in the \code{template} argument. Current alternatives are:
+\describe{
+  \item{standard}{Standard model output figures. Use the \code{harvest_rate} argument to switch between F and HR figures.}
+  \item{nea_ghl}{Output tailored for Northeast Arctic Greenland halibut assessment.}
+}
 }

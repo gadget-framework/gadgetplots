@@ -8,6 +8,7 @@ output:
     vertical_layout: fill
 params: 
   fit: fit
+  harvest_rate: harvest_rate
 editor_options: 
   chunk_output_type: console
 ---
@@ -51,10 +52,14 @@ plotly::ggplotly(plot_catch(fit)) %>%
                              orientation='h'))
 ```
 
-### Harvest rate
+### `r paste(ifelse(harvest_rate, "Harvest rate", "F"))`
 
-```{r mortalit}
-plotly::ggplotly(plot_hr(fit) + ggplot2::theme(legend.position = "none"))
+```{r mortality}
+if(harvest_rate) {
+  plotly::ggplotly(plot_hr(fit) + ggplot2::theme(legend.position = "none"))
+} else {
+  plotly::ggplotly(plot_f(fit) + ggplot2::theme(legend.position = "none"))
+}
 ```
 
 

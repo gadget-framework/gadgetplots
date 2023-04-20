@@ -39,3 +39,6 @@ Returns nothing, but makes the requested files.
 \description{
 Wrapper for plot.gadget.fit that saves all diagnostic graphs to a directory
 }
+\seealso{
+[make_html()]
+}

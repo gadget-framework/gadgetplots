@@ -9,6 +9,7 @@
 #' @param res Plot resolution. See the \code{dpi} argument in \code{\link[ggplot2]{ggsave}}
 #' @param ... Additional arguments to plotting functions (only used for plot_annual at the moment)
 #' @return Returns nothing, but makes the requested files.
+#' @seealso [make_html()]
 #' @export
 
 # Debugging params:
@@ -17,7 +18,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
 
   if(is.null(width) & units == "cm") width <- 18
   if(is.null(height) & units == "cm") height <- 10
-  
+
   pars <- list(...)
 
   # if (is.null(path)){
@@ -31,8 +32,9 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
   }
 
   if(file_type == "html") {
-    make_html(fit = fit, path = path, 
-              harvest_rate = ifelse('harvest_rate' %in% names(pars), pars$harvest_rate, TRUE))
+    make_html(fit = fit, path = path,
+              harvest_rate = ifelse('harvest_rate' %in% names(pars), pars$harvest_rate, TRUE),
+              template = ifelse('template' %in% names(pars), pars$template, "standard"))
   } else {
 
     if(!file_type %in% c("eps", "ps", "tex", "pdf", "jpeg", "tiff", "png", "bmp", "svg", "wmf")) stop("file_type has to be one of those listed in device argument for ggplot2")
