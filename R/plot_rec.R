@@ -28,6 +28,21 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
     }
 
     if(return_data) return(dat)
+    pl <-
+      ggplot2::ggplot(
+        dat,
+        ggplot2::aes(x = .data$year,
+                     y = .data$value)) +
+      ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
+      ggplot2::labs(y = 'Recruitment (in millions)',
+                    x = 'Year',
+                    fill = 'Stock') +
+      ggplot2::coord_cartesian(expand = FALSE) +
+      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      ggplot2::theme_classic(base_size = base_size)
+    if(length(stocks) == 1 && "total" %in% stocks) {
+
+    } else {
 
     pl <-
       ggplot2::ggplot(
@@ -42,7 +57,7 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
       ggplot2::theme_classic(base_size = base_size)
-
+    }
   }
 
   else{

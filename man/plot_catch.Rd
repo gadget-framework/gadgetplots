@@ -9,7 +9,7 @@ plot_catch(fit, type = "stock", biomass = TRUE, base_size = 8)
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{type}{Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, and \code{"hr"} harvest rates by fleet.}
+\item{type}{Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, \code{"total"} catches without separating to stock or fleet, and \code{"hr"} harvest rates by fleet.}
 
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 

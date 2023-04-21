@@ -4,12 +4,18 @@
 \alias{plot_f}
 \title{Plot fishing mortality}
 \usage{
-plot_f(fit, stock = NULL, fbar_ages = NULL, return_data = FALSE, base_size = 8)
+plot_f(
+  fit,
+  stocks = NULL,
+  fbar_ages = NULL,
+  return_data = FALSE,
+  base_size = 8
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{stock}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{fbar_ages} is defined.}
+\item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{fbar_ages} is defined.}
 
 \item{fbar_ages}{Either \code{NULL} or a numeric vector of ages to include to calculate Fbar (averaged F over age ranges) for selected ages instead of F for each stock.}
 

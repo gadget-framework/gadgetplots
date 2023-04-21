@@ -9,7 +9,7 @@
 #' @export
 
 # total = FALSE; geom_area = FALSE; biomass = TRUE;base_size = 8
-plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, min_catch_length = NULL, return_data = FALSE, base_size = 8){
+plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, stocks = NULL, min_catch_length = NULL, return_data = FALSE, base_size = 8){
 
   if (length(fit) == 1) fit <- fit[[1]]
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
@@ -25,7 +25,9 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
         .groups = "drop"
       ) %>% dplyr::ungroup()
   } else {
-    dat <- fit$res.by.year
+    if(is.null(stocks)) stocks <- unique(fit$res.by.year$stock)
+    dat <- fit$res.by.year %>%
+      dplyr::filter(.data$stock %in% stocks)
   }
 
   if(biomass) {

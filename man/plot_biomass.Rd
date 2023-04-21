@@ -9,6 +9,7 @@ plot_biomass(
   total = FALSE,
   geom_area = FALSE,
   biomass = TRUE,
+  stocks = NULL,
   min_catch_length = NULL,
   return_data = FALSE,
   base_size = 8
@@ -22,6 +23,8 @@ plot_biomass(
 \item{geom_area}{Logical indicating whether stacked area should be plotted instead of lines.}
 
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
+
+\item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
 
 \item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).}
 

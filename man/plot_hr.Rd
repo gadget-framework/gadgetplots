@@ -6,7 +6,7 @@
 \usage{
 plot_hr(
   fit,
-  stock = NULL,
+  stocks = NULL,
   min_catch_length = NULL,
   biomass = TRUE,
   base_size = 8,
@@ -16,7 +16,7 @@ plot_hr(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{stock}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
+\item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
 
 \item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.}
 

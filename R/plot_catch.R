@@ -1,6 +1,6 @@
 #' @title Plot catches
 #' @inheritParams plot_annual
-#' @param type Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, and \code{"hr"} harvest rates by fleet.
+#' @param type Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, \code{"total"} catches without separating to stock or fleet, and \code{"hr"} harvest rates by fleet.
 #' @param biomass Logical indicating whether biomass should be plotted instead of estimated abundance.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
@@ -17,7 +17,7 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8) {
           date = zoo::as.yearqtr(paste(.data$year, .data$step, sep = "Q"))),
       ggplot2::aes(.data$date, .data$amount/1e6, fill = .data$fleet)) +
       ggplot2::geom_col() +
-      ggplot2::labs(y="Catch (in '000 tons)",x='Year',fill='Fleet') +
+      ggplot2::labs(y="Catch (kt)",x='Year',fill='Fleet') +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
       ggplot2::theme_classic(base_size = base_size)
@@ -40,24 +40,40 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8) {
   } else {
 
     if(biomass) {
-      fit$res.by.year$value <- fit$res.by.year$catch/1e6
-    } else {
-      fit$res.by.year$value <- fit$res.by.year$num.catch/1e6
+      dat <- fit$res.by.year %>% dplyr::mutate(value = .data$catch/1e6)
+      } else {
+      dat <- fit$res.by.year %>% dplyr::mutate(value = .data$num.catch/1e6)
     }
 
-    ggplot2::ggplot(
-      fit$res.by.year,
-      ggplot2::aes(.data$year, .data$value, fill = .data$stock)) +
-      ggplot2::geom_col() +
-      ggplot2::labs(
-        y = ifelse(biomass,
-                   "Catch (weigth in '000 tons)",
-                   "Catch (abundance in millions)"),
-        x='Year',fill='Stock') +
-      ggplot2::coord_cartesian(expand = FALSE) +
-      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-      ggplot2::theme_classic(base_size = base_size)
-
+    if(type == "total") {
+      ggplot2::ggplot(
+        dat %>%
+          dplyr::group_by(.data$year) %>%
+          dplyr::summarise(value = sum(.data$value, na.rm = TRUE)),
+        ggplot2::aes(.data$year, .data$value)) +
+        ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
+        ggplot2::labs(
+          y = ifelse(biomass,
+                     "Catch (weight in '000 tons)",
+                     "Catch (abundance in millions)"),
+          x='Year',fill='Stock') +
+        ggplot2::coord_cartesian(expand = FALSE) +
+        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+        ggplot2::theme_classic(base_size = base_size)
+    } else {
+      ggplot2::ggplot(
+        dat,
+        ggplot2::aes(.data$year, .data$value, fill = .data$stock)) +
+        ggplot2::geom_col() +
+        ggplot2::labs(
+          y = ifelse(biomass,
+                     "Catch (weight in '000 tons)",
+                     "Catch (abundance in millions)"),
+          x='Year',fill='Stock') +
+        ggplot2::coord_cartesian(expand = FALSE) +
+        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+        ggplot2::theme_classic(base_size = base_size)
+    }
   }
 }
 
