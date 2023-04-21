@@ -19,7 +19,7 @@ plot_f(
 
 \item{fbar_ages}{Either \code{NULL} or a numeric vector of ages to include to calculate Fbar (averaged F over age ranges) for selected ages instead of F for each stock.}
 
-\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

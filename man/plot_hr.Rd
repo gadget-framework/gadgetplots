@@ -24,7 +24,7 @@ plot_hr(
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
-\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

@@ -3,7 +3,7 @@
 #' @param stocks Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.
 #' @param biomass Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.
-#' @param return_data Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.
+#' @param return_data Logical indicating whether to return data for the plot instead of the plot itself.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @seealso plot_f
 #' @export

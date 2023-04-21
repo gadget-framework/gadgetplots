@@ -19,7 +19,7 @@ plot_rec(
 
 \item{stocks}{Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. If \code{"total"}, total recruitment will be plotted instead.}
 
-\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself. Used for jitter and retro plots.}
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }

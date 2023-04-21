@@ -4,7 +4,13 @@
 \alias{plot_catch}
 \title{Plot catches}
 \usage{
-plot_catch(fit, type = "stock", biomass = TRUE, base_size = 8)
+plot_catch(
+  fit,
+  type = "stock",
+  biomass = TRUE,
+  base_size = 8,
+  return_data = FALSE
+)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
@@ -14,6 +20,8 @@ plot_catch(fit, type = "stock", biomass = TRUE, base_size = 8)
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
