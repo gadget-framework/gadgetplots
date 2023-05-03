@@ -1,7 +1,7 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.1.10**
+**Plot gadget3 model output using ggplot2. R package version 0.2.3**
 
 <!-- badges: start -->
 
@@ -142,17 +142,69 @@ plot_catchdist(fit, name = "EggaN_ldist") # synonym: plot(fit, "catchdist")
 
 ``` r
 plot_stockdist(fit) # synonym: plot(fit, "stockdist")
+#> $EcoS_sexdist
 ```
 
 ![](man/figures/README-unnamed-chunk-16-1.png)<!-- -->
+
+    #> 
+    #> $EggaN_matp
+
+![](man/figures/README-unnamed-chunk-16-2.png)<!-- -->
+
+    #> 
+    #> $EggaS_matp
+
+![](man/figures/README-unnamed-chunk-16-3.png)<!-- -->
+
+    #> 
+    #> $OtherNor_sexdist
+
+![](man/figures/README-unnamed-chunk-16-4.png)<!-- -->
+
+    #> 
+    #> $TrawlNor_sexdist
+
+![](man/figures/README-unnamed-chunk-16-5.png)<!-- -->
+
+    #> 
+    #> $TrawlRus_sexdist
+
+![](man/figures/README-unnamed-chunk-16-6.png)<!-- -->
 
 ### Stock composition
 
 ``` r
 plot_stockdist(fit, type = "stock_composition") # synonym: plot(fit, "stockcomp")
+#> $EcoS_sexdist
 ```
 
 ![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
+
+    #> 
+    #> $EggaN_matp
+
+![](man/figures/README-unnamed-chunk-17-2.png)<!-- -->
+
+    #> 
+    #> $EggaS_matp
+
+![](man/figures/README-unnamed-chunk-17-3.png)<!-- -->
+
+    #> 
+    #> $OtherNor_sexdist
+
+![](man/figures/README-unnamed-chunk-17-4.png)<!-- -->
+
+    #> 
+    #> $TrawlNor_sexdist
+
+![](man/figures/README-unnamed-chunk-17-5.png)<!-- -->
+
+    #> 
+    #> $TrawlRus_sexdist
+
+![](man/figures/README-unnamed-chunk-17-6.png)<!-- -->
 
 ### Suitability (fleet selection)
 

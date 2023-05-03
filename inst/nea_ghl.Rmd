@@ -65,7 +65,8 @@ Column {data-width=500}
 ### Recruitment
 
 ```{r recruitment}
-plotly::ggplotly(plot_rec(fit) + ggplot2::theme(legend.position = "none"))
+plotly::ggplotly(gadgetplots::plot_ageclass(fit) + 
+                   ggplot2::theme(legend.position = "none"))
 ```
 
 ### Biomass
