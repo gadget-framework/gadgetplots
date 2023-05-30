@@ -7,7 +7,7 @@
 plot_param(fit, out_only = FALSE, base_size = 8)
 }
 \arguments{
-\item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
+\item{fit}{A gadget fit object or a data frame containing model parameters. See \code{\link[gadgetutils]{g3_fit}}.}
 
 \item{out_only}{Logical indicating whether only parameters outside their boundaries should be plotted.}
 

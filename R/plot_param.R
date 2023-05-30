@@ -1,5 +1,6 @@
 #' @title Plot parameter values relative to their boundaries
 #' @inheritParams plot_annual
+#' @param fit A gadget fit object or a data frame containing model parameters. See \code{\link[gadgetutils]{g3_fit}}.
 #' @param out_only Logical indicating whether only parameters outside their boundaries should be plotted.
 #' @details The default plot is likely busy. Use \code{plotly::ggplotly()} to make it easier to interpret. If you are after parameters that are outside their boundaries, the \code{out_only} argument will help.
 #' @return A \link[ggplot2]{ggplot} object.
@@ -7,9 +8,17 @@
 
 plot_param <- function(fit, out_only = FALSE, base_size = 8) {
 
-  if(all(c("optimise", "lower", "upper") %in% names(fit$params))) {
-    if (is.list(fit$params$value)) fit$params$value <- unlist(fit$params$value)
-    dat <- fit$params %>%
+  if(inherits(fit, "gadget.fit")) {
+    dat <- fit$params
+  } else if(inherits(fit, "data.frame")) {
+    dat <- fit
+  } else {
+    stop("Supply either a gadget.fit object or a data.frame with model parameters.")
+  }
+
+  if(all(c("optimise", "lower", "upper") %in% names(dat))) {
+    if (is.list(dat$value)) dat$value <- unlist(dat$value)
+    dat <- dat %>%
       dplyr::filter(.data$optimise == 1) %>%
       dplyr::mutate(rho = (.data$value-.data$lower)/(.data$upper - .data$lower))
 
