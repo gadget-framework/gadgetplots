@@ -22,20 +22,22 @@ plot_jitter <- function(jitter_fit, vars = c("nll.summary", "total.biomass", "hr
       #                    "CV = ", round(100*sd(.data$nll)/mean(.data$nll), 1), " %")
       #     ),
       #     vjust = 2, hjust = -1) +
-          ggplot2::labs(
-            y = "Negative log-likelihood",
-            color = 'Jitter run',
-            title = paste0("sd = ", round(stats::sd(nll_dat$nll), 0), "\n",
-                           "CV = ", round(100*stats::sd(nll_dat$nll)/mean(nll_dat$nll), 1), " %")
-            ) +
-          ggplot2::scale_color_viridis_d() +
-          ggplot2::theme_classic(base_size = base_size) +
-          ggplot2::theme(
-            axis.title.x = ggplot2::element_blank(),
-            axis.text.x = ggplot2::element_blank(),
-            axis.ticks.x = ggplot2::element_blank(),
-            title = ggplot2::element_text(size = base_size)
-          )
+      ggplot2::labs(
+        y = "Negative log-likelihood",
+        color = 'Jitter run',
+        title = paste0(
+          "sd = ", round(stats::sd(nll_dat$nll, na.rm = TRUE), 0), "\n",
+          "CV = ", round(100*stats::sd(nll_dat$nll, na.rm = TRUE)/mean(nll_dat$nll, na.rm = TRUE), 1), " %", "\n",
+          "n = ", sum(!is.na(nll_dat$nll)), "/", length(nll_dat$nll))
+      ) +
+      ggplot2::scale_color_viridis_d() +
+      ggplot2::theme_classic(base_size = base_size) +
+      ggplot2::theme(
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        axis.ticks.x = ggplot2::element_blank(),
+        title = ggplot2::element_text(size = base_size)
+      )
 
     if(nrow(nll_dat) > 15) {
       nll_plot <- nll_plot + ggplot2::theme(legend.position = "none")
