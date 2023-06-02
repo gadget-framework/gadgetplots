@@ -2,11 +2,12 @@
 #' @title Plots age class from the model at the beginning of the year
 #' @inheritParams plot_annual
 #' @inheritParams plot_biomass
+#' @inheritParams plot_hr
 #' @param age Integer giving the age class to plot.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_ageclass <- function(fit, age = 2, biomass = FALSE, base_size = 8) {
+plot_ageclass <- function(fit, age = 2, biomass = FALSE, base_size = 8, return_data = FALSE) {
 
   dat <- fit$stock.std %>%
     dplyr::filter(.data$age == !!age,
@@ -25,6 +26,8 @@ if(biomass) {
   ylab <- paste("Abundance of age class", age, "(millions)")
   dat$value <- dat$total.number/1e6
 }
+
+  if(return_data) return(dat)
 
   ggplot2::ggplot(
     dat,

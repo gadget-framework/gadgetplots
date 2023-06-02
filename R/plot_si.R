@@ -50,11 +50,6 @@ plot_si <- function(fit, type = "model_fit", base_size = 8) {
         ", R2=", round(.data$r2, 2), ", w=", .data$weight, "% of SI max)")
     )
 
-  fit$params %>%
-    dplyr::filter(grepl("weight$", .data$switch),
-                  grepl(paste(gsub("surveyindices\\.", "", x$name) %>% unique(), collapse = "|"), .data$switch)) %>%
-    dplyr::mutate(switch = gsub("_weight$", "", .data$switch))
-
   ## Convert year to year+step if multiple steps exist
   steps <- unique(x$step)
   if (length(steps) > 1) {

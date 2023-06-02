@@ -1,6 +1,7 @@
 #' @title Plot of age composition from the model
 #' @inheritParams plot_annual
 #' @inheritParams plot_biomass
+#' @inheritParams plot_hr
 #' @param type Character specifying the plot type. Options: \code{"bar"}, \code{"line"}, \code{"ggridges"} or \code{"bubble"}. See Details.
 #' @details Possible plot types are:
 #' \describe{
@@ -14,7 +15,7 @@
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE, base_size = 8) {
+plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE, base_size = 8, return_data = FALSE) {
 
   year_span <-
     fit$stock.std %>%
@@ -34,6 +35,8 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
         weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
         .groups = "drop") %>%
       dplyr::mutate(yc = as.factor(.data$year - .data$age))
+
+    if(return_data) return(dat)
   }
 
   if(type == "line") {
@@ -45,6 +48,8 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
         weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
         .groups = "drop") %>%
       dplyr::mutate(yc = as.factor(.data$year - .data$age))
+
+    if(return_data) return(dat)
 
     suppressWarnings({
       ggplot2::ggplot(dat) + {

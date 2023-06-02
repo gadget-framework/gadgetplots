@@ -9,7 +9,8 @@ plot_agecomp(
   type = "bubble",
   scales = "fixed",
   biomass = FALSE,
-  base_size = 8
+  base_size = 8,
+  return_data = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_agecomp(
 \item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
