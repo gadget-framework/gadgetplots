@@ -114,9 +114,9 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
       )
 
     cowplot::plot_grid(
-      nll_plot + theme(legend.position = "bottom"),
+      nll_plot,
       cowplot::plot_grid(plotlist = plot_list, ncol = 1), ncol = 2,
-      rel_widths = c(2,8)
+      rel_widths = c(3,7)
     )
 
   } else {
