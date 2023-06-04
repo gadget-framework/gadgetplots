@@ -19,11 +19,12 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
 
       dt <- fit$res.by.year %>%
         dplyr::group_by(.data$year, .data$step, .data$area) %>%
-        dplyr::summarise(catch = sum(.data$catch),
-                         harv.biomass = sum(.data$harv.biomass)) %>%
+        dplyr::summarise(catch = sum(.data$catch, na.rm = TRUE),
+                         harv.biomass = sum(.data$harv.biomass, na.rm = TRUE)) %>%
         dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
         dplyr::rename(catch_biom = .data$catch) %>%
-        dplyr::ungroup()
+        dplyr::ungroup() %>%
+        tidyr::replace_na(list(value = 0))
 
     } else {
 
@@ -47,7 +48,8 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
         ) %>%
         dplyr::mutate(value = ifelse(biomass, .data$catch_biom/.data$biomass,
                                      .data$catch_num/.data$abundance)) %>%
-        dplyr::ungroup()
+        dplyr::ungroup() %>%
+        tidyr::replace_na(list(value = 0))
     }
   } else {
     if(is.null(stocks)) stocks <- unique(fit$res.by.year$stock)
@@ -55,7 +57,8 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
     dt <- fit$res.by.year %>%
       dplyr::filter(.data$stock %in% stocks) %>%
       dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
-      dplyr::rename(catch_biom = .data$catch, catch_num = .data$num.catch)
+      dplyr::rename(catch_biom = .data$catch, catch_num = .data$num.catch) %>%
+      tidyr::replace_na(list(value = 0))
   }
 
   if(return_data) return(dt)

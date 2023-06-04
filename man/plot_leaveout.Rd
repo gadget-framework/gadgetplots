@@ -7,8 +7,9 @@
 plot_leaveout(
   lo_fit,
   vars = c("nll.summary", "total.biomass", "hr", "recruitment"),
-  base_size = 8,
-  ncol = NULL
+  ncol = NULL,
+  colors = NULL,
+  base_size = 8
 )
 }
 \arguments{
@@ -16,9 +17,11 @@ plot_leaveout(
 
 \item{vars}{Character vector giving the variables to plot. Only the default parameters are currently implemented.}
 
-\item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
-
 \item{ncol}{Number of columns to be used in the plot. Set to \code{NULL} for standard layout.}
+
+\item{colors}{Vector of colors to use for leave-out component names. If a named vector, the component names are sorted following the order in the legend.}
+
+\item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
