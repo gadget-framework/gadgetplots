@@ -4,7 +4,7 @@
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population. See Details.
 #' @param biomass Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.
 #' @param return_data Logical indicating whether to return data for the plot instead of the plot itself.
-#' @details The function uses all catches without filtering to size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections for instance. The \code{min_catch_length} = 0 case is for that.
+#' @details The function uses all catches without filtering to size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections for instance. The \code{min_catch_length} = 0 is for the latter case.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @seealso plot_f
 #' @export
@@ -21,7 +21,9 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
         dplyr::group_by(.data$year, .data$step, .data$area) %>%
         dplyr::summarise(catch = sum(.data$catch),
                          harv.biomass = sum(.data$harv.biomass)) %>%
-        dplyr::mutate(value = .data$catch/.data$harv.biomass)
+        dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
+        dplyr::rename(catch_biom = .data$catch) %>%
+        dplyr::ungroup()
 
     } else {
 
@@ -44,14 +46,16 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
           by = c("year", "step", "area")
         ) %>%
         dplyr::mutate(value = ifelse(biomass, .data$catch_biom/.data$biomass,
-                                     .data$catch_num/.data$abundance))
+                                     .data$catch_num/.data$abundance)) %>%
+        dplyr::ungroup()
     }
   } else {
     if(is.null(stocks)) stocks <- unique(fit$res.by.year$stock)
 
     dt <- fit$res.by.year %>%
       dplyr::filter(.data$stock %in% stocks) %>%
-      dplyr::mutate(value = .data$catch/.data$harv.biomass)
+      dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
+      dplyr::rename(catch_biom = .data$catch, catch_num = .data$num.catch)
   }
 
   if(return_data) return(dt)
