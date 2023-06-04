@@ -18,7 +18,7 @@ plot_hr(
 
 \item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
 
-\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.}
+\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population. See Details.}
 
 \item{biomass}{Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.}
 
@@ -31,6 +31,9 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 Plot harvest rate
+}
+\details{
+The function uses all catches without filtering to size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections for instance. The \code{min_catch_length} = 0 case is for that.
 }
 \seealso{
 plot_f

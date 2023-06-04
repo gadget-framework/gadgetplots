@@ -20,7 +20,7 @@ plot_retro(
 
 \item{by_stock}{Logical indicating whether to produce plots by stock in addition to total biomass.}
 
-\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population.}
+\item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population. See Details.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 

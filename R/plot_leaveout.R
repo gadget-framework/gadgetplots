@@ -27,8 +27,8 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
         color = 'Left-out\ncomponent',
         title = paste0(
           "sd = ", round(stats::sd(nll_dat$nll, na.rm = TRUE), 0), "\n",
-          "CV = ", round(100*stats::sd(nll_dat$nll, na.rm = TRUE)/mean(nll_dat$nll, na.rm = TRUE), 1), " %", "\n",
-          "n = ", sum(!is.na(nll_dat$nll)), "/", length(nll_dat$nll))
+          "CV = ", round(100*stats::sd(nll_dat$nll, na.rm = TRUE)/mean(nll_dat$nll, na.rm = TRUE), 1), " %", "\n"
+          )
       ) +
       ggplot2::scale_color_viridis_d() +
       ggplot2::theme_classic(base_size = base_size) +
