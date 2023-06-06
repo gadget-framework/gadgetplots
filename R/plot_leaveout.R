@@ -4,11 +4,12 @@
 #' @param vars Character vector giving the variables to plot. Only the default parameters are currently implemented.
 #' @param ncol Number of columns to be used in the plot. Set to \code{NULL} for standard layout.
 #' @param colors Vector of colors to use for leave-out component names. If a named vector, the component names are sorted following the order in the legend.
+#' @param legend_title Character speficfying the title for legend (color mapping)
 #' @details Leave-out analysis has currently not been implemented to gadgetutils. Ask Mikko for the code.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
-plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr", "recruitment"), ncol = NULL, colors = NULL, base_size = 8) {
+plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr", "recruitment"), ncol = NULL, colors = NULL, base_size = 8, legend_title = "Left-out\ncomponent") {
 
   if("nll.summary" %in% vars) {
     nll_dat <- bind_fit_components(lo_fit, 'score')
@@ -24,11 +25,11 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
                           pch = 21, size = 2) +
       ggplot2::labs(
         y = "Negative log-likelihood",
-        color = 'Left-out\ncomponent',
+        color = legend_title,
         title = paste0(
           "sd = ", round(stats::sd(nll_dat$nll, na.rm = TRUE), 0), "\n",
           "CV = ", round(100*stats::sd(nll_dat$nll, na.rm = TRUE)/mean(nll_dat$nll, na.rm = TRUE), 1), " %", "\n"
-          )
+        )
       ) +
       {if(is.null(colors)) ggplot2::scale_color_viridis_d()} +
       {if(!is.null(colors)) ggplot2::scale_color_manual(values = colors)} +
@@ -60,7 +61,7 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
       ggplot2::geom_line() +
       ggplot2::labs(
         y = "Total harvest rate",
-        x = 'Year', color = 'Left-out\ncomponent') +
+        x = 'Year', color = legend_title) +
       ggplot2::coord_cartesian(expand = FALSE) +
       {if(is.null(colors)) ggplot2::scale_color_viridis_d()} +
       {if(!is.null(colors)) ggplot2::scale_color_manual(values = colors)} +
@@ -88,7 +89,7 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
       ggplot2::geom_path() +
       ggplot2::labs(
         y = "Total biomass (kt)",
-        x='Year',col = 'Left-out\ncomponent') +
+        x='Year',col = legend_title) +
       ggplot2::expand_limits(y = 0) +
       {if(is.null(colors)) ggplot2::scale_color_viridis_d()} +
       {if(!is.null(colors)) ggplot2::scale_color_manual(values = colors)} +
@@ -116,7 +117,7 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
       ggplot2::geom_path() +
       ggplot2::labs(
         y = "Recruitment (millions)",
-        x='Year',col = 'Left-out\ncomponent') +
+        x='Year',col = legend_title) +
       ggplot2::expand_limits(y = 0) +
       {if(is.null(colors)) ggplot2::scale_color_viridis_d()} +
       {if(!is.null(colors)) ggplot2::scale_color_manual(values = colors)} +
@@ -141,6 +142,16 @@ plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr",
       rel_widths = c(3,7)
     )
 
+  } else if(length(vars) == 1) {
+    if(vars == "nll.summary") {
+      nll_plot
+    } else if(vars == "total.biomass") {
+      biom_plot
+    } else if(vars == "hr") {
+      hr_plot
+    } else if(vars == "recruitment") {
+      rec_plot
+    }
   } else {
     plot_list <-
       list(

@@ -9,7 +9,8 @@ plot_leaveout(
   vars = c("nll.summary", "total.biomass", "hr", "recruitment"),
   ncol = NULL,
   colors = NULL,
-  base_size = 8
+  base_size = 8,
+  legend_title = "Left-out\\ncomponent"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_leaveout(
 \item{colors}{Vector of colors to use for leave-out component names. If a named vector, the component names are sorted following the order in the legend.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{legend_title}{Character speficfying the title for legend (color mapping)}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
