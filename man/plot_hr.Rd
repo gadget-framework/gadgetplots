@@ -9,6 +9,7 @@ plot_hr(
   stocks = NULL,
   min_catch_length = NULL,
   biomass = TRUE,
+  model_selectivity = TRUE,
   base_size = 8,
   return_data = FALSE
 )
@@ -21,6 +22,8 @@ plot_hr(
 \item{min_catch_length}{Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population. See Details.}
 
 \item{biomass}{Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.}
+
+\item{model_selectivity}{Logical indicating whether to use model selectivity when calculating harvest rates. \code{FALSE} will calculate harvest rate using the entire population, \code{TRUE} using the harvestable biomass following fleet suitabilities. Only applicable when using the \code{stocks} parameter or when \code{min_catch_length} = 0.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 

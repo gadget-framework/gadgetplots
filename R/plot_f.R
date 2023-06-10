@@ -3,13 +3,14 @@
 #' @param stocks Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating harvest rates using catches. Combines all stocks. Turn of by setting to \code{NULL} (default). Set to 0 to get HR for the entire model population. See Details.
 #' @param biomass Logical indicating whether biomass should be used to calculate harvest rates instead of abundance.
+#' @param model_selectivity Logical indicating whether to use model selectivity when calculating harvest rates. \code{FALSE} will calculate harvest rate using the entire population, \code{TRUE} using the harvestable biomass following fleet suitabilities. Only applicable when using the \code{stocks} parameter or when \code{min_catch_length} = 0.
 #' @param return_data Logical indicating whether to return data for the plot instead of the plot itself.
 #' @details The function uses all catches without filtering to size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections for instance. The \code{min_catch_length} = 0 is for the latter case.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @seealso plot_f
 #' @export
 
-plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE, base_size = 8, return_data = FALSE) {
+plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE, model_selectivity = TRUE, base_size = 8, return_data = FALSE) {
 
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
 
@@ -17,14 +18,16 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
 
     if(min_catch_length == 0) {
 
-      dt <- fit$res.by.year %>%
-        dplyr::group_by(.data$year, .data$step, .data$area) %>%
-        dplyr::summarise(catch = sum(.data$catch, na.rm = TRUE),
-                         harv.biomass = sum(.data$harv.biomass, na.rm = TRUE)) %>%
-        dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
-        dplyr::rename(catch_biom = .data$catch) %>%
-        dplyr::ungroup() %>%
-        tidyr::replace_na(list(value = 0))
+        dt <- fit$res.by.year %>%
+          dplyr::group_by(.data$year, .data$step, .data$area) %>%
+          dplyr::summarise(catch = sum(.data$catch, na.rm = TRUE),
+                           harv.biomass = sum(.data$harv.biomass, na.rm = TRUE),
+                           total.biomass = sum(.data$total.biomass, na.rm = TRUE)) %>%
+          dplyr::mutate(value = if(model_selectivity) {
+            .data$catch/.data$harv.biomass} else {.data$catch/.data$total.biomass}) %>%
+          dplyr::rename(catch_biom = .data$catch) %>%
+          dplyr::ungroup() %>%
+          tidyr::replace_na(list(value = 0))
 
     } else {
 
@@ -56,7 +59,8 @@ plot_hr <- function(fit, stocks = NULL, min_catch_length = NULL, biomass = TRUE,
 
     dt <- fit$res.by.year %>%
       dplyr::filter(.data$stock %in% stocks) %>%
-      dplyr::mutate(value = .data$catch/.data$harv.biomass) %>%
+      dplyr::mutate(value = if(model_selectivity) {
+        .data$catch/.data$harv.biomass} else {.data$catch/.data$total.biomass}) %>%
       dplyr::rename(catch_biom = .data$catch, catch_num = .data$num.catch) %>%
       tidyr::replace_na(list(value = 0))
   }
