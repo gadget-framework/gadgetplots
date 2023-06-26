@@ -14,6 +14,13 @@
 
 plot_likelihood <- function(fit, type = "total", log_scale = FALSE, use_proportions = TRUE, base_size = 8) {
 
+  ## gadget2 compatability
+  if ('likelihoodsummary' %in% names(fit)){
+    fit$likelihood <- 
+      fit$likelihoodsummary %>% 
+      dplyr::rename(num = likelihood_value)
+      
+  }
   if(exists('wgt',fit$likelihood)){
   x <- fit$likelihood %>%
     dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))

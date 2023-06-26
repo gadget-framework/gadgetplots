@@ -6,8 +6,12 @@
 #' @export
 
 plot_si <- function(fit, type = "model_fit", base_size = 8) {
-
-  if(length(unique(fit$sidat$type)) > 1 | unique(fit$sidat$type) != "log") {
+  
+  ## Gadget2 compatability
+  if (!('type' %in% names(fit$sidat)) & 'fittype' %in% names(fit$sidat)){
+    fit$sidat <- fit$sidat %>% dplyr::rename(type = fittype)
+  }
+  if(length(unique(fit$sidat$type)) > 1 | !grepl('log', unique(fit$sidat$type))) {
     warning("Regression parameters have been calculated assuming log space. That does not seem to be the case here. Note that the estimates will be wrong.")
   }
 
