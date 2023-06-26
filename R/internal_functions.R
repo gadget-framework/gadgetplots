@@ -1,20 +1,5 @@
 # Internal functions that are not exported
 
-#' @title Bind fit components over multiple gadget.fit objects
-#' @param fit_list A list of multiple gadget.fit objects
-#' @param component Character specifying the list component in a gadget.fit object
-#' @keywords internal
-#' @export
-bind_fit_components <- function(fit_list, component){
-
-  tmp <- lapply(fit_list, function(x, component){
-    return(x[[component]])
-  }, component = component)
-  out <- dplyr::bind_rows(tmp, .id = 'id')
-  return(out)
-
-}
-
 #' @title Convert font sizes measured as points to ggplot font sizes
 #' @description Converts font sizes measured as points (as given by most programs such as MS Word etc.) to ggplot font sizes
 #' @param x numeric vector giving the font sizes in points

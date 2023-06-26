@@ -18,7 +18,7 @@ plot_likelihood <- function(fit, type = "total", log_scale = FALSE, use_proporti
   if ('likelihoodsummary' %in% names(fit)){
     fit$likelihood <- 
       fit$likelihoodsummary %>% 
-      dplyr::rename(num = likelihood_value)
+      dplyr::rename(num = .data$likelihood_value)
       
   }
   if(exists('wgt',fit$likelihood)){

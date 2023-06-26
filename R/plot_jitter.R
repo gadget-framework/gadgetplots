@@ -9,7 +9,7 @@
 plot_jitter <- function(jitter_fit, vars = c("nll.summary", "total.biomass", "hr", "recruitment"), base_size = 8, ncol = NULL) {
 
   if("nll.summary" %in% vars) {
-    nll_dat <- bind_fit_components(jitter_fit, 'score')
+    nll_dat <- dplyr::bind_rows(purrr::map(jitter_fit, 'score'), .id = 'id')
     nll_dat$id <- factor(1:nrow(nll_dat), levels = 1:nrow(nll_dat))
 
     nll_plot <- ggplot2::ggplot(nll_dat) +

@@ -63,7 +63,11 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
   else{
 
     ## Extract components from each fit and bind together
-    dat <- bind_fit_components(fit, component = 'res.by.year')
+    dat <-
+      dplyr::bind_rows(
+        purrr::map(fit, 'res.by.year'),
+        .id = 'id'
+      )
 
     if (is.null(stocks)) stocks <- unique(dat$stock)
     pdat <-

@@ -12,7 +12,7 @@
 plot_leaveout <- function(lo_fit, vars = c("nll.summary", "total.biomass", "hr", "recruitment"), ncol = NULL, colors = NULL, base_size = 8, legend_title = "Left-out\ncomponent") {
 
   if("nll.summary" %in% vars) {
-    nll_dat <- bind_fit_components(lo_fit, 'score')
+    nll_dat <- dplyr::bind_rows(purrr::map(lo_fit, 'score'), .id = 'id')
 
     if(!is.null(colors)) {
       if(!is.null(names(colors))) {

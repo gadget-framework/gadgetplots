@@ -8,7 +8,7 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
 
   ## gadget2 compatability
   if (!('stock' %in% names(fit$catchdist.fleets)) & 'stocknames' %in% names(fit$catchdist.fleets)){
-    fit$catchdist.fleets <- fit$catchdist.fleets %>% dplyr::rename(stock = stocknames)
+    fit$catchdist.fleets <- fit$catchdist.fleets %>% dplyr::rename(stock = .data$stocknames)
   }
   
   ## Plot function
