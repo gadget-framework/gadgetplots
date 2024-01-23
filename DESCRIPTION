@@ -1,7 +1,7 @@
 Package: gadgetplots
 Type: Package
 Title: Plot gadget3 models
-Version: 0.2.13
+Version: 0.2.14
 Authors@R: c(person("Mikko", "Vihtakari", email = "mikko.vihtakari@hi.no",
                   role = c("aut", "cre"), 
                   comment = c(affiliation = "Institute of Marine Research", 
@@ -24,4 +24,4 @@ Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo,
   cowplot, rmarkdown, flexdashboard, DT, plotly, ggridges, gadget3,
   lubridate
 Suggests: gadgetutils
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0

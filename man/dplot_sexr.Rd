@@ -7,7 +7,7 @@
 dplot_sexr(x, ncol = NULL, base_size = 8)
 }
 \arguments{
-\item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{g3_data}.}
+\item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
 
 \item{ncol}{Number of columns passed to \code{\link[ggplot2]{facet_wrap}}}
 

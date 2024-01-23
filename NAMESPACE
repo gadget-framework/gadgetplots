@@ -2,6 +2,7 @@
 
 S3method(plot,gadget.fit)
 export("%>%")
+export(dplot_ldist)
 export(dplot_sexr)
 export(g3d_plot)
 export(g3plot_andersen)
