@@ -4,7 +4,7 @@
 \alias{dplot_ldist}
 \title{Plot length distribution data for a gadget3 model}
 \usage{
-dplot_ldist(x, type = "bar", scales = "free_y")
+dplot_ldist(x, type = "bar", scales = "free_y", base_size = 8)
 }
 \arguments{
 \item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
@@ -12,6 +12,8 @@ dplot_ldist(x, type = "bar", scales = "free_y")
 \item{type}{Character specifying the plot type: "bar", "ggridges" or path}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+
+\item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

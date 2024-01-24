@@ -1,8 +1,6 @@
 #' @title Plot sex ratio data for a gadget3 model
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
-#' @inheritParams plot_annual
-#' @param x A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.
-#' @param ncol Number of columns passed to \code{\link[ggplot2]{facet_wrap}}
+#' @inheritParams dplot_aldist
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 

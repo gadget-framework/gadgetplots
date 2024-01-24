@@ -29,13 +29,19 @@ The gadgetplots package produces diagnostics graphics for [gadget3](https://gith
 The gadgetplots is not available on CRAN yet. Use the devtools or remotes packages to install directly from GitHub:
 
 ```{r, eval=FALSE}
-# install.packages("devtools")
-devtools::install_github("gadget-framework/gadgetplots")
+# install.packages("remotes")
+remotes::install_github("gadget-framework/gadgetplots")
 ```
 
 ## Overview of plots
 
-The package produces generally similar plots to [Rgadget](https://github.com/gadget-framework/rgadget). Names and apperances of these plots have changed somewhat. There are two ways to produce the plots: either use a specific `plot_*()` or the generic `plot()` with `param` argument specifying the type of plot.
+The package produces plots in four categories: 1) `plot_*()` functions plot gadget model output generated using the `gadgetutils::g3_fit()` function; 2) `dplot_*()` functions plot gadget model input data generated using  [mfdb](https://github.com/gadget-framework/mfdb), `gadgetutils::g3_data()` or `gadgetutils::add_g3_attributes()` functions; 3) the `g3d_plot()` function plots data directly from a gadget model object; and 4) `g3plot_*` functions plot gadget suitability (selectivity) functions. The `plot_*()` functions have a generic shorthand, the `plot()` with `param` argument specifying the type of plot.
+
+Further, it is possible to use the `make_html()` function produce html overviews of gadget models and the `gadget_plots()` function to print multiple central `plot_*`s to png files. 
+
+Under are generic examples of available plots using the `r packageVersion("gadgetplots")` version of gadgetplot package. These may be outdated. 
+
+### `plot_*` for `g3_fit` output
 
 Load example data to demonstrate the plots:
 
@@ -44,13 +50,13 @@ library(gadgetplots)
 data(fit) # Note that we'll need a better example dataset
 ```
 
-### Annual (ICES) plot
+#### Annual (ICES) plot
 
 ```{r}
 plot_annual(fit) # synonym: plot(fit)
 ```
 
-### Stock biomass and abundance
+#### Stock biomass and abundance
 
 ```{r}
 plot_biomass(fit, total = TRUE) # synonym: plot(fit, "total")
@@ -64,7 +70,7 @@ plot_biomass(fit, geom_area = TRUE) # synonym: plot(fit, "biomass", geom_area = 
 plot_biomass(fit, biomass = FALSE) # synonym: plot(fit, "abundance")
 ```
 
-### Spawning stock
+#### Spawning stock
 
 Currently requires definition of spawning stock among stocks in the gadget model (uses a reasonable guess: `grep("fem.*mat")`). Defining spawning stock based on length or age from the model is also possible, but needs to be implemented.
 
@@ -72,19 +78,19 @@ Currently requires definition of spawning stock among stocks in the gadget model
 plot_ssb(fit) # synonym: plot(fit, "ssb")
 ```
 
-### Recruitment
+#### Recruitment
 
 ```{r}
 plot_rec(fit) # synonym: plot(fit, "rec")
 ```
 
-### Fishing mortality (F)
+#### Fishing mortality (F)
 
 ```{r}
 plot_f(fit) # synonym: plot(fit, "f")
 ```
 
-### Modeled catches and harvest rate
+#### Modeled catches and harvest rate
 
 ```{r}
 plot_catch(fit, type = "stock") # synonym: plot(fit, "catch")
@@ -98,13 +104,13 @@ plot_catch(fit, type = "fleet") # synonym: plot(fit, "fleet")
 plot_catch(fit, type = "hr") # synonym: plot(fit, "hr")
 ```
 
-### Survey indices
+#### Survey indices
 
 ```{r}
 plot_si(fit) # synonym: plot(fit, "si")
 ```
 
-### Catch distribution
+#### Catch distribution
 
 The function typically produces a list of plots. Here only one to save space
 
@@ -112,32 +118,32 @@ The function typically produces a list of plots. Here only one to save space
 plot_catchdist(fit, name = "EggaN_ldist") # synonym: plot(fit, "catchdist")
 ```
 
-### Stock distribution
+#### Stock distribution
 
 ```{r}
 plot_stockdist(fit) # synonym: plot(fit, "stockdist")
 ```
 
-### Stock composition
+#### Stock composition
 
 ```{r}
 plot_stockdist(fit, type = "stock_composition") # synonym: plot(fit, "stockcomp")
 ```
 
 
-### Suitability (fleet selection)
+#### Suitability (fleet selection)
 
 ```{r}
 plot_suitability(fit) # synonym: plot(fit, "suitability")
 ```
 
-### Average length by age (growth)
+#### Average length by age (growth)
 
 ```{r}
 plot_growth(fit) # synonym: plot(fit, "growth")
 ```
 
-### Age-length fit
+#### Age-length fit
 
 Returns as many plots as there are separate age-length data sources. Only one plotted here to save space.
 
@@ -145,19 +151,19 @@ Returns as many plots as there are separate age-length data sources. Only one pl
 plot_agelength(fit, name = "EggaN_aldist_female") # synonym: plot(fit, "agelength")
 ```
 
-### Age composition
+#### Age composition
 
 ```{r}
 plot_agecomp(fit) # synonym: plot(fit, "agecomp"), also "stock.std" works
 ```
 
-### Residuals
+#### Residuals
 
 ```{r}
 plot_resid(fit) # synonym: plot(fit, "resid")
 ```
 
-### Likelihood
+#### Likelihood
 
 ```{r}
 plot_likelihood(fit) # synonym: plot(fit, "likelihood")
@@ -171,7 +177,7 @@ plot_likelihood(fit, type = "weighted") # synonym: plot(fit, "weighted")
 plot_likelihood(fit, type = "sums") # synonym: plot(fit, "sums")
 ```
 
-### Parameters
+#### Parameters
 
 Parameter component weights:
 
@@ -183,9 +189,24 @@ plot_weight(fit) # synonym: plot(fit, "weight")
 # plot_param(fit) # synonym: plot(fit, "param") # need to add bounds to g3_fit
 ```
 
-## Quickly plot central diagnostics
+### Quickly plot central diagnostics
+
+#### HTML files
 
 The `gadget_plot()` produces a range of diagnostic plots into a folder specified by the `path` argument. You may also use the `file_type = "html"` argument to save these plots into a single html file. There is also the `make_html()` to produce the html file directly without a wrapper function. 
+
+#### Png files
+
+
+### `dplot_*` for gadget input data
+
+
+### `g3d_plot` for gadget model objects
+
+
+### `g3plot_*` for suitability functions
+
+
 
 ## Found a bug or desire a feature?
 
