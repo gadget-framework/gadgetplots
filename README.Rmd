@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 **Plot gadget3 model output using ggplot2. R package version `r packageVersion("gadgetplots")`**
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/gadget-framework/gadgetplots/workflows/R-CMD-check/badge.svg)](https://github.com/gadget-framework/gadgetplots/actions)
+<!-- [![R-CMD-check](https://github.com/gadget-framework/gadgetplots/workflows/R-CMD-check/badge.svg)](https://github.com/gadget-framework/gadgetplots/actions) -->
 <!-- badges: end -->
 
 The gadgetplots package produces diagnostics graphics for [gadget3](https://github.com/gadget-framework/gadget3) using [ggplot2](https://ggplot2.tidyverse.org/reference). The package replaces the plotting capabilities of [Rgadget](https://github.com/gadget-framework/rgadget) package which was designed to work with [gadget2](https://github.com/gadget-framework/gadget2). 
