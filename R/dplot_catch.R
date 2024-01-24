@@ -1,12 +1,14 @@
 #' @title Plot catch data for a gadget3 model
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @inheritParams dplot_aldist
+#' @param x A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}. Can be a single data frame or a named list of data frames in
+#' which case multiple catches are plotted in the same figure.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 
 dplot_catch <- function(x, base_size = 8) {
 
-  ## Remove list elements from values
+  ## Compile multiple catches
   if(inherits(x, "list")) {
     x <- lapply(seq_along(x), function(i) {
       out <- x[[i]]
@@ -54,7 +56,7 @@ dplot_catch <- function(x, base_size = 8) {
 
     ggplot2::ggplot(
       x,
-      ggplot2::aes(x = .data$date, y = .data$total_weight, fill = .data$name)) +
+      ggplot2::aes(x = .data$Date, y = .data$total_weight, fill = .data$name)) +
       ggplot2::geom_col() +
       ggplot2::scale_x_continuous(n.breaks = 10) +
       ggplot2::coord_cartesian(expand = FALSE) +
