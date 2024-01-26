@@ -22,3 +22,4 @@ long as the number of levels in data.
 \examples{
 scales::show_col(repeat_palette(12, scales::brewer_pal(palette = "Set1")))
 }
+\keyword{internal}

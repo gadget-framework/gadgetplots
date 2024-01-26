@@ -2,28 +2,28 @@
 % Please edit documentation in R/datasets-docs.R
 \docType{data}
 \encoding{UTF-8}
-\name{fit}
-\alias{fit}
-\title{An example gadget.fit object.}
+\name{stockdist_example}
+\alias{stockdist_example}
+\title{Maturity input data to gadget}
 \format{
-gadget.fit object containing an early draft of the gadget model for Northeast Arctic Greenland halibut stock assessment. This draft is used because the final model is too large as an example dataset.
+Data frame with gadget attributes containing Greenland halibut stock distributions (i.e. maturity and sex at length data) from the Institute of Marine Research EggaNord survey.
 }
 \source{
 \href{https://www.hi.no/hi/nettrapporter/imr-pinro-en-2023-6}{Joint Russian-Norwegian Arctic Fisheries Working Group}
 }
 \usage{
-fit
+stockdist_example
 }
 \description{
-An example gadget.fit object.
+Maturity input data to gadget
 }
 \seealso{
 Other datasets: 
 \code{\link{aldist_example}},
 \code{\link{example_catches}},
+\code{\link{fit}},
 \code{\link{ldist_example}},
-\code{\link{sexratio_example}},
-\code{\link{stockdist_example}}
+\code{\link{sexratio_example}}
 }
 \concept{datasets}
 \keyword{datasets}

@@ -29,3 +29,9 @@ A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot object
 \description{
 Plot suitability
 }
+\examples{
+data(fit)
+plot_suitability(fit)
+plot_suitability(fit, fleets = "EggaN_survey",
+                 include_missing = FALSE)
+}

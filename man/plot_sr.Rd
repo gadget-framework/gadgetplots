@@ -32,3 +32,8 @@ A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code
 \description{
 Plots spawning stock biomass (SSB) against recruitment with a lag
 }
+\examples{
+data(fit)
+plot_sr(fit, spawning_stock = "ghl_female_mat")
+plot_sr(fit, spawning_stock = 45)
+}

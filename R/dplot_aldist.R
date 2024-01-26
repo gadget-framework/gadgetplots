@@ -8,6 +8,11 @@
 #' @param color_palette A function defining the color palette to be used for fill of bars when \code{facet_age = TRUE}. See \link[ggplot2]{scale_color_manual}. To adjust color when \code{facet_age = FALSE}, use the standard \code{ggplot2::scale_fill_*} functions.
 #' @param base_size Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(aldist_example)
+#' dplot_aldist(aldist_example)
+#' dplot_aldist(aldist_example, facet_age = TRUE)
+#' dplot_aldist(aldist_example, type = "area") # works poorly
 #' @export
 
 dplot_aldist <- function(

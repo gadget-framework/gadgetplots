@@ -29,3 +29,8 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot recruitment
 }
+\examples{
+data(fit)
+plot_rec(fit)
+plot_rec(fit, stocks = "total")
+}

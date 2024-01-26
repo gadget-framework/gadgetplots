@@ -20,7 +20,7 @@ plot_agecomp(
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
-\item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
+\item{biomass}{Logical indicating whether biomass should be plotted instead of abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
@@ -41,4 +41,11 @@ Possible plot types are:
   \item{bubble (or any other string)}{Bubble plot with year on x-axis, age on y-axis and point size scaled to abundance. Year classes are colored.}
   }
 Note that both \code{"bar"} and \code{"bubble"} contain extra information as text for \code{plotly::ggplotly}.
+}
+\examples{
+data(fit)
+plot_agecomp(fit)
+plot_agecomp(fit, type = "line", biomass = TRUE)
+plot_agecomp(fit, type = "bar")
+plot_agecomp(fit, type = "ggridges")
 }

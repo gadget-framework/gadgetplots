@@ -32,6 +32,3 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot central model output from a leave-out analysis
 }
-\details{
-Leave-out analysis has currently not been implemented to gadgetutils. Ask Mikko for the code.
-}

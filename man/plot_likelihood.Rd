@@ -37,3 +37,9 @@ Possible plot types are:
   \item{total (or any other string)}{Plots the sums of weighted and raw likelihood values by component.}
   }
 }
+\examples{
+data(fit)
+plot_likelihood(fit)
+plot_likelihood(fit, use_proportions = FALSE, log_scale = TRUE)
+plot_likelihood(fit, type = "weighted")
+}

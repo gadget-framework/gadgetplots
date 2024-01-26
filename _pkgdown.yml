@@ -1,0 +1,136 @@
+url: ~
+template:
+  bootstrap: 5
+
+reference:
+
+- title: Model overviews
+  desc: >
+    The `make_html()` function generates a single html file out of
+    `gadgetutils::g3_fit()` output that contains key model diagnostics.
+    The `gadget_plots()` function saves a set of diagnostics plots into
+    a folder.
+  contents:
+  - make_html
+  - gadget_plots
+
+- title: Plotting functions
+  desc: >
+    The package produces plots in four categories:
+
+      1) `plot_*()` functions plot gadget model **output** generated
+      using `gadgetutils::g3_fit()`. These functions have a generic
+      shorthand, the `plot()`, with `param` argument specifying the
+      type of plot.
+
+      2) `dplot_*()` functions plot gadget model **input data** generated
+      using [mfdb](https://github.com/gadget-framework/mfdb),
+      `gadgetutils::g3_data()` or `gadgetutils::add_g3_attributes()`
+      functions.
+
+      3) the `g3d_plot()` function plots **data directly** from a gadget
+      model object.
+
+      4) `g3plot_*` functions plot gadget **suitability (selectivity)
+      functions**.
+
+- title: The `plot_*` for `g3_fit` output
+  desc: >
+    These functions make the plots typically used in asssessment
+    and model diagnostics. Some of the functions have `return_data`
+    argument, which can be used to quickly grab associated data for
+    further analyses, custom plots and tables.
+- subtitle: General
+  contents:
+  - plot.gadget.fit
+  - plot_annual
+- subtitle: Age-related
+  contents:
+  - plot_adist
+  - plot_ageclass
+  - plot_agecomp
+  - plot_agelength
+  - plot_growth
+- subtitle: Stock status
+  contents:
+  - plot_biomass
+  - plot_ssb
+  - plot_rec
+  - plot_sr
+  - plot_si
+- subtitle: Catches and fleets
+  contents:
+  - plot_catch
+  - plot_f
+  - plot_hr
+  - plot_suitability
+- subtitle: Distributions
+  contents:
+  - plot_catchdist
+  - plot_ldist
+  - plot_stockcomp
+  - plot_stockdist
+- subtitle: Parameters and fit
+  contents:
+  - plot_likelihood
+  - plot_param
+  - plot_resid
+  - plot_weight
+- subtitle: Model diagnostics
+  desc: >
+    These functions require a list of gadget.fit objects generated
+    using the `gadgetutils::g3_jitter()`, `gadgetutils::g3_leaveout()`,
+    and `gadgetutils::g3_retro()` functions.
+  contents:
+  - plot_jitter
+  - plot_leaveout
+  - plot_retro
+
+- title: The `dplot_*` for gadget input data
+  desc: >
+    These functions plot gadget input data attempting to highlight
+    attributes, which guide the model fitting, but are often difficult to notice
+    otherwise.
+  contents:
+  - dplot_adist
+  - dplot_aldist
+  - dplot_ldist
+  - dplot_sexr
+  - dplot_stockdist
+  - dplot_catch
+
+- title: The `g3d_plot` for gadget model objects
+  desc: >
+    The `g3d_plot()` function plots all observational data passed into a TMB or
+    R gadget model.
+  contents:
+  - g3d_plot
+
+- title: The `g3plot_*` for suitability functions
+  desc: >
+    These plot gadget suitability functions, which can be difficult to comprehend
+    without visualizing. The model parameters can be extracted from a gadget.fit
+    object or typed in manually.
+  contents:
+  - g3plot_andersen
+  - g3plot_exponentiall50
+
+- title: Example data
+  desc: >
+    Datasets to demonstrate plot functions.
+  contents:
+  - fit
+  - aldist_example
+  - ldist_example
+  - sexratio_example
+  - stockdist_example
+  - example_catches
+
+navbar:
+ components:
+   articles:
+      text: Articles
+      menu:
+      - text: make_html output
+        href: articles/make_html_output.html
+

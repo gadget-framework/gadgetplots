@@ -2,6 +2,9 @@
 #' @inheritParams plot_annual
 #' @param spawning_stock Character specifying the name of the spawning stock in the \code{fit} object (i.e. the female mature stock). If \code{NULL}, the correct stock is guessed.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_ssb(fit, spawning_stock = "ghl_female_mat")
 #' @export
 
 # Debugging arguments:

@@ -4,6 +4,11 @@
 #' @param type Character specifying the plot type: \code{"step"} uses stepwise lines to show the aggregation intervals. \code{"line"} uses lines through average values between lower and upper intervals.
 #' @param name A character vector specifying the unique(fit$catchdist.fleets$name) to plot. If \code{NULL}, all names with relevant data are plotted.
 #' @return A list of \link[ggplot2]{ggplot} objects consisting of a separate plot for each of \code{names}.
+#' @examples
+#' data(fit)
+#' # Only one data set to save space:
+#' plot_catchdist(fit, name = "EggaN_ldist")
+#' plot_catchdist(fit, name = "EggaN_ldist", type = "line")
 #' @export
 
 # type = "step"; name = NULL; base_size = 8

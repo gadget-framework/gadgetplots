@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_si.R
 \name{plot_si}
 \alias{plot_si}
-\title{Plot of survey indices}
+\title{Plot survey indices}
 \usage{
 plot_si(fit, type = "model_fit", base_size = 8)
 }
@@ -17,8 +17,14 @@ plot_si(fit, type = "model_fit", base_size = 8)
 A \link[ggplot2]{ggplot} object.
 }
 \description{
-Plot of survey indices
+Plot survey indices
 }
 \details{
 Relationship between a survey index (I) and model biomass or abundance (B) over a defined length range is expressed as \eqn{I = e^a B^b}, where \eqn{e^a} is the catchability (also called q) and b the stock size dependent catchability (see \code{type = "model_fit"}). Whether I is compared to model biomass or abundance, depends on the units of I (i.e. column name of the data object; "number" -> abundance, "weight" -> biomass). The survey index I is called "observed" in the figure, and "predicted" is derived as \eqn{exp(a + b \; log(B))}. The a and b can be visualized using a log-linear formula \eqn{log(I) = a + b \;  log(B)} (see \code{type = "regression"}; log-linear regressions shown using blue lines). The coefficient of determination \eqn{R^2} is calculated using this regression. To compare the observed and predicted values in the model fit plot, use \code{type = "scatter"}. The grey line represents a diagonal line with a slope of 1 and intercept of 0 (i.e. \eqn{I = B}, \eqn{a = 0}, \eqn{b = 1}).
+}
+\examples{
+data(fit)
+plot_si(fit)
+plot_si(fit, type = "regression")
+plot_si(fit, type = "scatter")
 }

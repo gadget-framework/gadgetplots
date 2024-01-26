@@ -29,3 +29,11 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot catches
 }
+\examples{
+data(fit)
+plot_catch(fit)
+plot_catch(fit, biomass = FALSE)
+plot_catch(fit, type = "total")
+plot_catch(fit, type = "fleet")
+plot_catch(fit, type = "hr")
+}

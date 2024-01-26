@@ -19,3 +19,7 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot spawning stock biomass
 }
+\examples{
+data(fit)
+plot_ssb(fit, spawning_stock = "ghl_female_mat")
+}

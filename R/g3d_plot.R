@@ -1,7 +1,8 @@
 #' @title Plot of data passed into a gadget model
+#' @description Plot all observational data from a gadget model
 #' @inheritParams plot_annual
 #' @param model R or TMB model. A model object from \link[gadget3]{g3_to_r} or \link[gadget3]{g3_to_tmb} functions.
-#' @param regexp Either \code{NULL} (no filtering) or a character string giving a regular expression to filter model-data components. Useful alternatives: \code{"adist"} for abundance distribution data and \code{"cdist"} for catch distribution data.
+#' @param regexp Either \code{NULL} (no filtering) or a character string giving a regular expression to filter model-data components. Useful alternatives: \code{"adist"} for abundance distribution data, \code{"cdist"} for catch distribution data, \code{"surveyindices"} for survey indices, and \code{"catch"} for catches.
 #' @param scales Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.
 #' @param ncol Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}
 #' @details Plots data as contained in a gadget model. Helpful in checking models for possible data issues and for documentation of models.
@@ -12,29 +13,91 @@
 g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_size = 8) {
 
   if(inherits(model, "g3_r")) {
-    x <- grep("num$|wgt$", ls(environment(model)), value = TRUE)
+    x <- grep("num$|wgt$|catch", ls(environment(model)), value = TRUE)
   } else if(inherits(model, "g3_cpp")) {
-    x <- grep("num$|wgt$", ls(attr(model, 'model_data')), value = TRUE)
+    x <- grep("num$|wgt$|catch", ls(attr(model, 'model_data')), value = TRUE)
   } else {
-    stop("The model object has to be created using the gadget3::g3_to_tmb or gadget3::g3_to_r functions")
+    stop("The model object has to be created using the gadget3::g3_to_tmb or
+         gadget3::g3_to_r functions")
   }
 
   if(!is.null(regexp)) {
     x <- grep(regexp, x, value = TRUE)
   }
 
+  ## Deal with catches which are different format
+
+  if(any(grepl("catch", x))) {
+    tmp <- unique(gsub("__keys|__values", "", grep("catch", x, value = TRUE)))
+
+    x <- c(
+      lapply(x[!grepl("catch", x)], function(k) k),
+      lapply(tmp, function(k) grep(k, x, value = TRUE))
+    )
+
+  } else {
+    x <- lapply(x, function(k) k)
+  }
+
   # i = 3
   lapply(seq_along(x), function(i) {
 
-    if(inherits(model, "g3_r")) {
-      y <- environment(model)[[x[i]]]
-    } else if(inherits(model, "g3_cpp")) {
-      y <- attributes(model)$model_data[[x[i]]]
+    message(paste(x[[i]], collapse = ", "))
+
+    if(any(grepl("catch", x[[i]]))) {
+      if(length(x[[i]]) == 1) {
+        if(!grepl("keys$", x)[[i]]) {
+          stop("No keys attribute in ", x[[i]])
+        }
+        if(inherits(model, "g3_r")) {
+          y <- environment(model)[[x[[i]]]]
+        } else if(inherits(model, "g3_cpp")) {
+          y <- attributes(model)$model_data[[x[[i]]]]
+        }
+
+        y <- data.frame(time = lubridate::yq(y), value = 0)
+      } else {
+
+        if(inherits(model, "g3_r")) {
+          y <-
+            stats::setNames(
+              lapply(x[[i]], function(k) environment(model)[[k]]),
+              x[[i]]
+            )
+        } else if(inherits(model, "g3_cpp")) {
+          y <-
+            stats::setNames(
+            lapply(x[[i]], function(k) attributes(model)$model_data[[k]]),
+            x[[i]]
+            )
+        }
+
+        y <- data.frame(
+          time = lubridate::yq(y[[grep("keys$", names(y))]]),
+          value = y[[grep("values$", names(y))]]/1e6 # kt
+          )
+      }
+    } else {
+      if(inherits(model, "g3_r")) {
+        y <- environment(model)[[x[[i]]]]
+      } else if(inherits(model, "g3_cpp")) {
+        y <- attributes(model)$model_data[[x[[i]]]]
+      }
+
+      y_lab <- ifelse(grepl("num$", x[i]), "Number", "Weight")
     }
 
-    y_lab <- ifelse(grepl("num$", x[i]), "Number", "Weight")
+    if(any(grepl("catch", x[[i]]))) {
 
-    if(length(dim(y)) == 2) {
+      ggplot2::ggplot(y, ggplot2::aes(.data$time, .data$value)) +
+        ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
+        ggplot2::labs(y = "Catch (kt)", x= 'Year',
+                      title = unique(gsub("__keys|__values", "", x[[i]]))
+                      ) +
+        ggplot2::coord_cartesian(expand = FALSE) +
+        ggplot2::theme_classic(base_size = base_size)
+
+    } else if(length(dim(y)) == 2) {
       ggplot2::ggplot(
         data.frame(
           time = lubridate::yq(colnames(y)),
@@ -72,8 +135,8 @@ g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_s
       ggplot2::ggplot(
         dat,
         ggplot2::aes(x = .data$xvar_cont,
-            y = .data$value,
-            width = .data$width)
+                     y = .data$value,
+                     width = .data$width)
       ) +
         ggplot2::geom_col() +
         ggplot2::facet_wrap(~time, scales = scales, ncol = ncol) +

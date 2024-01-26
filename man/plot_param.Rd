@@ -22,3 +22,8 @@ Plot parameter values relative to their boundaries
 \details{
 The default plot is likely busy. Use \code{plotly::ggplotly()} to make it easier to interpret. If you are after parameters that are outside their boundaries, the \code{out_only} argument will help.
 }
+\examples{
+data(fit)
+plot_param(fit)
+plot_param(fit, out_only = TRUE)
+}

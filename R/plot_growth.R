@@ -4,6 +4,12 @@
 #' @param stdev Logical indicating whether standard deviation should be shown on both sides of mean for plots that use mean lengths.
 #' @param add_models Logical indicating whether growth models extracted from growth parameters should be plotted together with the data. Uses grep and does not always work.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_growth(fit)
+#' plot_growth(fit, add_models = TRUE, stdev = TRUE)
+#' plot_growth(fit, type = "mean")
+#' plot_growth(fit, type = "stdev")
 #' @export
 
 plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE, base_size = 8) {

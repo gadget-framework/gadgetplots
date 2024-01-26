@@ -4,6 +4,13 @@
 #' @param type Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, \code{"total"} catches without separating to stock or fleet, and \code{"hr"} harvest rates by fleet.
 #' @param biomass Logical indicating whether biomass should be plotted instead of estimated abundance.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_catch(fit)
+#' plot_catch(fit, biomass = FALSE)
+#' plot_catch(fit, type = "total")
+#' plot_catch(fit, type = "fleet")
+#' plot_catch(fit, type = "hr")
 #' @export
 
 plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, return_data = FALSE) {

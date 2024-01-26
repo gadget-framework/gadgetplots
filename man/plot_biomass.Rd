@@ -6,8 +6,8 @@
 \usage{
 plot_biomass(
   fit,
+  type = "line",
   total = FALSE,
-  geom_area = FALSE,
   biomass = TRUE,
   stocks = NULL,
   min_catch_length = NULL,
@@ -18,11 +18,11 @@ plot_biomass(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{total}{Logical indicating whether total biomass should be plotted. Has no effect if \code{geom_area = TRUE}.}
+\item{type}{Character specifying the plot type. Options: "line" or "area". See examples.}
 
-\item{geom_area}{Logical indicating whether stacked area should be plotted instead of lines.}
+\item{total}{Logical indicating whether total biomass should be plotted. Has no effect if \code{type = "area"}.}
 
-\item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
+\item{biomass}{Logical indicating whether biomass should be plotted instead of abundance.}
 
 \item{stocks}{Character specifying the substock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. Not applicable if \code{min_catch_length} is defined.}
 
@@ -37,4 +37,11 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 Plot stock biomasses
+}
+\examples{
+data(fit)
+plot_biomass(fit)
+plot_biomass(fit, biomass = FALSE, total = TRUE)
+plot_biomass(fit, type = "area")
+plot_biomass(fit, min_catch_length = 45)
 }

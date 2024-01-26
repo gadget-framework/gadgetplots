@@ -29,3 +29,10 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot of average growth for each stock
 }
+\examples{
+data(fit)
+plot_growth(fit)
+plot_growth(fit, add_models = TRUE, stdev = TRUE)
+plot_growth(fit, type = "mean")
+plot_growth(fit, type = "stdev")
+}

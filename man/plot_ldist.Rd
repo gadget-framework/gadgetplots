@@ -41,3 +41,10 @@ Plot model length distributions for stocks by year
 \details{
 Do not trust the absolute numbers when \code{by_age = TRUE}. They are estimated from normal distributions by using \code{number * dnorm(1:120, mean = mean_length, sd = stddev_length)}.
 }
+\examples{
+data(fit)
+plot_ldist(fit)
+plot_ldist(fit, type = "bar")
+plot_ldist(fit, type = "ggridges")
+plot_ldist(fit, by_age = TRUE, years = 2021)
+}

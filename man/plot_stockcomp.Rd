@@ -4,14 +4,14 @@
 \alias{plot_stockcomp}
 \title{Plot model stock composition}
 \usage{
-plot_stockcomp(fit, by_age = FALSE, geom_area = FALSE, base_size = 8)
+plot_stockcomp(fit, type = "line", by_age = FALSE, base_size = 8)
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{by_age}{Logical indicating whether age should be used on the x-axis instead of length}
+\item{type}{Character specifying the plot type. Options: "line" or "area". See examples.}
 
-\item{geom_area}{Logical indicating whether stacked area should be plotted instead of lines.}
+\item{by_age}{Logical indicating whether age should be used on the x-axis instead of length}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -20,4 +20,10 @@ A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code
 }
 \description{
 Plots proportions of stocks in the model by length or age
+}
+\examples{
+data(fit)
+plot_stockcomp(fit)
+plot_stockcomp(fit, type = "area")
+plot_stockcomp(fit, by_age = TRUE)
 }

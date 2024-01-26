@@ -1,8 +1,13 @@
 #' @title Plot age distribution data for a gadget3 model
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @inheritParams dplot_aldist
-#' @param type  Character specifying the plot type: "bar" or "ggridges"
+#' @param type  Character specifying the plot type: "bar" or "ggridges".
+#' @param color_palette A function defining the color palette to be used for fill of bars.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(aldist_example)
+#' dplot_adist(aldist_example)
+#' dplot_adist(aldist_example, type = "ggridges")
 #' @export
 
 dplot_adist <- function(

@@ -1,12 +1,17 @@
-#' @title Plot of survey indices
+#' @title Plot survey indices
 #' @inheritParams plot_annual
 #' @param type Character specifying the plot type: \code{"model_fit"} plots the model fit to survey index data by year, \code{"regression"} plots regression lines together with logarithms of model biomass/abundance and observed index values, and \code{"scatter"} produces a scatter plot for the predicted and observed index using the same values than in \code{"model_fit"}. See details.
 #' @details Relationship between a survey index (I) and model biomass or abundance (B) over a defined length range is expressed as \eqn{I = e^a B^b}, where \eqn{e^a} is the catchability (also called q) and b the stock size dependent catchability (see \code{type = "model_fit"}). Whether I is compared to model biomass or abundance, depends on the units of I (i.e. column name of the data object; "number" -> abundance, "weight" -> biomass). The survey index I is called "observed" in the figure, and "predicted" is derived as \eqn{exp(a + b \; log(B))}. The a and b can be visualized using a log-linear formula \eqn{log(I) = a + b \;  log(B)} (see \code{type = "regression"}; log-linear regressions shown using blue lines). The coefficient of determination \eqn{R^2} is calculated using this regression. To compare the observed and predicted values in the model fit plot, use \code{type = "scatter"}. The grey line represents a diagonal line with a slope of 1 and intercept of 0 (i.e. \eqn{I = B}, \eqn{a = 0}, \eqn{b = 1}).
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_si(fit)
+#' plot_si(fit, type = "regression")
+#' plot_si(fit, type = "scatter")
 #' @export
 
 plot_si <- function(fit, type = "model_fit", base_size = 8) {
-  
+
   ## Gadget2 compatability
   if (!('type' %in% names(fit$sidat)) & 'fittype' %in% names(fit$sidat)){
     fit$sidat <- fit$sidat %>% dplyr::rename(type = .data$fittype)

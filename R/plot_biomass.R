@@ -1,15 +1,21 @@
 #' @title Plot stock biomasses
 #' @inheritParams plot_annual
 #' @inheritParams plot_hr
-#' @param total Logical indicating whether total biomass should be plotted. Has no effect if \code{geom_area = TRUE}.
+#' @param type Character specifying the plot type. Options: "line" or "area". See examples.
+#' @param total Logical indicating whether total biomass should be plotted. Has no effect if \code{type = "area"}.
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).
-#' @param geom_area Logical indicating whether stacked area should be plotted instead of lines.
-#' @param biomass Logical indicating whether biomass should be plotted instead of estimated abundance.
+#' @param biomass Logical indicating whether biomass should be plotted instead of abundance.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_biomass(fit)
+#' plot_biomass(fit, biomass = FALSE, total = TRUE)
+#' plot_biomass(fit, type = "area")
+#' plot_biomass(fit, min_catch_length = 45)
 #' @export
 
-# total = FALSE; geom_area = FALSE; biomass = TRUE;base_size = 8
-plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, stocks = NULL, min_catch_length = NULL, return_data = FALSE, base_size = 8){
+# total = FALSE;  biomass = TRUE;base_size = 8
+plot_biomass <- function(fit, type = "line", total = FALSE, biomass = TRUE, stocks = NULL, min_catch_length = NULL, return_data = FALSE, base_size = 8){
 
   if (length(fit) == 1) fit <- fit[[1]]
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
@@ -41,7 +47,7 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
   #dat <- dat %>%
    # dplyr::select(.data$stock, .data$year, .data$step, .data$area, .data$value)
 
-  if(total & !geom_area & is.null(min_catch_length)) {
+  if(total & type != "area" & is.null(min_catch_length)) {
     dat <- dat %>% dplyr::bind_rows(
       dat %>%
         dplyr::group_by(.data$year, .data$step, .data$area) %>%
@@ -52,7 +58,7 @@ plot_biomass <- function(fit, total = FALSE, geom_area = FALSE, biomass = TRUE, 
 
   if(return_data) return(dat)
 
-  if(geom_area) {
+  if(type == "area") {
 
     ggplot2::ggplot(dat) + {
       if(!is.null(min_catch_length)) {

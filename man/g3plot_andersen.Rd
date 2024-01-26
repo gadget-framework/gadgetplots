@@ -26,8 +26,11 @@ g3plot_andersen(
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
-\item{...}{Additional arguments passed to \code{plot_*} functions. See Details.}
+\item{...}{Additional arguments passed to \code{plot_*} functions.}
 }
 \description{
 Plot Andersen suitability using model parameters
+}
+\examples{
+g3plot_andersen(length = 1:120, p0 = 0, p1 = 0.659, p2 = 1, p3 = 0.15, p4 = 1e4, p5 = 120)
 }

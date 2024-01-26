@@ -7,6 +7,7 @@
 #' @return Returns a character vector of colors.
 #' @examples
 #' scales::show_col(repeat_palette(12, scales::brewer_pal(palette = "Set1")))
+#' @keywords internal
 #' @export
 
 repeat_palette <- function(n, pal) {

@@ -10,22 +10,27 @@
 #' @param log_scale Logical indicating whether the value axis should be log10 transformed.
 #' @param use_proportions Logical indicating whether proportions of summed likelihood scores should be used instead of summed likelihood score values when \code{type = "total"}.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_likelihood(fit)
+#' plot_likelihood(fit, use_proportions = FALSE, log_scale = TRUE)
+#' plot_likelihood(fit, type = "weighted")
 #' @export
 
 plot_likelihood <- function(fit, type = "total", log_scale = FALSE, use_proportions = TRUE, base_size = 8) {
 
   ## gadget2 compatability
   if ('likelihoodsummary' %in% names(fit)){
-    fit$likelihood <- 
-      fit$likelihoodsummary %>% 
+    fit$likelihood <-
+      fit$likelihoodsummary %>%
       dplyr::rename(num = .data$likelihood_value)
-      
+
   }
   if(exists('wgt',fit$likelihood)){
   x <- fit$likelihood %>%
     dplyr::mutate(value = ifelse(is.na(.data$num), .data$wgt, .data$num))
   } else(
-    x <- fit$likelihood %>% 
+    x <- fit$likelihood %>%
       dplyr::mutate(value =.data$num)
   )
 

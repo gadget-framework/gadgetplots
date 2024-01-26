@@ -4,6 +4,11 @@
 #' @param add_models Logical indicating whether models using suitability parameters should be plotted together with the suitabilities estimated from data. The name of the parameter has to be similar to the fleet name. Uses grep and does not always work.
 #' @param include_missing Logical indicating whether years with missing catch data should be plotted.
 #' @return A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot objects.
+#' @examples
+#' data(fit)
+#' plot_suitability(fit)
+#' plot_suitability(fit, fleets = "EggaN_survey",
+#'                  include_missing = FALSE)
 #' @export
 
 plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_missing = TRUE, base_size = 8) {

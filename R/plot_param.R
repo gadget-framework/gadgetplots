@@ -4,6 +4,10 @@
 #' @param out_only Logical indicating whether only parameters outside their boundaries should be plotted.
 #' @details The default plot is likely busy. Use \code{plotly::ggplotly()} to make it easier to interpret. If you are after parameters that are outside their boundaries, the \code{out_only} argument will help.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_param(fit)
+#' plot_param(fit, out_only = TRUE)
 #' @export
 
 plot_param <- function(fit, out_only = FALSE, base_size = 8) {

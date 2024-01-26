@@ -5,6 +5,15 @@
 #' @param l50 Numeric vector defining the exponentiall50 l50 values. Must be same length than \code{alpha}
 #' @param add Logical indicating whether the function should produce a ggplot2 layer which can be added to an existing ggplot (\code{TRUE}) or whether to plot the results (\code{FALSE})
 #' @param ... Additional arguments passed to \code{geom_line}
+#' @examples
+#' data(fit)
+#' suit <- fit$params[grepl("ghl_female.ecos.survey", fit$params$switch),]
+#'
+#' g3plot_exponentiall50(
+#'    length = 1:60,
+#'    alpha = unlist(suit[grepl("alpha", suit$switch), "value"]),
+#'    l50 = unlist(suit[grepl("l50", suit$switch), "value"])
+#'    )
 #' @export
 
 g3plot_exponentiall50 <- function(length, alpha, l50, add = FALSE, base_size = 8, ...) {
@@ -51,6 +60,8 @@ g3plot_exponentiall50 <- function(length, alpha, l50, add = FALSE, base_size = 8
 #' @inheritParams plot_annual
 #' @inheritParams g3plot_exponentiall50
 #' @param p0,p1,p2,p3,p4,p5 (Named) numeric vectors defining the Andersen suitability function parameters. See \link[gadget3]{suitability}. If length > 1, multiple curves will be plotted using a different line type. All of these parameters must have the same length.
+#' @examples
+#' g3plot_andersen(length = 1:120, p0 = 0, p1 = 0.659, p2 = 1, p3 = 0.15, p4 = 1e4, p5 = 120)
 #' @export
 
 # length = 1:120; p0 = 0; p1 = 0.659; p2 = 1; p3 = 0.15; p4 = 1e4; p5 = 120; add = FALSE; base_size = 8

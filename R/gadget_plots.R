@@ -1,15 +1,15 @@
 #' Wrapper for plot.gadget.fit that saves all diagnostic graphs to a directory
 #'
 #' @inheritParams plot_annual
-#' @param path Directory path for saving figures
-#' @param quiet Logical indicating whether to print messages about the plotting process (set to \code{FALSE} to suppress the messages.
-#' @param file_type Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}} and the \code{\link{make_html}} function.
+#' @param path Directory path for saving figures.
+#' @param quiet Logical indicating whether to print messages about the plotting process. Set to \code{FALSE} to suppress the messages.
+#' @param file_type Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or \code{"html"} which compiles all plots into one html file using \code{\link[knitr]{knit}} and the \code{\link{make_html}} function.
 #' @param width,height Plot size given in \code{units}. If \code{NULL}, reasonable standard values are used.
 #' @param units Units for plot size. See \code{\link[ggplot2]{ggsave}}
 #' @param res Plot resolution. See the \code{dpi} argument in \code{\link[ggplot2]{ggsave}}
 #' @param ... Additional arguments to plotting functions (only used for plot_annual at the moment)
 #' @return Returns nothing, but makes the requested files.
-#' @seealso [make_html()]
+#' @seealso make_html
 #' @export
 
 # Debugging params:
@@ -100,7 +100,7 @@ gadget_plots <- function(fit, path, file_type = "png", quiet = FALSE, width = NU
       })
 
       if(!quiet) message("Plotting model stock composition")
-      tmp <- plot_stockcomp(fit, geom_area = TRUE)
+      tmp <- plot_stockcomp(fit, type = "area")
 
       # lapply(seq_along(tmp), function(i) {
       #   if(!quiet) message(i, "/", length(tmp))

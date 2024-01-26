@@ -2,9 +2,14 @@
 #' @inheritParams plot_annual
 #' @inheritParams plot_agecomp
 #' @inheritParams plot_ldist
-#' @param type Character specifying the plot type. Options: \code{"line"}, \code{"bar"} or \code{"ggridges"}. See Details.
+#' @param type Character specifying the plot type. Options: \code{"line"}, \code{"bar"} or \code{"ggridges"}. See examples.
 #' @param years Numeric vector defining which years to plot. If \code{NULL} (default), all years are plotted.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
+#' @examples
+#' data(fit)
+#' plot_adist(fit)
+#' plot_adist(fit, type = "line")
+#' plot_adist(fit, type = "ggridges")
 #' @export
 
 plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, years = NULL, base_size = 8) {
@@ -35,7 +40,7 @@ plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, years =
         labeller = ggplot2::label_wrap_gen(multi_line=FALSE),
         scales = scales, ncol = ncol)  +
       ggplot2::theme_classic(base_size = base_size) +
-      ggplot2::labs(x = "Length", y = 'Abundance (in millions)', color = "Stock") +
+      ggplot2::labs(x = "Age", y = 'Abundance (in millions)', color = "Stock") +
       ggplot2::theme(legend.position = "bottom",
                      strip.background = ggplot2::element_blank())
   } else if (type == "bar") {
@@ -61,11 +66,11 @@ plot_adist <- function(fit, type = "bar", scales = "fixed", ncol = NULL, years =
         x = .data$age, y = .data$year, height = 10*.data$p,
         fill = .data$stock, group = interaction(.data$year, .data$stock))
     ) +
-      ggridges::geom_ridgeline(alpha = 0.5, size = 0.1/2.13) +
+      ggridges::geom_ridgeline(alpha = 0.5, linewidth = 0.1/2.13) +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_y_reverse(breaks = seq(1900,2050,2)) +
       ggplot2::expand_limits(x = 0) +
-      ggplot2::labs(x = "Length", y = "Year", fill = "Stock") +
+      ggplot2::labs(x = "Age", y = "Year", fill = "Stock") +
       ggplot2::theme_bw(base_size = base_size)
   }
 

@@ -2,11 +2,17 @@
 #' @description Plots proportions of stocks in the model by length or age
 #' @inheritParams plot_annual
 #' @inheritParams plot_biomass
+#' @param type Character specifying the plot type. Options: "line" or "area". See examples.
 #' @param by_age Logical indicating whether age should be used on the x-axis instead of length
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
+#' @examples
+#' data(fit)
+#' plot_stockcomp(fit)
+#' plot_stockcomp(fit, type = "area")
+#' plot_stockcomp(fit, by_age = TRUE)
 #' @export
 
-plot_stockcomp <- function(fit, by_age = FALSE, geom_area = FALSE, base_size = 8) {
+plot_stockcomp <- function(fit, type = "line", by_age = FALSE, base_size = 8) {
 
   if(!by_age) {
     x <- fit$stock.full %>%
@@ -25,7 +31,7 @@ plot_stockcomp <- function(fit, by_age = FALSE, geom_area = FALSE, base_size = 8
   }
 
   {
-    if(geom_area) {
+    if(type == "area") {
       ggplot2::ggplot(data = x, ggplot2::aes(x = .data$xval, y = .data$p)) +
         ggplot2::geom_area(ggplot2::aes(fill = .data$stock))
     } else {

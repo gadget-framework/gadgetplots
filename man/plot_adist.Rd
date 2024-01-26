@@ -16,7 +16,7 @@ plot_adist(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{type}{Character specifying the plot type. Options: \code{"line"}, \code{"bar"} or \code{"ggridges"}. See Details.}
+\item{type}{Character specifying the plot type. Options: \code{"line"}, \code{"bar"} or \code{"ggridges"}. See examples.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
@@ -31,4 +31,10 @@ A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code
 }
 \description{
 Plot model age distributions for stocks by year
+}
+\examples{
+data(fit)
+plot_adist(fit)
+plot_adist(fit, type = "line")
+plot_adist(fit, type = "ggridges")
 }

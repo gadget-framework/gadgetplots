@@ -7,7 +7,8 @@
 dplot_catch(x, base_size = 8)
 }
 \arguments{
-\item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
+\item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}. Can be a single data frame or a named list of data frames in
+which case multiple catches are plotted in the same figure.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 }
@@ -16,4 +17,15 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
+}
+\examples{
+data(example_catches)
+dplot_catch(TrawlNor_catches)
+dplot_catch(
+  list("TrawlNor" = TrawlNor_catches,
+       "OtherNor" = OtherNor_catches,
+       "TrawlRus" = TrawlRus_catches,
+       "OtherRus" = OtherRus_catches,
+       "Internat" = Internat_catches)
+       )
 }

@@ -9,7 +9,7 @@ dplot_ldist(x, type = "bar", scales = "free_y", base_size = 8)
 \arguments{
 \item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
 
-\item{type}{Character specifying the plot type: "bar", "ggridges" or path}
+\item{type}{Character specifying the plot type: "bar", "ggridges" or "line"}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
@@ -20,4 +20,10 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
+}
+\examples{
+data(ldist_example)
+dplot_ldist(ldist_example)
+dplot_ldist(ldist_example, type = "ggridges")
+dplot_ldist(ldist_example, type = "line")
 }

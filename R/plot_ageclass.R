@@ -1,10 +1,14 @@
-#' @title Plot of age class from the model
+#' @title Plot an age class from the model
 #' @title Plots age class from the model at the beginning of the year
 #' @inheritParams plot_annual
 #' @inheritParams plot_biomass
 #' @inheritParams plot_hr
-#' @param age Integer giving the age class to plot.
+#' @param age Integer specifying the age class to plot.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_ageclass(fit)
+#' plot_ageclass(fit, age = 5, biomass = TRUE)
 #' @export
 
 plot_ageclass <- function(fit, age = 2, biomass = FALSE, base_size = 8, return_data = FALSE) {

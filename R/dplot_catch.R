@@ -4,6 +4,16 @@
 #' @param x A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}. Can be a single data frame or a named list of data frames in
 #' which case multiple catches are plotted in the same figure.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(example_catches)
+#' dplot_catch(TrawlNor_catches)
+#' dplot_catch(
+#'   list("TrawlNor" = TrawlNor_catches,
+#'        "OtherNor" = OtherNor_catches,
+#'        "TrawlRus" = TrawlRus_catches,
+#'        "OtherRus" = OtherRus_catches,
+#'        "Internat" = Internat_catches)
+#'        )
 #' @export
 
 dplot_catch <- function(x, base_size = 8) {

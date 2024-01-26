@@ -8,6 +8,12 @@
 #' @param ncol Number of columns passed to  \code{\link[ggplot2]{facet_wrap}}
 #' @details Do not trust the absolute numbers when \code{by_age = TRUE}. They are estimated from normal distributions by using \code{number * dnorm(1:120, mean = mean_length, sd = stddev_length)}.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{type} argument.
+#' @examples
+#' data(fit)
+#' plot_ldist(fit)
+#' plot_ldist(fit, type = "bar")
+#' plot_ldist(fit, type = "ggridges")
+#' plot_ldist(fit, by_age = TRUE, years = 2021)
 #' @export
 
 plot_ldist <- function(fit, type = "line", by_age = FALSE, stocks = NULL, scales = "fixed", ncol = NULL, years = NULL, base_size = 8) {
@@ -88,7 +94,7 @@ plot_ldist <- function(fit, type = "line", by_age = FALSE, stocks = NULL, scales
         x = .data$length, y = .data$year, height = 100*.data$p,
         fill = .data$stock, group = interaction(.data$year, .data$stock))
     ) +
-      ggridges::geom_ridgeline(alpha = 0.5, size = 0.1/2.13) +
+      ggridges::geom_ridgeline(alpha = 0.5, linewidth = 0.1/2.13) +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_y_reverse(breaks = seq(1900,2050,2)) +
       ggplot2::expand_limits(x = 0) +

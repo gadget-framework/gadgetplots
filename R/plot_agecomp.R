@@ -13,6 +13,12 @@
 #' Note that both \code{"bar"} and \code{"bubble"} contain extra information as text for \code{plotly::ggplotly}.
 #' @param scales Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_agecomp(fit)
+#' plot_agecomp(fit, type = "line", biomass = TRUE)
+#' plot_agecomp(fit, type = "bar")
+#' plot_agecomp(fit, type = "ggridges")
 #' @export
 
 plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE, base_size = 8, return_data = FALSE) {
@@ -32,7 +38,7 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
       dplyr::group_by(.data$year, .data$step, .data$area, .data$age) %>%
       dplyr::summarise(
         number = sum(.data$number, na.rm = TRUE)/1e6, # millions
-        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
+        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE), #kt
         .groups = "drop") %>%
       dplyr::mutate(yc = as.factor(.data$year - .data$age))
 
@@ -45,7 +51,7 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
       dplyr::group_by(.data$year, .data$step, .data$area, .data$stock, .data$age) %>%
       dplyr::summarise(
         number = sum(.data$number, na.rm = TRUE)/1e6, # millions
-        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE)/1e6, #kt
+        weight = sum(.data$number*.data$mean_weight, na.rm = TRUE), #kt
         .groups = "drop") %>%
       dplyr::mutate(yc = as.factor(.data$year - .data$age))
 
@@ -93,14 +99,14 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
             fill = .data$yc,
             text = paste("age:", round(.data$age))
           ),
-          col = 'black', size = 0.5/2.13)} + {
+          col = 'black', linewidth = 0.5/2.13)} + {
             if(biomass) ggplot2::geom_bar(
               stat='identity',
               ggplot2::aes(
                 .data$year,.data$weight,
                 fill = .data$yc,
                 text = paste("age:", round(.data$age))),
-              col = 'black', size = 0.5/2.13)} +
+              col = 'black', linewidth = 0.5/2.13)} +
         ggplot2::facet_wrap(
           ~.data$age, ncol=1, scales = scales, strip.position="right"
         ) +
@@ -140,7 +146,7 @@ plot_agecomp <- function(fit, type = "bubble", scales = "fixed", biomass = FALSE
         tidyr::unnest(cols = c(.data$bars)),
       ggplot2::aes(x = .data$x, y = .data$year, height = 2*.data$height,
                    group = .data$year, fill = factor(.data$year))) +
-      ggridges::geom_ridgeline(alpha = 0.5, size = 0.5/2.13) +
+      ggridges::geom_ridgeline(alpha = 0.5, linewidth = 0.5/2.13) +
       ggplot2::scale_y_reverse(breaks = seq(1900,2050,2)) +
       ggplot2::scale_fill_manual(
         values = rep(pal, ceiling(length(unique(dat$year)) / length(pal)))) +

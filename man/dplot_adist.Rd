@@ -16,9 +16,9 @@ dplot_adist(
 \arguments{
 \item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
 
-\item{type}{Character specifying the plot type: "bar" or "ggridges"}
+\item{type}{Character specifying the plot type: "bar" or "ggridges".}
 
-\item{color_palette}{A function defining the color palette to be used for fill of bars when \code{facet_age = TRUE}. See \link[ggplot2]{scale_color_manual}. To adjust color when \code{facet_age = FALSE}, use the standard \code{ggplot2::scale_fill_*} functions.}
+\item{color_palette}{A function defining the color palette to be used for fill of bars.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
@@ -31,4 +31,9 @@ A \link[ggplot2]{ggplot} object.
 }
 \description{
 The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
+}
+\examples{
+data(aldist_example)
+dplot_adist(aldist_example)
+dplot_adist(aldist_example, type = "ggridges")
 }

@@ -5,7 +5,6 @@
 #' @param ncol Number of columns to be used in the plot. Set to \code{NULL} for standard layout.
 #' @param colors Vector of colors to use for leave-out component names. If a named vector, the component names are sorted following the order in the legend.
 #' @param legend_title Character speficfying the title for legend (color mapping)
-#' @details Leave-out analysis has currently not been implemented to gadgetutils. Ask Mikko for the code.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @export
 

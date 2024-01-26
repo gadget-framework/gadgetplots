@@ -2,6 +2,9 @@
 #' @description Produces a residual plot for each \code{catchdist.fleets} component.
 #' @inheritParams plot_annual
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_resid(fit)
 #' @export
 
 plot_resid <- function(fit, base_size = 8) {

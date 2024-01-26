@@ -19,3 +19,8 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Plot parameter weights
 }
+\examples{
+data(fit)
+plot_weight(fit)
+plot_weight(fit, log_scale = TRUE)
+}

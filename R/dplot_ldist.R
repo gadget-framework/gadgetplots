@@ -1,8 +1,13 @@
 #' @title Plot length distribution data for a gadget3 model
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @inheritParams dplot_aldist
-#' @param type Character specifying the plot type: "bar", "ggridges" or path
+#' @param type Character specifying the plot type: "bar", "ggridges" or "line"
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(ldist_example)
+#' dplot_ldist(ldist_example)
+#' dplot_ldist(ldist_example, type = "ggridges")
+#' dplot_ldist(ldist_example, type = "line")
 #' @export
 
 dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
@@ -105,6 +110,15 @@ dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
       x,
       ggplot2::aes(x = .data$Length, y = .data$number, color = .data$step)
     ) +
+      ggplot2::geom_vline(xintercept = length_groups, color = "grey", linewidth = 0.5/2.13) +
+      ggplot2::geom_vline(xintercept = attr(first_length_group[[1]], "min"),
+                          color = "grey",
+                          linetype = ifelse(min_open_ended, "dotted", "solid"),
+                          linewidth = 1/2.13) +
+      ggplot2::geom_vline(xintercept = attr(last_length_group[[1]], "max"),
+                          color = "grey",
+                          linetype = ifelse(max_open_ended, "dotted", "solid"),
+                          linewidth = 1/2.13) +
       ggplot2::geom_path() +
       ggplot2::facet_wrap(~.data$year, scales = scales, dir = "v") +
       ggplot2::labs(x = "Length (cm)", y = "Count", color = "Timestep") +

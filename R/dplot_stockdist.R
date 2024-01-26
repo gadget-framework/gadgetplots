@@ -11,6 +11,11 @@
 #' @param colors A vector of colors to be used for stocks. If \code{NULL},
 #' \code{scales::hue_pal()} will be used
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(stockdist_example)
+#' dplot_stockdist(stockdist_example)
+#' dplot_stockdist(stockdist_example, proportion = TRUE)
+#' dplot_stockdist(stockdist_example, proportion = TRUE, group_by_sex = TRUE)
 #' @export
 
 dplot_stockdist <-

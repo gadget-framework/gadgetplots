@@ -21,3 +21,9 @@ A list of \link[ggplot2]{ggplot} objects consisting of a separate plot for each 
 \description{
 Plots the length distribution of each \code{fit$catchdist.fleets$name}
 }
+\examples{
+data(fit)
+# Only one data set to save space:
+plot_catchdist(fit, name = "EggaN_ldist")
+plot_catchdist(fit, name = "EggaN_ldist", type = "line")
+}

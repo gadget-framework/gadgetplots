@@ -25,3 +25,4 @@ Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo,
   lubridate
 Suggests: gadgetutils
 RoxygenNote: 7.3.0
+URL: https://gadget-framework.github.io/gadgetplots/

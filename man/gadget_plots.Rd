@@ -19,11 +19,11 @@ gadget_plots(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{path}{Directory path for saving figures}
+\item{path}{Directory path for saving figures.}
 
-\item{file_type}{Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or "html" which compiles all plots into one html file using \code{\link[knitr]{knit}} and the \code{\link{make_html}} function.}
+\item{file_type}{Character. Either one of the \code{device}s in \code{\link[ggplot2]{ggsave}}, in which case files of the defined type are printed to \code{path}, or \code{"html"} which compiles all plots into one html file using \code{\link[knitr]{knit}} and the \code{\link{make_html}} function.}
 
-\item{quiet}{Logical indicating whether to print messages about the plotting process (set to \code{FALSE} to suppress the messages.}
+\item{quiet}{Logical indicating whether to print messages about the plotting process. Set to \code{FALSE} to suppress the messages.}
 
 \item{width, height}{Plot size given in \code{units}. If \code{NULL}, reasonable standard values are used.}
 
@@ -40,5 +40,5 @@ Returns nothing, but makes the requested files.
 Wrapper for plot.gadget.fit that saves all diagnostic graphs to a directory
 }
 \seealso{
-[make_html()]
+make_html
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ageclass.R
 \name{plot_ageclass}
 \alias{plot_ageclass}
-\title{Plot of age class from the model}
+\title{Plot an age class from the model}
 \usage{
 plot_ageclass(
   fit,
@@ -15,9 +15,9 @@ plot_ageclass(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{age}{Integer giving the age class to plot.}
+\item{age}{Integer specifying the age class to plot.}
 
-\item{biomass}{Logical indicating whether biomass should be plotted instead of estimated abundance.}
+\item{biomass}{Logical indicating whether biomass should be plotted instead of abundance.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
@@ -27,7 +27,12 @@ plot_ageclass(
 A \link[ggplot2]{ggplot} object.
 }
 \description{
-Plot of age class from the model
+Plot an age class from the model
 
 Plots age class from the model at the beginning of the year
+}
+\examples{
+data(fit)
+plot_ageclass(fit)
+plot_ageclass(fit, age = 5, biomass = TRUE)
 }

@@ -19,3 +19,7 @@ A \link[ggplot2]{ggplot} object.
 \description{
 The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 }
+\examples{
+data(sexratio_example)
+dplot_sexr(sexratio_example)
+}

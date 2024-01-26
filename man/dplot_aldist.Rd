@@ -35,3 +35,9 @@ A \link[ggplot2]{ggplot} object.
 \description{
 The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 }
+\examples{
+data(aldist_example)
+dplot_aldist(aldist_example)
+dplot_aldist(aldist_example, facet_age = TRUE)
+dplot_aldist(aldist_example, type = "area") # works poorly
+}

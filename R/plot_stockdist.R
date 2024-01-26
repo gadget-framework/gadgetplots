@@ -8,13 +8,20 @@
 #' @param color_palette A function defining the color palette or a vector of colors to be used for stocks.
 #' @details Plots model fit to data using likelihoods. Separate plot for each \code{unique(fit$stockdist$name)}.
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{stocks} argument.
+#' @examples
+#' data(fit)
+#' # Only one dataset to save space:
+#' plot_stockdist(fit, name = "EggaN_matp")
+#' plot_stockdist(fit, name = "EggaN_matp", stocks = "separate",
+#'                color_palette = NULL)
+#' plot_stockdist(fit, name = "EggaN_matp", type = "line", show_intervals = TRUE)
 #' @export
 
 # Dev params
-# stocks = NULL; name = NULL; type = "step"; show_intervals = FALSE; color_palette = scales::hue_pal(); base_size = 8
+# stocks = NULL; name = NULL; type = "step"; show_intervals = FALSE; color_palette = "default"; base_size = 8
 plot_stockdist <- function(
     fit, stocks = NULL, name = NULL, type = "step", show_intervals = FALSE,
-    color_palette = scales::hue_pal(), base_size = 8
+    color_palette = "default", base_size = 8
 ) {
 
   ## Check whether fit contains stockdist
@@ -48,17 +55,33 @@ plot_stockdist <- function(
   }
 
   ## Colors
-  if(inherits(color_palette, "function")) {
+  if(!is.null(color_palette)) {
 
-    cols <- stats::setNames(color_palette(length(c(all_stocks, all_stock_res))),
-                            c(all_stocks, all_stock_res))
-  } else {
-    if(length(color_palette) != length(c(all_stocks, all_stock_res))) {
-      stop("color_palette has to be a vector with a same length than the number of stocks in the model or a color palette function")
-    } else {
-      cols <- color_palette
+    if(color_palette == "default") {
+      if(is.null(stocks)) {
+        color_palette <- scales::hue_pal()
+      } else {
+        color_palette <- if(stocks == "separate") NULL else scales::hue_pal()
+      }
     }
+
+    if(is.null(color_palette)) {
+      cols <- color_palette
+    } else if(inherits(color_palette, "function")) {
+
+      cols <- stats::setNames(color_palette(length(c(all_stocks, all_stock_res))),
+                              c(all_stocks, all_stock_res))
+    } else {
+      if(length(color_palette) != length(c(all_stocks, all_stock_res))) {
+        stop("color_palette has to be a vector with a same length than the number of stocks in the model or a color palette function")
+      } else {
+        cols <- color_palette
+      }
+    }
+  } else {
+    cols <- NULL
   }
+
 
   ## Plot for length distributions
   lenplot <- function(stocks = NULL, stockdist_name = name, type = type, color_palette) {
@@ -111,46 +134,96 @@ plot_stockdist <- function(
             dplyr::select(-.data$lower) %>%
             dplyr::rename("lower"= "upper")
         ) %>%
-        dplyr::arrange(.data$year, .data$step, .data$stock, .data$lower)
-
+        dplyr::arrange(.data$year, .data$step, .data$stock, .data$lower) %>%
+        dplyr::rename(observed = "obs.ratio", predicted = "pred.ratio") %>%
+        tidyr::pivot_longer(cols = c(.data$observed, .data$predicted))
 
       ### Plot
       suppressWarnings({
         ggplot2::ggplot(x) + {
           if(show_intervals) ggplot2::geom_vline(
             xintercept = length_groups, color = "grey", linetype = "dotted")
+        } + {
+          if(is.null(color_palette))
+            ggplot2::geom_step(
+              ggplot2::aes(x = .data$lower, y = .data$value, linetype = .data$stock,
+                           color = .data$name)
+            )
+        } + {
+          if(!is.null(color_palette))
+            ggplot2::geom_step(
+              ggplot2::aes(x = .data$lower, y = .data$value, color = .data$stock,
+                           linetype = .data$name)
+            )
         } +
-          ggplot2::geom_step(
-            ggplot2::aes(x = .data$lower, y = .data$obs.ratio, lty = .data$stock),
-            color = "grey") +
-          ggplot2::geom_step(
-            ggplot2::aes(x = .data$lower, y = .data$pred.ratio, lty = .data$stock),
-            color = "black") +
           ggplot2::facet_wrap(~.data$year+.data$step,
                               labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
           ggplot2::expand_limits(y = c(0,1)) +
           ggplot2::scale_y_continuous(breaks = seq(0,1,0.25)) +
-          ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label) +
-          # ggplot2::scale_color_manual(values = cols) +
+          {if(is.null(color_palette))
+            ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label,
+                          color = "Source"
+            )
+          } +
+          {if(!is.null(color_palette))
+            ggplot2::labs(y = 'Stock proportion', x = 'Length', color = stock_label,
+                          lty = "Source")
+          } +
+          {if(!is.null(color_palette)) ggplot2::scale_color_manual(values = cols)} +
+          {if(!is.null(color_palette))
+            ggplot2::scale_linetype_manual(values = c("predicted" = 1, "observed" = 2))
+          } +
+          {if(is.null(color_palette))
+            ggplot2::scale_color_manual(values = c("predicted" = "black", "observed" = "grey"))
+          } +
           ggplot2::theme_classic(base_size = base_size) +
           ggplot2::theme(legend.position = "bottom",
                          strip.background = ggplot2::element_blank())
       })
     } else {
-      x %>%
-        ggplot2::ggplot(
-          ggplot2::aes(x = .data$length, y = .data$obs.ratio,
-                       lty = .data$stock # shape = .data$stock, color = .data$stock
-          )) +
-        ggplot2::geom_line(color = "grey") +
-        ggplot2::geom_line(ggplot2::aes(y = .data$pred.ratio, lty = .data$stock),
-                           color = "black") +
+
+      x <- x %>%
+        dplyr::select(.data$year, .data$step, .data$stock, .data$lower,
+                      .data$upper, .data$obs.ratio, .data$pred.ratio) %>%
+        dplyr::rename(observed = "obs.ratio", predicted = "pred.ratio") %>%
+        tidyr::pivot_longer(cols = c(.data$observed, .data$predicted))
+
+      ggplot2::ggplot(x) + {
+        if(show_intervals) ggplot2::geom_vline(
+          xintercept = length_groups, color = "grey", linetype = "dotted")
+      } + {
+        if(is.null(color_palette))
+          ggplot2::geom_line(
+            ggplot2::aes(x = .data$lower, y = .data$value, linetype = .data$stock,
+                         color = .data$name)
+          )
+      } + {
+        if(!is.null(color_palette))
+          ggplot2::geom_line(
+            ggplot2::aes(x = .data$lower, y = .data$value, color = .data$stock,
+                         linetype = .data$name)
+          )
+      } +
         ggplot2::facet_wrap(~.data$year+.data$step,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
         ggplot2::expand_limits(y = c(0,1)) +
         ggplot2::scale_y_continuous(breaks = seq(0,1,0.25)) +
-        ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label) +
-        # ggplot2::scale_color_manual(values = cols) +
+        {if(is.null(color_palette))
+          ggplot2::labs(y = 'Stock proportion', x = 'Length', lty = stock_label,
+                        color = "Source"
+          )
+        } +
+        {if(!is.null(color_palette))
+          ggplot2::labs(y = 'Stock proportion', x = 'Length', color = stock_label,
+                        lty = "Source")
+        } +
+        {if(!is.null(color_palette)) ggplot2::scale_color_manual(values = cols)} +
+        {if(!is.null(color_palette))
+          ggplot2::scale_linetype_manual(values = c("predicted" = 1, "observed" = 2))
+        } +
+        {if(is.null(color_palette))
+          ggplot2::scale_color_manual(values = c("predicted" = "black", "observed" = "grey"))
+        } +
         ggplot2::theme_classic(base_size = base_size) +
         ggplot2::theme(legend.position = "bottom",
                        strip.background = ggplot2::element_blank())

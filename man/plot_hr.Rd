@@ -36,8 +36,14 @@ A \link[ggplot2]{ggplot} object.
 Plot harvest rate
 }
 \details{
-The function uses all catches without filtering to size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections for instance. The \code{min_catch_length} = 0 is for the latter case.
+The function uses all catches without filtering by size (but allocates them to substocks) and varies denominator depending on the \code{min_catch_length} argument. If \code{min_catch_length} = NULL, the output represents harvest rate for each substock assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}). If \code{min_catch_length} = 0, the output represents harvest rate for the entire model population assuming model fleet selectivities (fetched from the \code{harv.biomass} column in \code{fit$res.by.year}, stocks are summed before calculating the harvest rate). Finally, if \code{min_catch_length} is any number > 0, the output represents harvest rate \emph{assuming} flat selectivity for lengths >= \code{min_catch_length}. Note that the last \strong{IS NOT real model harvest rate}. It should only be used for reporting results, never for finding target harvest rates in projections, for instance. The \code{min_catch_length} = 0 is for the latter case.
+}
+\examples{
+data(fit)
+plot_hr(fit)
+plot_hr(fit, model_selectivity = FALSE)
+plot_hr(fit, min_catch_length = 45)
 }
 \seealso{
-plot_f
+\link{plot_f}
 }

@@ -2,6 +2,9 @@
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @inheritParams dplot_aldist
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(sexratio_example)
+#' dplot_sexr(sexratio_example)
 #' @export
 
 dplot_sexr <- function(x, ncol = NULL, base_size = 8) {

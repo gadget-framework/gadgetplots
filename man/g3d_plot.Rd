@@ -9,7 +9,7 @@ g3d_plot(model, regexp = NULL, scales = "fixed", ncol = NULL, base_size = 8)
 \arguments{
 \item{model}{R or TMB model. A model object from \link[gadget3]{g3_to_r} or \link[gadget3]{g3_to_tmb} functions.}
 
-\item{regexp}{Either \code{NULL} (no filtering) or a character string giving a regular expression to filter model-data components. Useful alternatives: \code{"adist"} for abundance distribution data and \code{"cdist"} for catch distribution data.}
+\item{regexp}{Either \code{NULL} (no filtering) or a character string giving a regular expression to filter model-data components. Useful alternatives: \code{"adist"} for abundance distribution data, \code{"cdist"} for catch distribution data, \code{"surveyindices"} for survey indices, and \code{"catch"} for catches.}
 
 \item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
 
@@ -21,7 +21,7 @@ g3d_plot(model, regexp = NULL, scales = "fixed", ncol = NULL, base_size = 8)
 A list of \link[ggplot2]{ggplot} objects.
 }
 \description{
-Plot of data passed into a gadget model
+Plot all observational data from a gadget model
 }
 \details{
 Plots data as contained in a gadget model. Helpful in checking models for possible data issues and for documentation of models.

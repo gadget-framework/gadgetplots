@@ -22,3 +22,13 @@ g3plot_exponentiall50(length, alpha, l50, add = FALSE, base_size = 8, ...)
 \description{
 Plot exponentiall50 suitability using model parameters
 }
+\examples{
+data(fit)
+suit <- fit$params[grepl("ghl_female.ecos.survey", fit$params$switch),]
+
+g3plot_exponentiall50(
+   length = 1:60,
+   alpha = unlist(suit[grepl("alpha", suit$switch), "value"]),
+   l50 = unlist(suit[grepl("l50", suit$switch), "value"])
+   )
+}

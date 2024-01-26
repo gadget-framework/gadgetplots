@@ -2,6 +2,9 @@
 #' @inheritParams plot_annual
 #' @inheritParams plot_catchdist
 #' @return A \link[ggplot2]{ggplot} object. A list of ggplot objects if there are multiple age-length (aldist) data sources (\code{unique(fit$catchdist.fleets$name)}).
+#' @examples
+#' data(fit)
+#' plot_agelength(fit)
 #' @export
 
 plot_agelength <- function(fit, name = NULL, base_size = 8) {
@@ -10,7 +13,7 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
   if (!('stock' %in% names(fit$catchdist.fleets)) & 'stocknames' %in% names(fit$catchdist.fleets)){
     fit$catchdist.fleets <- fit$catchdist.fleets %>% dplyr::rename(stock = .data$stocknames)
   }
-  
+
   ## Plot function
 
   agelenplot <- function(dat) {

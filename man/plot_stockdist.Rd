@@ -10,7 +10,7 @@ plot_stockdist(
   name = NULL,
   type = "step",
   show_intervals = FALSE,
-  color_palette = scales::hue_pal(),
+  color_palette = "default",
   base_size = 8
 )
 }
@@ -37,4 +37,12 @@ Plots proportions of stocks by length or age in \code{fit$stockdist}
 }
 \details{
 Plots model fit to data using likelihoods. Separate plot for each \code{unique(fit$stockdist$name)}.
+}
+\examples{
+data(fit)
+# Only one dataset to save space:
+plot_stockdist(fit, name = "EggaN_matp")
+plot_stockdist(fit, name = "EggaN_matp", stocks = "separate",
+               color_palette = NULL)
+plot_stockdist(fit, name = "EggaN_matp", type = "line", show_intervals = TRUE)
 }

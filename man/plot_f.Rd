@@ -32,6 +32,11 @@ Plot fishing mortality
 \details{
 The function calculates either average fishing mortality per substock or average fishing mortality over an age range depending on the \code{fbar_ages} argument.
 }
+\examples{
+data(fit)
+plot_f(fit)
+plot_f(fit, fbar_ages = 5:10)
+}
 \seealso{
-plot_hr
+\link{plot_hr}
 }

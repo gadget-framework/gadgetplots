@@ -15,13 +15,13 @@ plot_annual(
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{harvest_rate}{A Logical value, if TRUE the harvest rate will be plotted, if FALSE the fishing mortality will be plotted.}
+\item{harvest_rate}{A Logical value, if \code{TRUE} the harvest rate will be plotted, if \code{FALSE} the fishing mortality will be plotted.}
 
 \item{color_palette}{A function defining the color palette to be used or a vector of colors which is 1 longer than the number of stocks in the model. The extra color will be used for total estimate. See \link[ggplot2]{scale_color_manual}.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
-\item{...}{Additional arguments passed to \code{plot_*} functions. See Details.}
+\item{...}{Additional arguments passed to \code{plot_*} functions.}
 }
 \value{
 A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot objects.

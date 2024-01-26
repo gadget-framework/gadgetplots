@@ -4,6 +4,10 @@
 #' @param panelrow something here
 #' @param stocks Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. If \code{"total"}, total recruitment will be plotted instead.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_rec(fit)
+#' plot_rec(fit, stocks = "total")
 #' @export
 
 # Debugging arguments:

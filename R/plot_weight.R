@@ -2,6 +2,10 @@
 #' @inheritParams plot_annual
 #' @param log_scale Logical indicating whether the value axis should be log10 transformed.
 #' @return A \link[ggplot2]{ggplot} object.
+#' @examples
+#' data(fit)
+#' plot_weight(fit)
+#' plot_weight(fit, log_scale = TRUE)
 #' @export
 
 plot_weight <- function(fit, log_scale = FALSE, base_size = 8) {

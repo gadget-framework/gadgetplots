@@ -6,6 +6,10 @@
 #' @param years A vector of recruitment years to include. If \code{NULL}, all years will be used.
 #' @param add_line Add a line connecting years
 #' @return A \link[ggplot2]{ggplot} object or a list of such objects depending on the \code{stocks} argument.
+#' @examples
+#' data(fit)
+#' plot_sr(fit, spawning_stock = "ghl_female_mat")
+#' plot_sr(fit, spawning_stock = 45)
 #' @export
 
 plot_sr <- function(fit, spawning_stock = NULL, lag = 1, years = NULL, add_line = TRUE, base_size = 8) {

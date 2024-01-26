@@ -19,3 +19,7 @@ A \link[ggplot2]{ggplot} object. A list of ggplot objects if there are multiple 
 \description{
 Plot of fitted growth for each age-length component
 }
+\examples{
+data(fit)
+plot_agelength(fit)
+}

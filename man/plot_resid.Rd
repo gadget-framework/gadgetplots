@@ -17,3 +17,7 @@ A \link[ggplot2]{ggplot} object.
 \description{
 Produces a residual plot for each \code{catchdist.fleets} component.
 }
+\examples{
+data(fit)
+plot_resid(fit)
+}
