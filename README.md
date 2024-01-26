@@ -33,7 +33,9 @@ for a detailed list of functions and documentation on how to use them.
 
 The
 [`make_html()`](https://gadget-framework.github.io/gadgetplots/reference/make_html.html)
-function generates a single html file out of
+function generates a [single html
+file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html)
+out of
 [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html)
 output that contains key model diagnostics. Further, the package
 produces plots in four categories:

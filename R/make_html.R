@@ -4,7 +4,7 @@
 #' @param path Directory path for saving the html output.
 #' @param file_name Character specifying the name of the html file without path. Must include the file extension.
 #' @param template Character specifying the html template to use. See details.
-#' @return Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/docs/articles/make_html_output.html}{webpage for example output}.
+#' @return Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html}{webpage for example output}.
 #' @details The package contains html templates tailored for different stocks needed by the authors. Specify the name in the \code{template} argument. Current alternatives are:
 #' \describe{
 #'   \item{standard}{Standard model output figures. Use the \code{harvest_rate} argument to switch between F and HR figures.}

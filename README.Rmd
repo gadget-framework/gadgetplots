@@ -37,7 +37,7 @@ remotes::install_github("gadget-framework/gadgetplots")
 
 See the [**function reference**](https://gadget-framework.github.io/gadgetplots/reference/index.html) for a detailed list of functions and documentation on how to use them. 
 
-The [`make_html()`](https://gadget-framework.github.io/gadgetplots/reference/make_html.html) function generates a single html file out of [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html) output that contains key model diagnostics. Further, the package produces plots in four categories:
+The [`make_html()`](https://gadget-framework.github.io/gadgetplots/reference/make_html.html) function generates a [single html file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html) out of [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html) output that contains key model diagnostics. Further, the package produces plots in four categories:
 
 1) `plot_*()` functions plot gadget model **output** generated using [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html). These functions have a generic shorthand, the [`plot()`](https://gadget-framework.github.io/gadgetplots/reference/plot.gadget.fit.html), with `param` argument specifying the type of plot.
 

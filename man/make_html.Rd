@@ -24,7 +24,7 @@ make_html(
 \item{template}{Character specifying the html template to use. See details.}
 }
 \value{
-Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/docs/articles/make_html_output.html}{webpage for example output}.
+Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html}{webpage for example output}.
 }
 \description{
 Save diagnostic graphs to a single html document
