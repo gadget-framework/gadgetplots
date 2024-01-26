@@ -5,8 +5,9 @@ reference:
 
 - title: Model overviews
   desc: >
-    The `make_html()` function generates a single html file out of
-    `gadgetutils::g3_fit()` output that contains key model diagnostics.
+    The `make_html()` function generates a
+    [single html file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html)
+    out of `gadgetutils::g3_fit()` output that contains key model diagnostics.
     The `gadget_plots()` function saves a set of diagnostics plots into
     a folder.
   contents:
