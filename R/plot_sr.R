@@ -50,7 +50,7 @@ plot_sr <- function(fit, spawning_stock = NULL, lag = 1, years = NULL, add_line 
   tmp <- tmp[-1,]
 
   if (unique(tmp$step) == 1) {
-    tmp$year <- tmp$year - 1
+    tmp$year <- tmp$year - lag
   } else stop("Other time steps than 1 have not been implemented yet.")
 
 

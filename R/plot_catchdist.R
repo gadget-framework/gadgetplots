@@ -118,7 +118,7 @@ plot_catchdist <- function(fit, type = "step", name = NULL, base_size = 8) {
           dplyr::rename("lower"= "upper")
       ) %>%
       dplyr::arrange(.data$year, .data$step, .data$lower) %>%
-      ggplot2::ggplot()+
+      ggplot2::ggplot() +
       ggplot2::geom_step(
         ggplot2::aes(x = .data$lower, y = .data$observed),
         color = "grey") +
