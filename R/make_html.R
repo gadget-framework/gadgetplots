@@ -18,8 +18,12 @@
 
 make_html <- function(fit, path, harvest_rate = TRUE, file_name = 'model_output_figures.html', template = "standard") {
   filename <- paste0(template, ".Rmd")
+  path <- fs::path_abs(path)
+  fs::dir_create(path)
   rmarkdown::render(
     input = system.file(filename, package="gadgetplots"),
+    # NB: Without, rmarkdown will store temporary kint files in the package directory above
+    knit_root_dir = path,
     output_dir = path,
     output_file = file_name,
     params = list(fit = fit, harvest_rate = harvest_rate)
