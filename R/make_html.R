@@ -17,14 +17,21 @@
 #' @export
 
 make_html <- function(fit, path, harvest_rate = TRUE, file_name = 'model_output_figures.html', template = "standard") {
-  filename <- paste0(template, ".Rmd")
   path <- fs::path_abs(path)
   fs::dir_create(path)
+
+  # Copy the template to use into the output directory, so temporary files also go there
+  # NB: Without, rmarkdown will store temporary kint files in the package directory.
+  #     We could set knit_root_dir / intermediates_dir, but intermediates_dir causes spurious duplicated chunks
+  template_path <- file.path(path, "template.Rmd")
+  fs::file_copy(
+      system.file(paste0(template, ".Rmd"), package="gadgetplots"),
+      template_path,
+      overwrite = TRUE)
+  on.exit(fs::file_delete(template_path), add = TRUE)
+
   rmarkdown::render(
-    input = system.file(filename, package="gadgetplots"),
-    # NB: Without, rmarkdown will store temporary kint files in the package directory above
-    knit_root_dir = path,
-    intermediates_dir = path,
+    input = template_path,
     output_dir = path,
     output_file = file_name,
     params = list(fit = fit, harvest_rate = harvest_rate)
