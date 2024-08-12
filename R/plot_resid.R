@@ -8,6 +8,10 @@
 #' @export
 
 plot_resid <- function(fit, base_size = 8) {
+  if (is.null(fit$catchdist) || is.null(fit$catchdist.fleets)) {
+    warning("No catchdist to plot")
+    return(NULL)
+  }
 
   ggplot2::ggplot(fit$catchdist.fleets,
                   ggplot2::aes(.data$lower, .data$observed - .data$predicted,

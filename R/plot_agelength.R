@@ -14,6 +14,11 @@ plot_agelength <- function(fit, name = NULL, base_size = 8) {
     fit$catchdist.fleets <- fit$catchdist.fleets %>% dplyr::rename(stock = .data$stocknames)
   }
 
+  if (is.null(fit$catchdist) || is.null(fit$catchdist.fleets)) {
+    warning("No catchdist to plot")
+    return(NULL)
+  }
+
   ## Plot function
 
   agelenplot <- function(dat) {
