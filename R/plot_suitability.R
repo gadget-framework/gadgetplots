@@ -60,22 +60,24 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_mis
             )
           } +
           ggplot2::geom_line(linewidth = base_size/16, alpha = 0.7) +
-          ggplot2::facet_wrap(~.data$year + .data$step) +
           ggplot2::labs(y='Suitability',x='Length', color = 'Stock') +
-          ggplot2::geom_text(
-            data = dat %>%
-              dplyr::ungroup() %>%
-              dplyr::select(.data$year,.data$step) %>%
-              dplyr::mutate(y=Inf,
-                            label = paste(.data$year,.data$step,sep=',')) %>%
-              dplyr::select(.data$step,.data$y,.data$year,.data$label) %>%
-              dplyr::distinct(),
-            ggplot2::aes(-Inf,Inf,label=.data$label),
-            vjust = 1.3,hjust = -.05,
-            size = FS(base_size)*0.8,
-            inherit.aes = FALSE) +
-          ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
-                              ncol = max(2*length(unique(fit$suitability$step)),4)) +
+          if (!(all(is.na(dat$year)) && all(is.na(dat$step)))){
+            ggplot2::facet_wrap(~.data$year + .data$step) +
+              ggplot2::geom_text(
+                data = dat %>%
+                  dplyr::ungroup() %>%
+                  dplyr::select(.data$year,.data$step) %>%
+                  dplyr::mutate(y=Inf,
+                                label = paste(.data$year,.data$step,sep=',')) %>%
+                  dplyr::select(.data$step,.data$y,.data$year,.data$label) %>%
+                  dplyr::distinct(),
+                ggplot2::aes(-Inf,Inf,label=.data$label),
+                vjust = 1.3,hjust = -.05,
+                size = FS(base_size)*0.8,
+                inherit.aes = FALSE) +
+              ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
+                                  ncol = max(2*length(unique(fit$suitability$step)),4))
+          } + 
           ggplot2::theme_classic(base_size = base_size) +
           ggplot2::theme(
             axis.text.y = ggplot2::element_blank(),
@@ -112,22 +114,24 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_mis
       } + {
         if(length(fleets) == 1) ggplot2::geom_line(size = base_size/16)
       } +
-      ggplot2::facet_wrap(~.data$year + .data$step) +
       ggplot2::labs(y='Suitability',x='Length', color = 'Stock', if(length(fleets) > 1) {lty = 'Fleet'}) +
-      ggplot2::geom_text(
-        data = dat %>%
-          dplyr::ungroup() %>%
-          dplyr::select(.data$year,.data$step) %>%
-          dplyr::mutate(y=Inf,
-                        label = paste(.data$year,.data$step,sep=',')) %>%
-          dplyr::select(.data$step,.data$y,.data$year,.data$label) %>%
-          dplyr::distinct(),
-        ggplot2::aes(-Inf,Inf,label=.data$label),
-        vjust = 1.3,hjust = -.05,
-        size = FS(base_size)*0.8,
-        inherit.aes = FALSE) +
-      ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
-                          ncol = max(2*length(unique(fit$suitability$step)),4)) +
+      if (!all(is.na(dat$year)) && all(is.na(dat$step))){
+        ggplot2::facet_wrap(~.data$year + .data$step) +
+          ggplot2::geom_text(
+            data = dat %>%
+              dplyr::ungroup() %>%
+              dplyr::select(.data$year,.data$step) %>%
+              dplyr::mutate(y=Inf,
+                            label = paste(.data$year,.data$step,sep=',')) %>%
+              dplyr::select(.data$step,.data$y,.data$year,.data$label) %>%
+              dplyr::distinct(),
+            ggplot2::aes(-Inf,Inf,label=.data$label),
+            vjust = 1.3,hjust = -.05,
+            size = FS(base_size)*0.8,
+            inherit.aes = FALSE) +
+          ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
+                              ncol = max(2*length(unique(fit$suitability$step)),4))  
+      } +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(axis.text.y = ggplot2::element_blank(),
                      axis.ticks.y = ggplot2::element_blank(),
