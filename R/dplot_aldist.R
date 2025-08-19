@@ -15,6 +15,7 @@
 #' dplot_aldist(aldist_example, type = "area") # works poorly
 #' @export
 
+# type = "bar"; facet_age = FALSE; scales = "fixed"; ncol = NULL; color_palette = scales::brewer_pal(palette = "Set1"); base_size = 8
 dplot_aldist <- function(
     x, type = "bar", facet_age = FALSE, scales = "fixed", ncol = NULL,
     color_palette = scales::brewer_pal(palette = "Set1"), base_size = 8
@@ -89,7 +90,7 @@ dplot_aldist <- function(
           linetype = ifelse(
             !is.null(attr(last_length_group[[1]], "max_open_ended")),
             "dotted", "solid"), linewidth = 1/2.13) +
-        ggplot2::geom_rect(color = "black") +
+        ggplot2::geom_rect(color = "black", linewidth = 0.5/2.13) +
         ggplot2::labs(x = "Length (cm)", y = "Number") +
         ggplot2::facet_grid(.data$Age~.data$Date, scales = scales,
                             labeller = ggplot2::label_wrap_gen(multi_line=FALSE))+
@@ -123,7 +124,7 @@ dplot_aldist <- function(
                    "dotted", "solid"), linewidth = 1/2.13) +
         ggplot2::scale_x_continuous(expand = c(0,0.5), n.breaks = 8) +
         ggplot2::scale_y_continuous(expand = c(0, 0)) +
-        ggplot2::geom_col(color = "black") +
+        ggplot2::geom_col(color = "black", linewidth = 0.2/2.13) +
         ggplot2::labs(x = "Length (cm)", y = "Number") +
         ggplot2::scale_fill_viridis_c() +
         ggplot2::theme_classic(base_size = base_size) +
@@ -150,7 +151,7 @@ dplot_aldist <- function(
         linetype =
           ifelse(!is.null(attr(last_length_group[[1]], "max_open_ended")),
                  "dotted", "solid"), linewidth = 1/2.13) +
-      ggplot2::geom_area(color = "black") +
+      ggplot2::geom_area(color = "black", linewidth = 0.2/2.13) +
       ggplot2::labs(x = "Length (cm)", y = "Number") +
       ggplot2::facet_wrap(~.data$Date, scales = scales, dir = "v", ncol = ncol,
                  labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
