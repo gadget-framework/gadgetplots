@@ -171,8 +171,17 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE,
     }
   } else {
 
+    if(is.list(fit$params)) {
+      tmp <- fit$params[
+        grepl("init.sd", names(fit$params))] 
+      
+      tmp <- setNames(as.data.frame(tmp), "value") %>% 
+        mutate(switch = names(tmp), .before = 1)
+      
+    } else {
     tmp <- fit$params %>%
-        dplyr::filter(grepl("init.sd", .data$switch))
+      dplyr::filter(grepl("init.sd", .data$switch))
+    }
 
     if(nrow(tmp) > 0) {
       dat <- dat %>%
