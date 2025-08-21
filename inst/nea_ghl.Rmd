@@ -321,16 +321,26 @@ plot_weight(fit, log_scale = TRUE)
 ### Growth parameters & Z
 
 ```{r grparams}
-DT::datatable(fit$params %>% 
-                dplyr::filter(grepl("K$|Linf|recl$|M$|rec.sd|init.F|bbin|_l50$|_alpha|_a50$", .data$switch)) %>% 
-                dplyr::arrange(switch),
-              options = list(pageLength = 500)) %>%
+if(is.list(fit$params)) {
+  tmp <- setNames(as.data.frame(fit$params), "value") %>% 
+    mutate(switch = names(fit$params), .before = 1)
+} else {
+  tmp <- fit$params 
+}
+
+DT::datatable(
+  tmp %>% 
+    dplyr::filter(
+      grepl("K$|Linf|recl$|M$|rec.sd|init.F|bbin|_l50$|_alpha|_a50$", 
+            .data$switch)) %>% 
+    dplyr::arrange(switch),
+  options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
 ```
 
 ### All parameters 
 
 ```{r allparams}
-DT::datatable(fit$params, options = list(pageLength = 500)) %>%
+DT::datatable(tmp, options = list(pageLength = 500)) %>%
   DT::formatRound(columns=c('value'), digits=3)
 ```
