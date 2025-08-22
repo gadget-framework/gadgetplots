@@ -321,9 +321,9 @@ plot_weight(fit, log_scale = TRUE)
 ### Growth parameters & Z
 
 ```{r grparams}
-if(is.list(fit$params)) {
-  tmp <- setNames(as.data.frame(fit$params), "value") %>% 
-    mutate(switch = names(fit$params), .before = 1)
+if(inherits(fit$params, "list")) {
+  tmp <- stats::setNames(as.data.frame(fit$params), "value") %>% 
+    dplyr::mutate(switch = names(fit$params), .before = 1)
 } else {
   tmp <- fit$params 
 }
