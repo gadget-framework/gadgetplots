@@ -22,7 +22,7 @@ LazyData: true
 Depends: R (>= 3.5.0)
 Imports: ggplot2, dplyr, magrittr, tidyr, purrr, rlang, scales, zoo, 
   cowplot, rmarkdown, flexdashboard, DT, plotly, ggridges, gadget3,
-  lubridate
+  lubridate, fs
 Suggests: gadgetutils
 RoxygenNote: 7.3.2
 URL: https://gadget-framework.github.io/gadgetplots/

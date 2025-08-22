@@ -10,13 +10,13 @@
 
 plot_weight <- function(fit, log_scale = FALSE, base_size = 8) {
   
-  if (is.list(fit$params$value)) fit$params$value <- unlist(fit$params$value)
+  if(is.list(fit$params$value)) fit$params$value <- unlist(fit$params$value)
   
-  if(is.list(fit$params)) {
+  if(inherits(fit$params, "list")) {
     tmp <- unlist(fit$params[grepl("weight$", names(fit$params))])
     
-    dat <- setNames(as.data.frame(tmp), "value") %>% 
-      mutate(switch = names(tmp), .before = 1) %>% 
+    dat <- stats::setNames(as.data.frame(tmp), "value") %>% 
+      dplyr::mutate(switch = names(tmp), .before = 1) %>% 
       dplyr::mutate(switch = gsub("_weight$", "", .data$switch))
     
   } else {

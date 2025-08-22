@@ -171,12 +171,12 @@ plot_growth <- function(fit, type = "annual", stdev = FALSE, add_models = FALSE,
     }
   } else {
 
-    if(is.list(fit$params)) {
+    if(inherits(fit$params, "list")) {
       tmp <- fit$params[
         grepl("init.sd", names(fit$params))] 
       
-      tmp <- setNames(as.data.frame(tmp), "value") %>% 
-        mutate(switch = names(tmp), .before = 1)
+      tmp <- stats::setNames(as.data.frame(tmp), "value") %>% 
+        dplyr::mutate(switch = names(tmp), .before = 1)
       
     } else {
     tmp <- fit$params %>%

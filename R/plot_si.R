@@ -30,13 +30,13 @@ plot_si <- function(fit, type = "model_fit", base_size = 8) {
     ) %>%
     dplyr::mutate(name = gsub("surveyindices\\.", "", .data$name))
 
-   if(is.list(fit$params)) {
+   if(inherits(fit$params, "list")) {
     tmp <- fit$params[
       grepl("weight$", names(fit$params)) & 
         grepl(paste(x$name %>% unique(), collapse = "|"), names(fit$params))] 
     
-    tmp <- setNames(as.data.frame(tmp), "value") %>% 
-      mutate(switch = names(tmp), .before = 1)
+    tmp <- stats::setNames(as.data.frame(tmp), "value") %>% 
+      dplyr::mutate(switch = names(tmp), .before = 1)
     
   } else {
     tmp <- fit$params %>%
