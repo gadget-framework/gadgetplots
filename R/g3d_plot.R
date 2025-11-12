@@ -28,7 +28,7 @@ g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_s
   ## Deal with catches which are different format
 
   if(any(grepl("catch", x))) {
-    tmp <- unique(gsub("__keys|__values", "", grep("catch", x, value = TRUE)))
+    tmp <- unique(gsub("_keys|_values", "", grep("catch", x, value = TRUE)))
 
     x <- c(
       lapply(x[!grepl("catch", x)], function(k) k),
@@ -40,7 +40,7 @@ g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_s
   }
 
   # i = 3
-  lapply(seq_along(x), function(i) {
+  out <- lapply(seq_along(x), function(i) {
 
     message(paste(x[[i]], collapse = ", "))
 
@@ -92,7 +92,7 @@ g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_s
       ggplot2::ggplot(y, ggplot2::aes(.data$time, .data$value)) +
         ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
         ggplot2::labs(y = "Catch (kt)", x= 'Year',
-                      title = unique(gsub("__keys|__values", "", x[[i]]))
+                      title = unique(gsub("_keys|_values", "", x[[i]]))
                       ) +
         ggplot2::coord_cartesian(expand = FALSE) +
         ggplot2::theme_classic(base_size = base_size)
@@ -208,5 +208,11 @@ g3d_plot <- function(model, regexp = NULL, scales = "fixed", ncol = NULL, base_s
       }
     }
   })
+  
+  if(grepl("catch", regexp)) {
+    cowplot::plot_grid(plotlist = out)
+  } else {
+    out
+  }
 
 }
