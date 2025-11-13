@@ -1,5 +1,5 @@
 ---
-title: "Gadget model output"
+title: "`r model_name`"
 author: "`r ifelse(is.null(attributes(fit)$summary$convergence), 'No data', ifelse(attributes(fit)$summary$convergence, 'Converged', 'Not converged'))`"
 date: "`r ifelse(is.null(attributes(fit)$summary$gd_calls), 'on iteration', paste0(attributes(fit)$summary$gd_calls, '/', attributes(fit)$summary$maxiter, ' iterations'))`"
 output: 
@@ -9,6 +9,7 @@ output:
 params: 
   fit: fit
   harvest_rate: harvest_rate
+  model_name: model_name
 editor_options: 
   chunk_output_type: console
 ---

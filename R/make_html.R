@@ -1,9 +1,10 @@
 #' @title Save diagnostic graphs to a single html document
 #' @inheritParams plot_annual
 #' @inheritParams gadget_plots
-#' @param path Directory path for saving the html output.
+#' @param path Directory path for saving the html output. Defaults to working directory. 
 #' @param file_name Character specifying the name of the html file without path. Must include the file extension.
 #' @param template Character specifying the html template to use. See details.
+#' @param model_name Character specifying the name of the model when "standard \code{template} is used. 
 #' @return Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html}{webpage for example output}.
 #' @details The package contains html templates tailored for different stocks needed by the authors. Specify the name in the \code{template} argument. Current alternatives are:
 #' \describe{
@@ -16,7 +17,11 @@
 #' @import flexdashboard
 #' @export
 
-make_html <- function(fit, path, harvest_rate = TRUE, file_name = 'model_output_figures.html', template = "standard") {
+# Debug params:
+# path = getwd(); harvest_rate = TRUE; file_name = 'test.html'; template = "standard"; model_name = "GADGET model"
+make_html <- function(fit, path = getwd(), harvest_rate = TRUE, 
+                      file_name = 'model_output_figures.html', 
+                      template = "standard", model_name = "Gadget model output") {
   path <- fs::path_abs(path)
   fs::dir_create(path)
 
@@ -34,6 +39,6 @@ make_html <- function(fit, path, harvest_rate = TRUE, file_name = 'model_output_
     input = template_path,
     output_dir = path,
     output_file = file_name,
-    params = list(fit = fit, harvest_rate = harvest_rate)
+    params = list(fit = fit, harvest_rate = harvest_rate, model_name = model_name)
     )
 }

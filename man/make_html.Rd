@@ -6,22 +6,25 @@
 \usage{
 make_html(
   fit,
-  path,
+  path = getwd(),
   harvest_rate = TRUE,
   file_name = "model_output_figures.html",
-  template = "standard"
+  template = "standard",
+  model_name = "Gadget model output"
 )
 }
 \arguments{
 \item{fit}{A gadget fit object. See \code{\link[gadgetutils]{g3_fit}}.}
 
-\item{path}{Directory path for saving the html output.}
+\item{path}{Directory path for saving the html output. Defaults to working directory.}
 
 \item{harvest_rate}{A Logical value, if \code{TRUE} the harvest rate will be plotted, if \code{FALSE} the fishing mortality will be plotted.}
 
 \item{file_name}{Character specifying the name of the html file without path. Must include the file extension.}
 
 \item{template}{Character specifying the html template to use. See details.}
+
+\item{model_name}{Character specifying the name of the model when "standard \code{template} is used.}
 }
 \value{
 Returns nothing, but makes the requested file. See the \href{https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html}{webpage for example output}.
