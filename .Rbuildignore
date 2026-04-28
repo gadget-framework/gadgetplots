@@ -13,3 +13,5 @@
 ^NEWS\.md$
 man/figures$
 
+^\.positai$
+^\.claude$

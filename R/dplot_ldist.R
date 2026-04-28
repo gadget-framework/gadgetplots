@@ -98,7 +98,7 @@ dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
         limits = c(if(min_open_ended) 0 else attr(first_length_group[[1]], "min")-1,
                    attr(last_length_group[[1]], "max")+1),
         expand = c(0,0.5), n.breaks = 8) +
-      ggplot2::labs(x = "Length", y = "Year", fill = "Stock") +
+      ggplot2::labs(x = "Length", y = "Year") +
       ggplot2::theme_bw(base_size = base_size) +
       ggplot2::theme(
         panel.grid.major.x = ggplot2::element_blank(),
