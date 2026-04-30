@@ -4,14 +4,16 @@
 \alias{dplot_sexr}
 \title{Plot sex ratio data for a gadget3 model}
 \usage{
-dplot_sexr(x, ncol = NULL, base_size = 8)
+dplot_sexr(x, dir = "v", base_size = 8, ...)
 }
 \arguments{
 \item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
 
-\item{ncol}{Number of columns passed to \code{\link[ggplot2]{facet_wrap}}}
+\item{dir}{Character specifying the direction of the facets ("h" for horizontal, "v" for vertical). See \code{\link[ggplot2]{facet_wrap}}. Defaults to "v" unlike in \code{\link[ggplot2]{facet_wrap}} to make it easier to follow length and age groups across years.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2]{facet_wrap}}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

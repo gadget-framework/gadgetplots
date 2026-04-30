@@ -1,0 +1,235 @@
+# gadgetplots
+
+**Plot gadget3 model output using ggplot2. R package version 0.3.8**
+
+The gadgetplots package produces diagnostics graphics for
+[gadget3](https://github.com/gadget-framework/gadget3) using
+[ggplot2](https://ggplot2.tidyverse.org/reference). The package replaces
+the plotting capabilities of
+[Rgadget](https://github.com/gadget-framework/rgadget) package which was
+designed to work with
+[gadget2](https://github.com/gadget-framework/gadget2).
+
+## Installation
+
+The gadgetplots is not available on CRAN yet. Use the devtools or
+remotes packages to install directly from GitHub:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gadget-framework/gadgetplots")
+```
+
+## Usage
+
+See the [**function
+reference**](https://gadget-framework.github.io/gadgetplots/reference/index.html)
+for a detailed list of functions and documentation on how to use them.
+
+The
+[`make_html()`](https://gadget-framework.github.io/gadgetplots/reference/make_html.html)
+function generates a [single html
+file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html)
+out of
+[`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html)
+output that contains key model diagnostics. Further, the package
+produces plots in four categories:
+
+1.  `plot_*()` functions plot gadget model **output** generated using
+    [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html).
+    These functions have a generic shorthand, the
+    [`plot()`](https://gadget-framework.github.io/gadgetplots/reference/plot.gadget.fit.html),
+    with `param` argument specifying the type of plot.
+
+2.  `dplot_*()` functions plot gadget model **input data** generated
+    using [mfdb](https://github.com/gadget-framework/mfdb),
+    [`gadgetutils::g3_data()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_data.html)
+    or
+    [`gadgetutils::add_g3_attributes()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/add_g3_attributes.html)
+    functions.
+
+3.  the [`g3d_plot()`](reference/g3d_plot.md) function plots **data
+    directly** from a gadget model object.
+
+4.  `g3plot_*` functions plot gadget **suitability (selectivity)
+    functions**.
+
+## Found a bug or desire a feature?
+
+The package is under an active development together with gadget3
+framework. Please report bugs and write feature requests under
+[Issues](https://github.com/gadget-framework/gadgetplots/issues).
+
+# Package index
+
+## Model overviews
+
+The [`make_html()`](../reference/make_html.md) function generates a
+[single html
+file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html)
+out of
+[`gadgetutils::g3_fit()`](https://rdrr.io/pkg/gadgetutils/man/g3_fit.html)
+output that contains key model diagnostics. The
+[`gadget_plots()`](../reference/gadget_plots.md) function saves a set of
+diagnostics plots into a folder.
+
+- [`make_html()`](make_html.md) : Save diagnostic graphs to a single
+  html document
+- [`gadget_plots()`](gadget_plots.md) : Wrapper for plot.gadget.fit that
+  saves all diagnostic graphs to a directory
+
+## Plotting functions
+
+The package produces plots in four categories:
+
+1.  `plot_*()` functions plot gadget model **output** generated using
+    [`gadgetutils::g3_fit()`](https://rdrr.io/pkg/gadgetutils/man/g3_fit.html).
+    These functions have a generic shorthand, the
+    [`plot()`](https://rdrr.io/r/graphics/plot.default.html), with
+    `param` argument specifying the type of plot.
+
+2.  `dplot_*()` functions plot gadget model **input data** generated
+    using [mfdb](https://github.com/gadget-framework/mfdb),
+    [`gadgetutils::g3_data()`](https://rdrr.io/pkg/gadgetutils/man/g3_data.html)
+    or
+    [`gadgetutils::add_g3_attributes()`](https://rdrr.io/pkg/gadgetutils/man/add_g3_attributes.html)
+    functions.
+
+3.  the [`g3d_plot()`](../reference/g3d_plot.md) function plots **data
+    directly** from a gadget model object.
+
+4.  `g3plot_*` functions plot gadget **suitability (selectivity)
+    functions**.
+
+## The `plot_*` for `g3_fit` output
+
+These functions make the plots typically used in asssessment and model
+diagnostics. Some of the functions have `return_data` argument, which
+can be used to quickly grab associated data for further analyses, custom
+plots and tables.
+
+### General
+
+- [`plot(`*`<gadget.fit>`*`)`](plot.gadget.fit.md) :
+
+  Plot `gadget.fit` object
+
+- [`plot_annual()`](plot_annual.md) : Plot annual ICES type of graphic
+  returning central model data
+
+### Age-related
+
+- [`plot_adist()`](plot_adist.md) : Plot model age distributions for
+  stocks by year
+- [`plot_ageclass()`](plot_ageclass.md) : Plot an age class from the
+  model
+- [`plot_agecomp()`](plot_agecomp.md) : Plot of age composition from the
+  model
+- [`plot_agelength()`](plot_agelength.md) : Plot of fitted growth for
+  each age-length component
+- [`plot_growth()`](plot_growth.md) : Plot of average growth for each
+  stock
+
+### Stock status
+
+- [`plot_biomass()`](plot_biomass.md) : Plot stock biomasses
+- [`plot_ssb()`](plot_ssb.md) : Plot spawning stock biomass
+- [`plot_rec()`](plot_rec.md) : Plot recruitment
+- [`plot_sr()`](plot_sr.md) : Plot stock-recruitment relationship
+- [`plot_si()`](plot_si.md) : Plot survey indices
+
+### Catches and fleets
+
+- [`plot_catch()`](plot_catch.md) : Plot catches
+- [`plot_f()`](plot_f.md) : Plot fishing mortality
+- [`plot_hr()`](plot_hr.md) : Plot harvest rate
+- [`plot_suitability()`](plot_suitability.md) : Plot suitability
+
+### Distributions
+
+- [`plot_catchdist()`](plot_catchdist.md) : Plot catch distributions
+- [`plot_ldist()`](plot_ldist.md) : Plot model length distributions for
+  stocks by year
+- [`plot_stockcomp()`](plot_stockcomp.md) : Plot model stock composition
+- [`plot_stockdist()`](plot_stockdist.md) : Plot stock distribution
+
+### Parameters and fit
+
+- [`plot_likelihood()`](plot_likelihood.md) : Plot likelihood summary
+- [`plot_param()`](plot_param.md) : Plot parameter values relative to
+  their boundaries
+- [`plot_resid()`](plot_resid.md) : Plot residuals for catch
+  distributions
+- [`plot_weight()`](plot_weight.md) : Plot parameter weights
+
+### Model diagnostics
+
+These functions require a list of gadget.fit objects generated using the
+[`gadgetutils::g3_jitter()`](https://rdrr.io/pkg/gadgetutils/man/g3_jitter.html),
+[`gadgetutils::g3_leaveout()`](https://rdrr.io/pkg/gadgetutils/man/g3_leaveout.html),
+and
+[`gadgetutils::g3_retro()`](https://rdrr.io/pkg/gadgetutils/man/g3_retro.html)
+functions.
+
+- [`plot_jitter()`](plot_jitter.md) : Plot central model output from a
+  jitter analysis
+- [`plot_leaveout()`](plot_leaveout.md) : Plot central model output from
+  a leave-out analysis
+- [`plot_retro()`](plot_retro.md) : Plot model biomass from a
+  retrospective analysis
+
+## The `dplot_*` for gadget input data
+
+These functions plot gadget input data attempting to highlight
+attributes, which guide the model fitting, but are often difficult to
+notice otherwise.
+
+- [`dplot_adist()`](dplot_adist.md) : Plot age distribution data for a
+  gadget3 model
+- [`dplot_aldist()`](dplot_aldist.md) : Plot age-length distribution
+  data for a gadget3 model
+- [`dplot_ldist()`](dplot_ldist.md) : Plot length distribution data for
+  a gadget3 model
+- [`dplot_sexr()`](dplot_sexr.md) : Plot sex ratio data for a gadget3
+  model
+- [`dplot_stockdist()`](dplot_stockdist.md) : Plot stock distribution
+  data for a gadget3 model
+- [`dplot_catch()`](dplot_catch.md) : Plot catch data for a gadget3
+  model
+
+## The `g3d_plot` for gadget model objects
+
+The [`g3d_plot()`](../reference/g3d_plot.md) function plots all
+observational data passed into a TMB or R gadget model.
+
+- [`g3d_plot()`](g3d_plot.md) : Plot of data passed into a gadget model
+
+## The `g3plot_*` for suitability functions
+
+These plot gadget suitability functions, which can be difficult to
+comprehend without visualizing. The model parameters can be extracted
+from a gadget.fit object or typed in manually.
+
+- [`g3plot_andersen()`](g3plot_andersen.md) : Plot Andersen suitability
+  using model parameters
+- [`g3plot_exponentiall50()`](g3plot_exponentiall50.md) : Plot
+  exponentiall50 suitability using model parameters
+
+## Example data
+
+Datasets to demonstrate plot functions.
+
+- [`fit`](fit.md) : An example gadget.fit object.
+- [`aldist_example`](aldist_example.md) : Age-length input data to
+  gadget
+- [`ldist_example`](ldist_example.md) : Length input data to gadget
+- [`sexratio_example`](sexratio_example.md) : Sex input data to gadget
+- [`stockdist_example`](stockdist_example.md) : Maturity input data to
+  gadget
+- [`TrawlNor_catches`](example_catches.md)
+  [`Internat_catches`](example_catches.md)
+  [`OtherNor_catches`](example_catches.md)
+  [`OtherRus_catches`](example_catches.md)
+  [`TrawlRus_catches`](example_catches.md) : Catch input data to gadget
+

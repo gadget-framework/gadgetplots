@@ -1,16 +1,17 @@
 #' @title Plot age-length distribution data for a gadget3 model
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @param x A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.
-#' @param type Character specifying the plot type: "bar", "step", or "area". "step" produces a similar plot where age and length distributions are plotted separately as in \link{plot_aldist}. "area" produces an area plot instead of a bar plot, but works poorly when there are many age groups.
+#' @param type Character specifying the plot type: "bar", "step", or "area". "step" produces a similar plot where age and length distributions are plotted separately as in \link{plot_catchdist}. "area" produces an area plot instead of a bar plot, but works poorly when there are many age groups.
 #' @param facet_age Logical indicating whether ages should be plotted in separate facets. Does not apply for \code{type = "step"}.
-#' @param scales Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.
-#' @param ncol Number of columns passed to \code{\link[ggplot2]{facet_wrap}}
+#' @param dir Character specifying the direction of the facets ("h" for horizontal, "v" for vertical). See \code{\link[ggplot2]{facet_wrap}}. Defaults to "v" unlike in \code{\link[ggplot2]{facet_wrap}} to make it easier to follow length and age groups across years.
 #' @param color_palette A function defining the color palette to be used for fill of bars when \code{facet_age = TRUE}. See \link[ggplot2]{scale_color_manual}. To adjust color when \code{facet_age = FALSE}, use the standard \code{ggplot2::scale_fill_*} functions.
 #' @param base_size Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.
+#' @param ... Additional arguments passed to \code{\link[ggplot2]{facet_wrap}}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(aldist_example)
 #' dplot_aldist(aldist_example)
+#' dplot_aldist(aldist_example, type = "step") # as in plot_catchdist
 #' dplot_aldist(aldist_example, facet_age = TRUE)
 #' dplot_aldist(aldist_example, type = "area") # works poorly
 #' @export
@@ -20,10 +21,10 @@ dplot_aldist <- function(
   x,
   type = "bar",
   facet_age = FALSE,
-  scales = "fixed",
-  ncol = NULL,
+  dir = "v",
   color_palette = scales::brewer_pal(palette = "Set1"),
-  base_size = 8
+  base_size = 8,
+  ...
 ) {
   length_groups <- sapply(attributes(x)$length, function(k) attr(k, "min"))
 
@@ -81,7 +82,8 @@ dplot_aldist <- function(
       ggplot2::facet_wrap(
         ~ .data$year + .data$step,
         labeller = ggplot2::label_wrap_gen(multi_line = FALSE),
-        scales = scales
+        dir = dir,
+        ...
       ) +
       ggplot2::labs(y = 'Proportion', x = 'Age') +
       ggplot2::theme_classic(base_size = base_size) +
@@ -111,7 +113,8 @@ dplot_aldist <- function(
       ggplot2::facet_wrap(
         ~ .data$year + .data$step,
         labeller = ggplot2::label_wrap_gen(multi_line = FALSE),
-        scales = scales
+        dir = dir,
+        ...
       ) +
       ggplot2::labs(y = 'Proportion', x = 'Length') +
       ggplot2::theme_classic(base_size = base_size) +
@@ -121,7 +124,7 @@ dplot_aldist <- function(
         axis.ticks.y = ggplot2::element_blank()
       )
 
-    cowplot::plot_grid(p1, p2, ncol = 2)
+    cowplot::plot_grid(p1, p2, ncol = 1)
   } else if (type == "bar") {
     if (facet_age) {
       ggplot2::ggplot(
@@ -163,7 +166,6 @@ dplot_aldist <- function(
         ggplot2::labs(x = "Length (cm)", y = "Number") +
         ggplot2::facet_grid(
           .data$Age ~ .data$Date,
-          scales = scales,
           labeller = ggplot2::label_wrap_gen(multi_line = FALSE)
         ) +
         ggplot2::scale_fill_manual(
@@ -182,10 +184,9 @@ dplot_aldist <- function(
       ) +
         ggplot2::facet_wrap(
           ~ .data$Date,
-          scales = scales,
-          dir = "v",
-          ncol = ncol,
-          labeller = ggplot2::label_wrap_gen(multi_line = FALSE)
+          labeller = ggplot2::label_wrap_gen(multi_line = FALSE),
+          dir = dir,
+          ...
         ) +
         ggplot2::geom_vline(
           xintercept = length_groups,
@@ -262,10 +263,9 @@ dplot_aldist <- function(
       ggplot2::labs(x = "Length (cm)", y = "Number") +
       ggplot2::facet_wrap(
         ~ .data$Date,
-        scales = scales,
-        dir = "v",
-        ncol = ncol,
-        labeller = ggplot2::label_wrap_gen(multi_line = FALSE)
+        labeller = ggplot2::label_wrap_gen(multi_line = FALSE),
+        dir = dir,
+        ...
       ) +
       ggplot2::scale_fill_viridis_c() +
       ggplot2::coord_cartesian(expand = FALSE) +

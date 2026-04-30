@@ -10,6 +10,7 @@
 #' sexes in \code{stock_col}. See the default as an example.
 #' @param colors A vector of colors to be used for stocks. If \code{NULL},
 #' \code{scales::hue_pal()} will be used
+#' @param scales Character specifying the \code{scales} argument passed to \code{\link[ggplot2]{facet_wrap}}. Defaults to \code{"free_y"}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(stockdist_example)
@@ -22,7 +23,7 @@ dplot_stockdist <-
   function(
     x, stock_col = "maturity_stage", proportion = FALSE, group_by_sex = FALSE,
     sexes = c("female" = "^female", "male" = "^male"), colors = NULL,
-    scales = "free_y", base_size = 8
+    scales = "free_y", dir = "v", base_size = 8, ...
   ) {
 
     length_groups <- sapply(attributes(x)$length, function(k) attr(k, "min"))
@@ -81,7 +82,7 @@ dplot_stockdist <-
                             linetype = ifelse(attr(last_length_group[[1]], "max_open_ended"),
                                               "dotted", "solid")) +
         ggplot2::geom_path() +
-        ggplot2::facet_wrap(~as.character(.data$Date), scales = scales) +
+        ggplot2::facet_wrap(~as.character(.data$Date), scales = scales, dir = dir, ...) +
         ggplot2::labs(x = "Length (cm)", y = "Number", color = "Stock") +
         ggplot2::scale_color_manual(values = colors) +
         ggplot2::scale_x_continuous(expand = c(0,0.5), n.breaks = 8) +
@@ -137,7 +138,7 @@ dplot_stockdist <-
                             linetype = ifelse(attr(last_length_group[[1]], "max_open_ended"),
                                               "dotted", "solid")) +
         ggplot2::geom_line() +
-        ggplot2::facet_wrap(~as.character(.data$Date)) +
+        ggplot2::facet_wrap(~as.character(.data$Date), dir = dir, ...) +
         ggplot2::labs(x = "Length (cm)", y = "Proportion", color = "Stock") +
         ggplot2::scale_color_manual(values = colors) +
         ggplot2::theme_classic(base_size = base_size) +

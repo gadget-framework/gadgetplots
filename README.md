@@ -1,10 +1,12 @@
 
 # gadgetplots
 
-**Plot gadget3 model output using ggplot2. R package version 0.3.0**
+**Plot gadget3 model output using ggplot2. R package version 0.3.8**
 
 <!-- badges: start -->
+
 <!-- [![R-CMD-check](https://github.com/gadget-framework/gadgetplots/workflows/R-CMD-check/badge.svg)](https://github.com/gadget-framework/gadgetplots/actions) -->
+
 <!-- badges: end -->
 
 The gadgetplots package produces diagnostics graphics for

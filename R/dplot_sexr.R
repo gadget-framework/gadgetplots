@@ -7,7 +7,7 @@
 #' dplot_sexr(sexratio_example)
 #' @export
 
-dplot_sexr <- function(x, ncol = NULL, base_size = 8) {
+dplot_sexr <- function(x, dir = "v", base_size = 8, ...) {
 
   length_groups <- names(attributes(x)$length) %>%
     gsub("[^0-9.-]", "", .) %>%
@@ -74,8 +74,8 @@ dplot_sexr <- function(x, ncol = NULL, base_size = 8) {
       size = FS(6), angle = 270) +
     ggplot2::labs(x = "Length", y = "Sex ratio") +
     ggplot2::facet_wrap(
-      ~.data$Date, dir = "v", ncol = ncol,
-      labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
+      ~.data$Date, dir = dir,
+      labeller = ggplot2::label_wrap_gen(multi_line=FALSE), ...) +
     ggplot2::scale_y_continuous(breaks = seq(0,1,0.25), expand = c(0,0)) +
     ggplot2::expand_limits(y = 1.2) +
     ggplot2::theme_classic(base_size = base_size) +

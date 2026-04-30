@@ -1,0 +1,62 @@
+# gadgetplots
+
+**Plot gadget3 model output using ggplot2. R package version 0.3.8**
+
+The gadgetplots package produces diagnostics graphics for
+[gadget3](https://github.com/gadget-framework/gadget3) using
+[ggplot2](https://ggplot2.tidyverse.org/reference). The package replaces
+the plotting capabilities of
+[Rgadget](https://github.com/gadget-framework/rgadget) package which was
+designed to work with
+[gadget2](https://github.com/gadget-framework/gadget2).
+
+## Installation
+
+The gadgetplots is not available on CRAN yet. Use the devtools or
+remotes packages to install directly from GitHub:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("gadget-framework/gadgetplots")
+```
+
+## Usage
+
+See the [**function
+reference**](https://gadget-framework.github.io/gadgetplots/reference/index.html)
+for a detailed list of functions and documentation on how to use them.
+
+The
+[`make_html()`](https://gadget-framework.github.io/gadgetplots/reference/make_html.html)
+function generates a [single html
+file](https://gadget-framework.github.io/gadgetplots/articles/make_html_output.html)
+out of
+[`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html)
+output that contains key model diagnostics. Further, the package
+produces plots in four categories:
+
+1.  `plot_*()` functions plot gadget model **output** generated using
+    [`gadgetutils::g3_fit()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_fit.html).
+    These functions have a generic shorthand, the
+    [`plot()`](https://gadget-framework.github.io/gadgetplots/reference/plot.gadget.fit.html),
+    with `param` argument specifying the type of plot.
+
+2.  `dplot_*()` functions plot gadget model **input data** generated
+    using [mfdb](https://github.com/gadget-framework/mfdb),
+    [`gadgetutils::g3_data()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/g3_data.html)
+    or
+    [`gadgetutils::add_g3_attributes()`](https://rdrr.io/github/gadget-framework/gadgetutils/man/add_g3_attributes.html)
+    functions.
+
+3.  the [`g3d_plot()`](reference/g3d_plot.md) function plots **data
+    directly** from a gadget model object.
+
+4.  `g3plot_*` functions plot gadget **suitability (selectivity)
+    functions**.
+
+## Found a bug or desire a feature?
+
+The package is under an active development together with gadget3
+framework. Please report bugs and write feature requests under
+[Issues](https://github.com/gadget-framework/gadgetplots/issues).

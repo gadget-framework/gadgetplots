@@ -49,3 +49,6 @@ README.html
 *.Rproj
 
 .positai
+
+# Claude Code
+.claude/

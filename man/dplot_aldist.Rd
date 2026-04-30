@@ -8,26 +8,26 @@ dplot_aldist(
   x,
   type = "bar",
   facet_age = FALSE,
-  scales = "fixed",
-  ncol = NULL,
+  dir = "v",
   color_palette = scales::brewer_pal(palette = "Set1"),
-  base_size = 8
+  base_size = 8,
+  ...
 )
 }
 \arguments{
 \item{x}{A gadget3 ready data frame created using mfdb, \link[gadgetutils]{g3_data} or \link[gadgetutils]{add_g3_attributes}.}
 
-\item{type}{Character specifying the plot type: "bar" or "area".}
+\item{type}{Character specifying the plot type: "bar", "step", or "area". "step" produces a similar plot where age and length distributions are plotted separately as in \link{plot_catchdist}. "area" produces an area plot instead of a bar plot, but works poorly when there are many age groups.}
 
-\item{facet_age}{Logical indicating whether ages should be plotted in separate facets}
+\item{facet_age}{Logical indicating whether ages should be plotted in separate facets. Does not apply for \code{type = "step"}.}
 
-\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
-
-\item{ncol}{Number of columns passed to \code{\link[ggplot2]{facet_wrap}}}
+\item{dir}{Character specifying the direction of the facets ("h" for horizontal, "v" for vertical). See \code{\link[ggplot2]{facet_wrap}}. Defaults to "v" unlike in \code{\link[ggplot2]{facet_wrap}} to make it easier to follow length and age groups across years.}
 
 \item{color_palette}{A function defining the color palette to be used for fill of bars when \code{facet_age = TRUE}. See \link[ggplot2]{scale_color_manual}. To adjust color when \code{facet_age = FALSE}, use the standard \code{ggplot2::scale_fill_*} functions.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2]{facet_wrap}}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
@@ -38,6 +38,7 @@ The dplot functions plot data passed to a gadget3 model instead of data from the
 \examples{
 data(aldist_example)
 dplot_aldist(aldist_example)
+dplot_aldist(aldist_example, type = "step") # as in plot_catchdist
 dplot_aldist(aldist_example, facet_age = TRUE)
 dplot_aldist(aldist_example, type = "area") # works poorly
 }

@@ -12,7 +12,9 @@ dplot_stockdist(
   sexes = c(female = "^female", male = "^male"),
   colors = NULL,
   scales = "free_y",
-  base_size = 8
+  dir = "v",
+  base_size = 8,
+  ...
 )
 }
 \arguments{
@@ -32,9 +34,13 @@ sexes in \code{stock_col}. See the default as an example.}
 \item{colors}{A vector of colors to be used for stocks. If \code{NULL},
 \code{scales::hue_pal()} will be used}
 
-\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
+\item{scales}{Character specifying the \code{scales} argument passed to \code{\link[ggplot2]{facet_wrap}}. Defaults to \code{"free_y"}.}
+
+\item{dir}{Character specifying the direction of the facets ("h" for horizontal, "v" for vertical). See \code{\link[ggplot2]{facet_wrap}}. Defaults to "v" unlike in \code{\link[ggplot2]{facet_wrap}} to make it easier to follow length and age groups across years.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2]{facet_wrap}}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

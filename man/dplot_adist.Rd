@@ -8,9 +8,9 @@ dplot_adist(
   x,
   type = "bar",
   color_palette = scales::brewer_pal(palette = "Set1"),
-  scales = "fixed",
-  ncol = NULL,
-  base_size = 8
+  dir = "v",
+  base_size = 8,
+  ...
 )
 }
 \arguments{
@@ -20,11 +20,11 @@ dplot_adist(
 
 \item{color_palette}{A function defining the color palette to be used for fill of bars.}
 
-\item{scales}{Character defining the \code{\link[ggplot2]{facet_wrap}} \code{scales} argument to use.}
-
-\item{ncol}{Number of columns passed to \code{\link[ggplot2]{facet_wrap}}}
+\item{dir}{Character specifying the direction of the facets ("h" for horizontal, "v" for vertical). See \code{\link[ggplot2]{facet_wrap}}. Defaults to "v" unlike in \code{\link[ggplot2]{facet_wrap}} to make it easier to follow length and age groups across years.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2]{facet_wrap}}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.

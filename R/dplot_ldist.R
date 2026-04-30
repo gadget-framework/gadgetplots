@@ -2,6 +2,7 @@
 #' @description The dplot functions plot data passed to a gadget3 model instead of data from the model or fit objects.
 #' @inheritParams dplot_aldist
 #' @param type Character specifying the plot type: "bar", "ggridges" or "line"
+#' @param scales Character specifying the \code{scales} argument passed to \code{\link[ggplot2]{facet_wrap}}. Defaults to \code{"free_y"}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(ldist_example)
@@ -10,7 +11,7 @@
 #' dplot_ldist(ldist_example, type = "line")
 #' @export
 
-dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
+dplot_ldist <- function(x, type = "bar", scales = "free_y", dir = "v", base_size = 8, ...) {
 
   length_groups <- sapply(attributes(x)$length, function(k) attr(k, "min"))
 
@@ -68,8 +69,8 @@ dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
       ) +
       ggplot2::geom_rect(fill = "grey", color = "black") +
       ggplot2::labs(x = "Length (cm)", y = "Number") +
-      ggplot2::facet_wrap(~.data$year+.data$step, scales = scales,
-                          labeller = ggplot2::label_wrap_gen(multi_line=FALSE)) +
+      ggplot2::facet_wrap(~.data$year+.data$step, scales = scales, dir = dir,
+                          labeller = ggplot2::label_wrap_gen(multi_line=FALSE), ...) +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(strip.background = ggplot2::element_blank())
@@ -120,7 +121,7 @@ dplot_ldist <- function(x, type = "bar", scales = "free_y", base_size = 8) {
                           linetype = ifelse(max_open_ended, "dotted", "solid"),
                           linewidth = 1/2.13) +
       ggplot2::geom_path() +
-      ggplot2::facet_wrap(~.data$year, scales = scales, dir = "v") +
+      ggplot2::facet_wrap(~.data$year, scales = scales, dir = dir, ...) +
       ggplot2::labs(x = "Length (cm)", y = "Count", color = "Timestep") +
       ggplot2::theme_classic(base_size = base_size) +
       ggplot2::theme(legend.position = "bottom",
