@@ -24,8 +24,10 @@ g3plot_exponentiall50 <- function(length, alpha, l50, add = FALSE, base_size = 8
     data.frame(
       model = ifelse(!is.null(names(alpha)), names(alpha)[i], paste("expl50", i, sep = "_")),
       length = length,
-      y = gadget3::g3_eval(gadget3::g3_suitability_exponentiall50(alpha[i],l50[i]),
-                           stock = gadget3::g3_stock('s', length))
+      # The exponentiall50 suitability of gadget3::g3_suitability_exponentiall50(), evaluated at
+      # the given lengths. Evaluating it for gadget3::g3_stock('s', length) would use the midpoints
+      # of length groups starting at the given lengths, i.e. shift the curve by half a length group
+      y = 1 / (1 + exp(-alpha[[i]] * (length - l50[[i]])))
     )
   }) %>% dplyr::bind_rows()
 
