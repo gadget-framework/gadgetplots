@@ -33,17 +33,22 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_mis
         
         nm <- gsub("_survey|_fishery", "", unique(dat$fleet))
         
+        # Parameters of this fleet only: the fleet name is a whole dot-separated part of the
+        # parameter name (e.g. "Int.reb.l50", "ghl_female.trawlnor.l50"). A plain substring
+        # search would also match other fleets (e.g. "Int" in "WinterS.reb.l50")
+        fleet_switches <- grep(paste0("(^|\\.)", nm, "(\\.|$)"), fit$params$switch, ignore.case = TRUE, value = TRUE)
+        alpha_switches <- grep("\\.alpha$", fleet_switches, value = TRUE)
+        l50_switches <- grep("\\.l50$", fleet_switches, value = TRUE)
+
         if(
           add_models &
-          length(grep("l50", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE)) > 0 &
-          length(grep("alpha", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE)) > 0 &
-          length(grep("l50", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE)) ==
-          length(grep("alpha", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE))
+          length(l50_switches) > 0 &
+          length(alpha_switches) == length(l50_switches)
         ) {
           expl50suit <- TRUE
-          alpha <- unlist(fit$params$value[fit$params$switch %in% grep("alpha", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE)])
-          names(alpha) <- gsub("\\.alpha", "", names(alpha))
-          l50 <- unname(unlist(fit$params$value[fit$params$switch %in% grep("l50", grep(nm, fit$params$switch, ignore.case = TRUE, value = TRUE), value = TRUE)]))
+          alpha <- unlist(fit$params$value[match(alpha_switches, fit$params$switch)])
+          names(alpha) <- gsub("\\.alpha$", "", alpha_switches)
+          l50 <- unname(unlist(fit$params$value[match(l50_switches, fit$params$switch)]))
         } else {
           expl50suit <- FALSE
         }
@@ -63,8 +68,8 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_mis
           ggplot2::labs(y='Suitability',x='Length', color = 'Stock') +
           {
             if (!(all(is.na(dat$year)) && all(is.na(dat$step)))){
-              # ggplot2::facet_wrap(~.data$year + .data$step) +
-              ggplot2::geom_text(
+              # NB: A list, ggplot2 (>= 4.0) can't add two layers together before they are added to the plot
+              list(ggplot2::geom_text(
                 data = dat %>%
                   dplyr::ungroup() %>%
                   dplyr::select(.data$year,.data$step) %>%
@@ -75,9 +80,9 @@ plot_suitability <- function(fit, fleets = "all", add_models = TRUE, include_mis
                 ggplot2::aes(-Inf,Inf,label=.data$label),
                 vjust = 1.3, hjust = -.05,
                 size = FS(base_size)*0.8,
-                inherit.aes = FALSE) +
+                inherit.aes = FALSE),
                 ggplot2::facet_wrap(~.data$year+.data$step,drop = FALSE,
-                                    ncol = max(2*length(unique(fit$suitability$step)),4))
+                                    ncol = max(2*length(unique(fit$suitability$step)),4)))
             }
           } +
           ggplot2::theme_classic(base_size = base_size) +
