@@ -29,6 +29,9 @@ A \link[ggplot2]{ggplot} object. If \code{fleet = NULL}, a list of ggplot object
 \description{
 Plot suitability
 }
+\details{
+Fleets whose suitability depends on age (the suitability table has non-missing ages, e.g. a selectivity defined by age rather than length) are plotted against age instead of length, since such a fleet has one suitability value per age at every length. With \code{fleets = "all"} or several fleets, length- and age-based fleets cannot share an axis: if both are selected, the age-based ones are left out with a message.
+}
 \examples{
 data(fit)
 plot_suitability(fit)
