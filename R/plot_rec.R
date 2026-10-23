@@ -3,6 +3,7 @@
 #' @inheritParams plot_hr
 #' @param panelrow something here
 #' @param stocks Character specifying the stock to plot in \code{fit}. If \code{NULL}, all stocks are plotted. If \code{"total"}, total recruitment will be plotted instead.
+#' @param scale Character specifying the display unit of recruitment: \code{"millions"} (default), \code{"billions"} or \code{"thousands"}.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(fit)
@@ -12,7 +13,11 @@
 
 # Debugging arguments:
 # panelrow = FALSE; stock = NULL; base_size = 8
-plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, base_size = 8){
+plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, base_size = 8,
+                     scale = c("millions", "billions", "thousands")){
+
+  scale <- unit_scale(match.arg(scale), "number")
+  ylab <- paste0("Recruitment (", scale$label, ")")
 
   if (length(fit) == 1) fit <- fit[[1]]
   if (inherits(fit, 'gadget.fit')){
@@ -22,13 +27,13 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
     if(length(stocks) == 1 && "total" %in% stocks) {
         dat <- fit$res.by.year %>%
           dplyr::group_by(.data$year) %>%
-          dplyr::summarise(value = sum(.data$recruitment, na.rm = TRUE)/1e6) %>%
+          dplyr::summarise(value = sum(.data$recruitment, na.rm = TRUE)/scale$divisor) %>%
           dplyr::mutate(stock = "total", .before = "value")
     } else {
       dat <- fit$res.by.year %>%
         dplyr::filter(.data$stock %in% stocks) %>%
         dplyr::group_by(.data$year, .data$stock) %>%
-        dplyr::summarise(value = sum(.data$recruitment, na.rm = TRUE)/1e6)
+        dplyr::summarise(value = sum(.data$recruitment, na.rm = TRUE)/scale$divisor)
     }
 
     if(return_data) return(dat)
@@ -38,7 +43,7 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
         ggplot2::aes(x = .data$year,
                      y = .data$value)) +
       ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
-      ggplot2::labs(y = 'Recruitment (in millions)',
+      ggplot2::labs(y = ylab,
                     x = 'Year',
                     fill = 'Stock') +
       ggplot2::coord_cartesian(expand = FALSE) +
@@ -55,7 +60,7 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
                      y = .data$value,
                      fill = .data$stock)) +
       ggplot2::geom_col() +
-      ggplot2::labs(y = 'Recruitment (in millions)',
+      ggplot2::labs(y = ylab,
                     x = 'Year',
                     fill = 'Stock') +
       ggplot2::coord_cartesian(expand = FALSE) +
@@ -83,11 +88,11 @@ plot_rec <- function(fit, panelrow = FALSE, stocks = NULL, return_data = FALSE, 
     pl <-
       ggplot2::ggplot(pdat %>% dplyr::filter(.data$stock %in% stocks),
                       ggplot2::aes(.data$year,
-                                   .data$recruitment/1e6,
+                                   .data$recruitment/scale$divisor,
                                    col=.data$id)) +
       ggplot2::geom_line() +
       ggplot2::facet_wrap(~.data$stock, ncol = if (panelrow) 1 else NULL) +
-      ggplot2::labs(y='Recruitment (in millions)', x='Year', col='Model')
+      ggplot2::labs(y=ylab, x='Year', col='Model')
 
   }
 

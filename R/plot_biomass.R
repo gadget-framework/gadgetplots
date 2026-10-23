@@ -5,6 +5,7 @@
 #' @param total Logical indicating whether total biomass should be plotted. Has no effect if \code{type = "area"}.
 #' @param min_catch_length Numeric value defining the minimum catch length (size), which will be used to filter (\code{>=}) the model population before calculating biomass. Combines all stocks. Turn of by setting to \code{NULL} (default).
 #' @param biomass Logical indicating whether biomass should be plotted instead of abundance.
+#' @param scale Character specifying the display unit of biomass: \code{"kt"} (default), \code{"Mt"} or \code{"t"}. Applies to biomass only; abundance is always shown in millions.
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(fit)
@@ -15,7 +16,10 @@
 #' @export
 
 # total = FALSE;  biomass = TRUE;base_size = 8
-plot_biomass <- function(fit, type = "line", total = FALSE, biomass = TRUE, stocks = NULL, min_catch_length = NULL, return_data = FALSE, base_size = 8){
+plot_biomass <- function(fit, type = "line", total = FALSE, biomass = TRUE, stocks = NULL, min_catch_length = NULL, return_data = FALSE, base_size = 8,
+                         scale = c("kt", "Mt", "t")){
+
+  scale <- unit_scale(match.arg(scale))
 
   if (length(fit) == 1) fit <- fit[[1]]
   if (!inherits(fit, 'gadget.fit')) stop("fit must be a gadget fit object.")
@@ -37,8 +41,8 @@ plot_biomass <- function(fit, type = "line", total = FALSE, biomass = TRUE, stoc
   }
 
   if(biomass) {
-    ylab <- "Biomass (kt)"
-    dat$value <- dat$total.biomass/1e6
+    ylab <- paste0("Biomass (", scale$label, ")")
+    dat$value <- dat$total.biomass/scale$divisor
   } else {
     ylab <- "Abundance (millions)"
     dat$value <- dat$total.number/1e6

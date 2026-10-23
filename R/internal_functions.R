@@ -42,6 +42,20 @@ getCores <- function() {
   }
 }
 
+# Map a display-unit name to a divisor (from the unit used in the fit) and label.
+# Biomass and catch in a fit are in kg; recruitment is in individuals.
+unit_scale <- function(scale, what = c("weight", "number")) {
+  what <- match.arg(what)
+  if (what == "weight") {
+    scale <- match.arg(scale, c("kt", "Mt", "t"))
+    list(divisor = c(kt = 1e6, Mt = 1e9, t = 1e3)[[scale]], label = scale)
+  } else {
+    scale <- match.arg(scale, c("millions", "billions", "thousands"))
+    list(divisor = c(millions = 1e6, billions = 1e9, thousands = 1e3)[[scale]],
+         label = scale)
+  }
+}
+
 #' Pipe operator
 #'
 #' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.

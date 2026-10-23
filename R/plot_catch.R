@@ -3,6 +3,7 @@
 #' @inheritParams plot_hr
 #' @param type Character specifying the data type: \code{"stock"} plots the catches by stock, \code{"fleet"} by fleet, \code{"total"} catches without separating to stock or fleet, and \code{"hr"} harvest rates by fleet.
 #' @param biomass Logical indicating whether biomass should be plotted instead of estimated abundance.
+#' @param scale Character specifying the display unit of catch in biomass: \code{"kt"} (default), \code{"Mt"} or \code{"t"}. Does not affect \code{type = "hr"} or catch in numbers (\code{biomass = FALSE}).
 #' @return A \link[ggplot2]{ggplot} object.
 #' @examples
 #' data(fit)
@@ -13,7 +14,11 @@
 #' plot_catch(fit, type = "hr")
 #' @export
 
-plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, return_data = FALSE) {
+plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, return_data = FALSE,
+                       scale = c("kt", "Mt", "t")) {
+
+  scale <- unit_scale(match.arg(scale))
+  ylab_biomass <- paste0("Catch (", scale$label, ")")
 
   if(type == "fleet") {
 
@@ -25,9 +30,9 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, retur
 
     if(return_data) return(dat)
 
-    ggplot2::ggplot(dat, ggplot2::aes(.data$date, .data$amount/1e6, fill = .data$fleet)) +
+    ggplot2::ggplot(dat, ggplot2::aes(.data$date, .data$amount/scale$divisor, fill = .data$fleet)) +
       ggplot2::geom_col() +
-      ggplot2::labs(y="Catch (kt)",x='Year',fill='Fleet') +
+      ggplot2::labs(y = ylab_biomass,x='Year',fill='Fleet') +
       ggplot2::coord_cartesian(expand = FALSE) +
       ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
       ggplot2::theme_classic(base_size = base_size)
@@ -52,7 +57,7 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, retur
   } else {
 
     if(biomass) {
-      dat <- fit$res.by.year %>% dplyr::mutate(value = .data$catch/1e6)
+      dat <- fit$res.by.year %>% dplyr::mutate(value = .data$catch/scale$divisor)
       } else {
       dat <- fit$res.by.year %>% dplyr::mutate(value = .data$num.catch/1e6)
     }
@@ -69,7 +74,7 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, retur
         ggplot2::geom_col(fill = "grey", color = "black", linewidth = LS(0.5)) +
         ggplot2::labs(
           y = ifelse(biomass,
-                     "Catch (weight in '000 tons)",
+                     ylab_biomass,
                      "Catch (abundance in millions)"),
           x='Year',fill='Stock') +
         ggplot2::coord_cartesian(expand = FALSE) +
@@ -85,7 +90,7 @@ plot_catch <- function(fit, type = "stock", biomass = TRUE, base_size = 8, retur
         ggplot2::geom_col() +
         ggplot2::labs(
           y = ifelse(biomass,
-                     "Catch (weight in '000 tons)",
+                     ylab_biomass,
                      "Catch (abundance in millions)"),
           x='Year',fill='Stock') +
         ggplot2::coord_cartesian(expand = FALSE) +

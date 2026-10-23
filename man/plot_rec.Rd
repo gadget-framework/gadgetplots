@@ -9,7 +9,8 @@ plot_rec(
   panelrow = FALSE,
   stocks = NULL,
   return_data = FALSE,
-  base_size = 8
+  base_size = 8,
+  scale = c("millions", "billions", "thousands")
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_rec(
 \item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{scale}{Character specifying the display unit of recruitment: \code{"millions"} (default), \code{"billions"} or \code{"thousands"}.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
