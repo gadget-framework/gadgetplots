@@ -9,7 +9,8 @@ plot_catch(
   type = "stock",
   biomass = TRUE,
   base_size = 8,
-  return_data = FALSE
+  return_data = FALSE,
+  scale = c("kt", "Mt", "t")
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_catch(
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
 
 \item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
+
+\item{scale}{Character specifying the display unit of catch in biomass: \code{"kt"} (default), \code{"Mt"} or \code{"t"}. Does not affect \code{type = "hr"} or catch in numbers (\code{biomass = FALSE}).}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
