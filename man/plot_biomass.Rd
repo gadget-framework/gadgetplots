@@ -12,7 +12,8 @@ plot_biomass(
   stocks = NULL,
   min_catch_length = NULL,
   return_data = FALSE,
-  base_size = 8
+  base_size = 8,
+  scale = c("kt", "Mt", "t")
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ plot_biomass(
 \item{return_data}{Logical indicating whether to return data for the plot instead of the plot itself.}
 
 \item{base_size}{Base size parameter for ggplot. See \link[ggplot2]{ggtheme}.}
+
+\item{scale}{Character specifying the display unit of biomass: \code{"kt"} (default), \code{"Mt"} or \code{"t"}. Applies to biomass only; abundance is always shown in millions.}
 }
 \value{
 A \link[ggplot2]{ggplot} object.
